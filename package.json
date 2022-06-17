@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon mullegro_server.js"
+    "devStart": "nodemon index.js"
   },
   "repository": {
     "type": "git",
