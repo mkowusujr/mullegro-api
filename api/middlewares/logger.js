@@ -1,13 +1,17 @@
 exports.logger = (req, res, next) => {
     const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}`
+    const bodyJSON = JSON.stringify(req.body, null, 2)
+    
     switch(req.method) {
         case 'GET': console.log(colorize(requestOutput).magenta);
         break;
 
         case 'POST': console.log(colorize(requestOutput).green);
+        console.log(`${bodyJSON}`);
         break;
 
         case 'PUT': console.log(colorize(requestOutput).yellow);
+        console.log(`${bodyJSON}`);
         break;
 
         case 'DELETE': console.log(colorize(requestOutput).red);
@@ -15,9 +19,7 @@ exports.logger = (req, res, next) => {
 
         default: console.log(colorize(requestOutput).white);
     }
-    
-    // req.body ? console.log(`\t${req.body}`) : null;
-    console.log(`\t${req.body}`);
+
     next();
 };
 

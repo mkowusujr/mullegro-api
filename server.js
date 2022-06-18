@@ -4,8 +4,6 @@ const db = require('./api/models/index')
 const app = express();
 
 // middleware
-const logger = require('./api/middlewares/logger');
-app.use(logger.logger);
 app.use(express.json());
 
 // start db
