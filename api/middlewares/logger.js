@@ -1,5 +1,5 @@
 exports.logger = (req, res, next) => {
-    const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}`
+    const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}\n>> Request Body:`
     const bodyJSON = JSON.stringify(req.body, null, 2)
     
     switch(req.method) {
