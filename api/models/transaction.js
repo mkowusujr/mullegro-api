@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Transcation = sequelize.define('transcation', {
+    const transaction = sequelize.define('transaction', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
@@ -11,5 +11,5 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         }
     });
-    return Transcation;
+    return transaction;
 };

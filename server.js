@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('./app/models/index')
+const db = require('./api/models/index')
 
 const app = express();
 
@@ -17,8 +17,8 @@ db.sequelize
     });
 
 // setup routes
-const homeRoute = require('./app/routes/home');
-app.use('', homeRoute);
+const apiRoutes = require('./api/routes/index');
+app.use('', apiRoutes);
 
 // start app
 const PORT = 3000;
