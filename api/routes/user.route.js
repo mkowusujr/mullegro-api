@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express('Router');
+const userController = require('../controllers/user.controller');
 
 // middleware
 const logger = require('../middlewares/logger');
@@ -12,7 +13,15 @@ router.route('')
     // get all users
     .get((req, res) => {})
     // create user
-    .post((req, res) => {});
+    .post(async (req, res) => {
+        const user = await userController.createUser(req.body)
+        .then((createdUser) => {
+            res.status(200).json(createdUser);
+        })
+        .catch((err) => {
+            res.status(400).send('error creating user: ' + err);
+        })
+    });
 
 /**
  * Dealing with one user
