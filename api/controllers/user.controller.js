@@ -24,6 +24,13 @@ exports.createUser = (userObj) => {
         return createdUser;
     })
     .catch((err) => {
-        console.log('>> Error  creating user:' + err);
+        console.log('>> Error creating user:' + err);
+    })
+};
+
+exports.findAll = () => {
+    return User.findAll()
+    .catch((err) => {
+        console.log('>> Error fetching all users:' + err);
     })
 };

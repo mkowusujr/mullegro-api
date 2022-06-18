@@ -11,7 +11,15 @@ router.use(logger.logger);
  */
 router.route('')
     // get all users
-    .get((req, res) => {})
+    .get(async (req, res) => {
+        const users = await userController.findAll()
+        .then((foundUsers) => {
+            res.status(200).json(foundUsers);
+        })
+        .catch((err) => {
+            res.status(400).send('error creating user: ' + err);
+        })
+    })
     // create user
     .post(async (req, res) => {
         const user = await userController.createUser(req.body)
