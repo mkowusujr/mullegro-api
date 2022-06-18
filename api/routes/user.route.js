@@ -38,18 +38,27 @@ router.route('/user/:userId')
             res.status(200).json(fetchedUser);
         })
         .catch((err) => {
-            res.status(400).send('error creating user: ' + err);
+            res.status(400).send('error fetching user: ' + err);
         })
     })
     // update user with id
-    .put((res, req) => {})
+    .put((req, res) => {})
     // delete user with id
-    .delete((res, req) => {})
+    .delete((req, res) => {
+        console.log(req.params.userId)
+        const deleteUser = userController.deleteUser(req.params.userId)
+        .then((deletedUser) => {
+            res.status(200).json(deletedUser);
+        })
+        .catch((err) => {
+            res.status(400).send('error creating user: ' + err);
+        })
+    })
 
 /**
  * Finding users with query
  */
-router.get('/search', (res, req) => {})
+router.get('/search', (req, res) => {})
 
 // export user router
 module.exports = router;

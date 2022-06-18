@@ -30,8 +30,18 @@ exports.createUser = async (userObj) => {
 
 exports.getUser = async (userId) => {
     return await User.findByPk(userId)
+    // check if user exists first
     .then((fetchedUser) => {
-        console.log(">> Fetched user:\n" + JSON.stringify(fetchedUser, null, 4));
+        if (fetchedUser != null){
+            return fetchedUser
+        } 
+        else {
+            throw `User with id of ${userId} doesn't exist`;
+        }
+    })
+    // if exists return it
+    .then((fetchedUser) => {
+        console.log('>> Fetched user:\n' + JSON.stringify(fetchedUser, null, 4));
         return fetchedUser;
     })
     .catch((err) => {
@@ -47,8 +57,7 @@ exports.findAll = async () => {
 };
 
 exports.deleteUser = async (userId) => {
-    const fetchedUser = this.getUser(userId);
-    const deleted = await fetchedUser.destroy({where: {id: userId}});
+    const deleted = await User.destroy({where: {id: userId}});
     console.log(deleted);
     // return await User.findByPk(userId)
     // .catch((err) => {
