@@ -30,6 +30,10 @@ exports.createUser = async (userObj) => {
 
 exports.getUser = async (userId) => {
     return await User.findByPk(userId)
+    .then((fetchedUser) => {
+        console.log(">> Fetched user:\n" + JSON.stringify(fetchedUser, null, 4));
+        return fetchedUser;
+    })
     .catch((err) => {
         console.error('>> Error fetching user: ' + err);
     })
@@ -41,3 +45,13 @@ exports.findAll = async () => {
         console.error('>> Error fetching all users: ' + err);
     })
 };
+
+exports.deleteUser = async (userId) => {
+    const fetchedUser = this.getUser(userId);
+    const deleted = await fetchedUser.destroy({where: {id: userId}});
+    console.log(deleted);
+    // return await User.findByPk(userId)
+    // .catch((err) => {
+    //     console.error('>> Error fetching user: ' + err);
+    // })
+}

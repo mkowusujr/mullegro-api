@@ -32,7 +32,15 @@ router.route('')
  */
 router.route('/user/:userId')
     // get user with id
-    .get((res, req) => {})
+    .get((req, res) => {
+        const fetchUser = userController.getUser(req.params.userId)
+        .then((fetchedUser) => {
+            res.status(200).json(fetchedUser);
+        })
+        .catch((err) => {
+            res.status(400).send('error creating user: ' + err);
+        })
+    })
     // update user with id
     .put((res, req) => {})
     // delete user with id
