@@ -2,8 +2,8 @@ const db = require("../models");
 const bcrypt = require('bcrypt');
 const User = db.users;
 
-exports.createUser = (userObj) => {
-    return User.create({
+exports.createUser = async (userObj) => {
+    return await User.create({
         name: userObj.name,
         address: userObj.address,
         email: userObj.email
@@ -16,21 +16,21 @@ exports.createUser = (userObj) => {
         });
 
         // removed password field and return obj to console for debugging
-        userOb = createdUser;
+        userObj = createdUser;
         delete userObj.password_hash;
         console.log(">> Created user:\n" + JSON.stringify(userObj, null, 4));
         
         // return created user
-        return createdUser;
+        return userObj;
     })
     .catch((err) => {
-        console.log('>> Error creating user:' + err);
+        console.error('>> Error creating user:' + err);
     })
 };
 
-exports.findAll = () => {
-    return User.findAll()
+exports.findAll = async () => {
+    return await User.findAll()
     .catch((err) => {
-        console.log('>> Error fetching all users:' + err);
+        console.error('>> Error fetching all users:' + err);
     })
 };

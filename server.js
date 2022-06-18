@@ -13,7 +13,7 @@ db.sequelize
         console.log('>> Database synchronized');
     })
     .catch((err) => {
-        console.log(err)
+        console.error(err)
     });
 
 // setup routes

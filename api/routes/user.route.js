@@ -11,8 +11,8 @@ router.use(logger.logger);
  */
 router.route('')
     // get all users
-    .get(async (req, res) => {
-        const users = await userController.findAll()
+    .get((req, res) => {
+        const users = userController.findAll()
         .then((foundUsers) => {
             res.status(200).json(foundUsers);
         })
@@ -21,8 +21,8 @@ router.route('')
         })
     })
     // create user
-    .post(async (req, res) => {
-        const user = await userController.createUser(req.body)
+    .post((req, res) => {
+        const user = userController.createUser(req.body)
         .then((createdUser) => {
             res.status(200).json(createdUser);
         })
