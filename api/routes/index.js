@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express('Router');
 
+// middleware
+const logger = require('../middlewares/logger');
+router.use(logger.logger);
+
 // setup routes
 router.use('/api/users', require('./user.route'));
 router.use('/api/posts', require('./post.route'));

@@ -24,13 +24,20 @@ exports.createUser = async (userObj) => {
         return userObj;
     })
     .catch((err) => {
-        console.error('>> Error creating user:' + err);
+        console.error('>> Error creating user: ' + err);
     })
 };
+
+exports.getUser = async (userId) => {
+    return await User.findByPk(userId)
+    .catch((err) => {
+        console.error('>> Error fetching user: ' + err);
+    })
+}
 
 exports.findAll = async () => {
     return await User.findAll()
     .catch((err) => {
-        console.error('>> Error fetching all users:' + err);
+        console.error('>> Error fetching all users: ' + err);
     })
 };

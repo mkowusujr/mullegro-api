@@ -2,10 +2,6 @@ const express = require('express');
 const router = express('Router');
 const userController = require('../controllers/user.controller');
 
-// middleware
-const logger = require('../middlewares/logger');
-router.use(logger.logger);
-
 /**
  * Dealing with all users
  */
