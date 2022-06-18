@@ -19,8 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         password_hash: {
-            type: Sequelize.STRING,
-            allowNull: false
+            type: Sequelize.STRING
         }
     });
     return User;
