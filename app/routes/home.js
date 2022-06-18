@@ -5,13 +5,8 @@ const userController = require('../controllers/user.controller');
 
 router.route('')
     .get(async (req, res) => {
-        const user = await userController.createUser({
-            name: 'Jane',
-            location: 'Feeder Ln',
-            email: 'somebody@something.com',
-            password_hash: 'password_hash'
-        });
-        res.status(200).send('Hello World')
+        
+        res.status(200).send('Welcome to the Mullegro Api')
     });
 
 module.exports = router;

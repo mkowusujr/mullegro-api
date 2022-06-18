@@ -7,15 +7,15 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         name: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(50),
             allowNull: false
         },
-        location: {
+        address: {
             type: Sequelize.STRING,
             allowNull: false
         },
         email: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(60),
             allowNull: false
         },
         password_hash: {

@@ -13,6 +13,6 @@ exports.createUser = (user) => {
         return user;
     })
     .catch((err) => {
-        console.log('Error  creating user:' + err);
+        console.log('>> Error  creating user:' + err);
     })
 };
