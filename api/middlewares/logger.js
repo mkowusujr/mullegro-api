@@ -1,16 +1,16 @@
 exports.logger = (req, res, next) => {
-    const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}\n>> Request Body:`
+    const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}`
     const bodyJSON = JSON.stringify(req.body, null, 2)
     
     switch(req.method) {
         case 'GET': console.log(colorize(requestOutput).magenta);
         break;
 
-        case 'POST': console.log(colorize(requestOutput).green);
+        case 'POST': console.log(colorize(requestOutput + '\n>> Request Body:').green);
         console.log(`${bodyJSON}`);
         break;
 
-        case 'PUT': console.log(colorize(requestOutput).yellow);
+        case 'PUT': console.log(colorize(requestOutput + '\n>> Request Body:').yellow);
         console.log(`${bodyJSON}`);
         break;
 
