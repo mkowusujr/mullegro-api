@@ -46,6 +46,7 @@ exports.getUser = async (userId) => {
     })
     .catch((err) => {
         console.error('>> Error fetching user: ' + err);
+        throw `User with id of ${userId} doesn't exist`;
     })
 }
 
@@ -57,10 +58,15 @@ exports.findAll = async () => {
 };
 
 exports.deleteUser = async (userId) => {
-    const deleted = await User.destroy({where: {id: userId}});
-    console.log(deleted);
-    // return await User.findByPk(userId)
-    // .catch((err) => {
-    //     console.error('>> Error fetching user: ' + err);
-    // })
-}
+    const deleteResult = await User.destroy({where: {id: userId}})
+    // check if user exists
+    .then((deleteResult) => {
+        if (deleteResult == 0){
+            throw `User with id of ${userId} doesn't exist`;
+        }
+    })
+    .catch((err) => {
+        console.error('>> Error fetching user: ' + err);
+        throw `User with id of ${userId} doesn't exist`;
+    });
+};

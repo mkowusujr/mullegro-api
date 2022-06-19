@@ -13,7 +13,7 @@ router.route('')
             res.status(200).json(foundUsers);
         })
         .catch((err) => {
-            res.status(400).send('error creating user: ' + err);
+            res.status(400).send('Error fetching users: ' + err);
         })
     })
     // create user
@@ -23,7 +23,7 @@ router.route('')
             res.status(200).json(createdUser);
         })
         .catch((err) => {
-            res.status(400).send('error creating user: ' + err);
+            res.status(400).send('Error creating user: ' + err);
         })
     });
 
@@ -38,20 +38,19 @@ router.route('/user/:userId')
             res.status(200).json(fetchedUser);
         })
         .catch((err) => {
-            res.status(400).send('error fetching user: ' + err);
+            res.status(400).send('Error fetching user: ' + err);
         })
     })
     // update user with id
     .put((req, res) => {})
     // delete user with id
     .delete((req, res) => {
-        console.log(req.params.userId)
         const deleteUser = userController.deleteUser(req.params.userId)
-        .then((deletedUser) => {
-            res.status(200).json(deletedUser);
+        .then(() => {
+            res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
         })
         .catch((err) => {
-            res.status(400).send('error creating user: ' + err);
+            res.status(400).send('Error deleting user: ' + err);
         })
     })
 
