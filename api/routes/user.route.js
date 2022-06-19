@@ -54,38 +54,6 @@ router.route('/user/:userId')
         })
     });
 
-router.route('/user/:userId/password')
-    .all((req, res, next) => {
-        // check if correct password was sent in body
-        const fetchedUser = userController
-            .checkUserPassword(req.params.userId, req.body)
-            // console.log(fetchedUser)
-            .then(() => {
-                // console.log(`${result}`);
-                // if (result){
-                //     console.log(`${result} next`);
-                next();
-                // }
-                // else {
-                    // console.log(`why`);
-                    // }
-            })
-            .catch((err) => {
-                console.error('is this the error ' + err);
-                res.status(400).send('Error: Incorrect Password');
-            })
-    })
-    .get((req, res) => {
-        return res.status(200).send('Hello World');
-    })
-    .put((req, res) => {
-
-    });
-
-router.put('/user/:userId/email', (req, res) => {
-
-});
-
 
 /**
  * Finding users with query

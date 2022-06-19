@@ -48,28 +48,6 @@ exports.getUser = async (userId) => {
     })
 }
 
-exports.checkUserPassword = async (userId, obj) => {
-    return await this.getUser(userId)
-    .then((fetchedUser) => {
-        // console.log(obj.password);
-        let wasCorrect = false;
-        bcrypt.compare(obj.password, fetchedUser.password_hash, (err, result) => {
-            // console.log(result);
-            // if (result){
-            //     wasCorrect = result;
-            //     // console.log(wasCorrect);
-            //     //return result;
-            // }else 
-            //     // throw 'Wrong'
-                // console.error('>> Error: Incorrect Password');
-                if (result == false)
-                    throw 'wrong'
-        }).catch((err) => {console.error('its this' + err)})
-        //.then((result)=>{console.log(result)})
-        // console.log(wasCorrect);
-    }).catch((err) => {throw `is THIS the error ${err}`})
-};
-
 exports.findAll = async () => {
     return await User.findAll()
     .catch((err) => {
