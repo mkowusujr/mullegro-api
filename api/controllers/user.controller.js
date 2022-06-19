@@ -32,12 +32,10 @@ exports.getUser = async (userId) => {
     return await User.findByPk(userId)
     // check if user exists first
     .then((fetchedUser) => {
-        if (fetchedUser != null){
-            return fetchedUser
-        } 
-        else {
+        if (fetchedUser != null)
+            return fetchedUser;
+        else 
             throw `User with id of ${userId} doesn't exist`;
-        }
     })
     // if exists return it
     .then((fetchedUser) => {
@@ -49,6 +47,28 @@ exports.getUser = async (userId) => {
         throw `User with id of ${userId} doesn't exist`;
     })
 }
+
+exports.checkUserPassword = async (userId, obj) => {
+    return await this.getUser(userId)
+    .then((fetchedUser) => {
+        // console.log(obj.password);
+        let wasCorrect = false;
+        bcrypt.compare(obj.password, fetchedUser.password_hash, (err, result) => {
+            // console.log(result);
+            // if (result){
+            //     wasCorrect = result;
+            //     // console.log(wasCorrect);
+            //     //return result;
+            // }else 
+            //     // throw 'Wrong'
+                // console.error('>> Error: Incorrect Password');
+                if (result == false)
+                    throw 'wrong'
+        }).catch((err) => {console.error('its this' + err)})
+        //.then((result)=>{console.log(result)})
+        // console.log(wasCorrect);
+    }).catch((err) => {throw `is THIS the error ${err}`})
+};
 
 exports.findAll = async () => {
     return await User.findAll()

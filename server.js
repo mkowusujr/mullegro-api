@@ -18,7 +18,7 @@ db.sequelize
 
 // setup routes
 const apiRoutes = require('./api/routes/index');
-app.use('', apiRoutes);
+app.use('/api', apiRoutes);
 
 // start app
 const PORT = 3000;
