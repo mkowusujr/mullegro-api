@@ -1,10 +1,12 @@
-const express = require('express')
-const db = require('./api/models/index')
+const express = require('express');
+const cors = require('cors');
+const db = require('./api/models/index');
 
 const app = express();
 
 // middleware
 app.use(express.json());
+app.use(cors());
 
 // start db
 db.sequelize
