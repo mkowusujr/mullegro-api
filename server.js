@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 // start db
 db.sequelize
     .sync({ force: true })
@@ -18,9 +19,11 @@ db.sequelize
         console.error(err)
     });
 
+
 // setup routes
 const apiRoutes = require('./api/routes/index');
 app.use('/api', apiRoutes);
+
 
 // start app
 const PORT = 3000;
