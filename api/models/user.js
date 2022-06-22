@@ -14,6 +14,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        username: {
+            type: Sequelize.STRING(50),
+            allowNull: false
+        },
         email: {
             type: Sequelize.STRING(60),
             allowNull: false

@@ -28,8 +28,9 @@ const auth = require('../middlewares/auth');
 
 
 router.post('/login', (req, res) => {
-    let {email, password} = req.body;
-    const user = userController.getUserByEmail(email)
+    let {email_or_username, password} = req.body;
+    console.log(email_or_username);
+    const user = userController.getUserAcctDetails(email_or_username)
     .then((user) => {
         bcrypt.compare(password, user.password_hash, function(err, result) {
             delete user.password_hash;

@@ -1,10 +1,12 @@
 const db = require("../models");
 const bcrypt = require('bcrypt');
+const e = require("express");
 const User = db.users;
 
 exports.createUser = async (userObj) => {
     return await User.create({
         name: `${userObj.firstname} ${userObj.lastname}`,
+        username: userObj.username,
         address: userObj.address,
         email: userObj.email
     })
@@ -31,7 +33,7 @@ exports.createUser = async (userObj) => {
 exports.getUser = async (userId) => {
     return await User.findByPk(
         userId,
-        {attributes: ['name','email','address']}
+        {attributes: ['name', 'username', 'email','address']}
         )
     // check if user exists first
     .then((fetchedUser) => {
@@ -49,11 +51,11 @@ exports.getUser = async (userId) => {
         console.error('>> Error fetching user: ' + err);
         throw `User with id of ${userId} doesn't exist`;
     })
-}
+};
 
 exports.getUserByEmail = async (userEmail) => {
     return await User.findOne({
-        attributes: ['name','email','address', 'password_hash'],
+        attributes: ['name','email', 'username', 'address', 'password_hash'],
         where: {
             email: userEmail
         }
@@ -74,7 +76,39 @@ exports.getUserByEmail = async (userEmail) => {
         console.error('>> Error fetching user: ' + err);
         throw `User with email of ${userEmail} doesn't exist`;
     })
-}
+};
+
+exports.getUserByUsername = async (username) => {
+    return await User.findOne({
+        attributes: ['name','email', 'username', 'address', 'password_hash'],
+        where: {
+            username: username
+        }
+    })
+    // check if user exists first
+    .then((fetchedUser) => {
+        if (fetchedUser != null)
+            return fetchedUser;
+        else 
+            throw `User with username of ${username} doesn't exist`;
+    })
+    // if exists return it
+    .then((fetchedUser) => {
+        console.log('>> Fetched user:\n' + JSON.stringify(fetchedUser, null, 4));
+        return fetchedUser;
+    })
+    .catch((err) => {
+        console.error('>> Error fetching user: ' + err);
+        throw `User with username of ${username} doesn't exist`;
+    })
+};
+
+exports.getUserAcctDetails = async (email_or_username) => {
+    if (email_or_username.includes('@'))
+        return this.getUserByEmail(email_or_username);
+    else
+        return this.getUserByUsername(email_or_username);
+};
 
 exports.findAll = async () => {
     return await User.findAll()
