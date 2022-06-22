@@ -53,7 +53,7 @@ exports.getUser = async (userId) => {
 
 exports.getUserByEmail = async (userEmail) => {
     return await User.findOne({
-        attributes: ['password_hash'],
+        attributes: ['name','email','address', 'password_hash'],
         where: {
             email: userEmail
         }

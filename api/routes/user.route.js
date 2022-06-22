@@ -3,6 +3,8 @@ const router = express('Router');
 const userController = require('../controllers/user.controller');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const auth = require('../middlewares/auth');
+
 
 /**
  * Dealing with all users
@@ -51,6 +53,9 @@ router.route('/user/:userId')
 router.get('/search', (req, res) => {});
 
 
+/**
+ * User Auth
+ */
 router.post('/register', (req, res) => {
     const user = userController.createUser(req.body)
         .then((createdUser) => {
@@ -62,7 +67,6 @@ router.post('/register', (req, res) => {
             });
         })
         .catch((err) => {
-
             return res.status(400).send({
                 status: 0,
                 data: `Error creating user: ${err}`
@@ -76,8 +80,7 @@ router.post('/login', (req, res) => {
     const user = userController.getUserByEmail(email)
     .then((user) => {
         bcrypt.compare(password, user.password_hash, function(err, result) {
-            console.log(password);
-            console.log(user.password_hash);
+            delete user.password_hash;
             if (result){
                 let token = jwt.sign({data: user}, 'secret')
                 return res.status(200).send({
@@ -102,6 +105,11 @@ router.post('/login', (req, res) => {
     });
 });
 
-
+router.get('/user/profile', auth.verifyToken, (req, res) => {
+    return res.status(200).send({
+        status: 1,
+        data: res.locals.user
+    });
+})
 // export user router
 module.exports = router;
