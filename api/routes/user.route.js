@@ -5,58 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
 
-
-/**
- * Dealing with all users
- */
-// get all users
-router.get('', (req, res) => {
-        const users = userController.findAll()
-        .then((foundUsers) => {
-            return res.status(200).json(foundUsers);
-        })
-        .catch((err) => {
-            return res.status(400).send('Error fetching users: ' + err);
-        })
-    });
-
-
-/**
- * Dealing with one user
- */
-router.route('/user/:userId')
-    // get user with id
-    .get((req, res) => {
-        const fetchUser = userController.getUser(req.params.userId)
-        .then((fetchedUser) => {
-            return res.status(200).json(fetchedUser);
-        })
-        .catch((err) => {
-            return res.status(400).send('Error fetching user: ' + err);
-        })
-    })
-    // delete user with id
-    .delete((req, res) => {
-        const deleteUser = userController.deleteUser(req.params.userId)
-        .then(() => {
-            return res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
-        })
-        .catch((err) => {
-            return res.status(400).send('Error deleting user: ' + err);
-        })
-    });
-
-
-/**
- * Finding users with query
- */
-router.get('/search', (req, res) => {});
-
-
 /**
  * User Auth
  */
-router.post('/register', (req, res) => {
+ router.post('/register', (req, res) => {
     const user = userController.createUser(req.body)
         .then((createdUser) => {
             let token = jwt.sign({data: createdUser}, 'secret')
@@ -106,10 +58,60 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/user/profile', auth.verifyToken, (req, res) => {
+    console.log('herre')
     return res.status(200).send({
         status: 1,
         data: res.locals.user
     });
 })
+
+
+/**
+ * Dealing with all users
+ */
+// get all users
+router.get('', (req, res) => {
+        const users = userController.findAll()
+        .then((foundUsers) => {
+            return res.status(200).json(foundUsers);
+        })
+        .catch((err) => {
+            return res.status(400).send('Error fetching users: ' + err);
+        })
+    });
+
+
+/**
+ * Dealing with one user
+ */
+router.route('/user/:userId')
+    // get user with id
+    .get((req, res) => {
+        const fetchUser = userController.getUser(req.params.userId)
+        .then((fetchedUser) => {
+            return res.status(200).json(fetchedUser);
+        })
+        .catch((err) => {
+            return res.status(400).send('Error fetching user: ' + err);
+        })
+    })
+    // delete user with id
+    .delete((req, res) => {
+        const deleteUser = userController.deleteUser(req.params.userId)
+        .then(() => {
+            return res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
+        })
+        .catch((err) => {
+            return res.status(400).send('Error deleting user: ' + err);
+        })
+    });
+
+
+/**
+ * Finding users with query
+ */
+router.get('/search', (req, res) => {});
+
+
 // export user router
 module.exports = router;
