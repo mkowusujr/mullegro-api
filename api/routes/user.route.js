@@ -58,8 +58,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.get('/user/profile', auth.verifyToken, (req, res) => {
-    console.log('herre')
+router.get('/user/details', auth.verifyToken, (req, res) => {
     return res.status(200).send({
         status: 1,
         data: res.locals.user
