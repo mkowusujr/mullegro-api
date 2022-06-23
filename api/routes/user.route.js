@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
 
 /**
- * User Auth
+ * Creating an account
  */
  router.post('/register', (req, res) => {
     const user = userController.createUser(req.body)
@@ -26,7 +26,9 @@ const auth = require('../middlewares/auth');
         })
 });
 
-
+/**
+ * Login
+ */
 router.post('/login', (req, res) => {
     let {email_or_username, password} = req.body;
     console.log(email_or_username);
@@ -58,6 +60,10 @@ router.post('/login', (req, res) => {
     });
 });
 
+
+/**
+ * Get looged in user's details
+ */
 router.get('/user/details', auth.verifyToken, (req, res) => {
     return res.status(200).send({
         status: 1,
@@ -67,9 +73,8 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
 
 
 /**
- * Dealing with all users
+ * Get all users
  */
-// get all users
 router.get('', (req, res) => {
         const users = userController.findAll()
         .then((foundUsers) => {
