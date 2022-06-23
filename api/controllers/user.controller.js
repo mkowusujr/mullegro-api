@@ -1,33 +1,53 @@
 const db = require("../models");
 const bcrypt = require('bcrypt');
-const e = require("express");
 const User = db.users;
 
+async function usernameExists (username) {
+    user = await User.findOne({
+        attributes: ['name','email', 'username', 'address', 'password_hash'],
+        where: {
+            username: username
+        }
+    });
+    if (user) {
+        return true;
+    }
+    else {
+        return false
+    }
+}
+
 exports.createUser = async (userObj) => {
-    return await User.create({
+    let doesUsernameExist = await usernameExists(userObj.username);
+    if (doesUsernameExist) {
+        throw `User with ${userObj.username} already exists`;
+    }
+    else {
+        return await User.create({
         name: `${userObj.firstname} ${userObj.lastname}`,
         username: userObj.username,
         address: userObj.address,
         email: userObj.email
-    })
-    .then((createdUser) => {
-        // hashing the password and added it to the created user
-        bcrypt.hash(userObj.password_1, 10, (err, hash) => {
-            createdUser.password_hash = hash;
-            createdUser.save();
-        });
+        })
+        .then((createdUser) => {
+            // hashing the password and added it to the created user
+            bcrypt.hash(userObj.password_1, 10, (err, hash) => {
+                createdUser.password_hash = hash;
+                createdUser.save();
+            });
 
-        // removed password field and return obj to console for debugging
-        userObj = createdUser;
-        delete userObj.password_hash;
-        console.log(">> Created user:\n" + JSON.stringify(userObj, null, 4));
-        
-        // return created user
-        return userObj;
-    })
-    .catch((err) => {
-        console.error('>> Error creating user: ' + err);
-    })
+            // removed password field and return obj to console for debugging
+            userObj = createdUser;
+            delete userObj.password_hash;
+            console.log(">> Created user:\n" + JSON.stringify(userObj, null, 4));
+            
+            // return created user
+            return userObj;
+        })
+        .catch((err) => {
+            console.error('>> Error creating user: ' + err);
+        })
+    }
 };
 
 exports.getUser = async (userId) => {
@@ -117,16 +137,16 @@ exports.findAll = async () => {
     })
 };
 
-exports.deleteUser = async (userId) => {
-    const deleteResult = await User.destroy({where: {id: userId}})
+exports.deleteUser = async (username) => {
+    const deleteResult = await User.destroy({where: {username: username}})
     // check if user exists
     .then((deleteResult) => {
         if (deleteResult == 0){
-            throw `User with id of ${userId} doesn't exist`;
+            throw `User with username of ${username} doesn't exist`;
         }
     })
     .catch((err) => {
         console.error('>> Error fetching user: ' + err);
-        throw `User with id of ${userId} doesn't exist`;
+        throw `User with username of ${username} doesn't exist`;
     });
 };

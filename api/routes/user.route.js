@@ -84,10 +84,10 @@ router.get('', (req, res) => {
 /**
  * Dealing with one user
  */
-router.route('/user/:userId')
+router.route('/user/:username')
     // get user with id
     .get((req, res) => {
-        const fetchUser = userController.getUser(req.params.userId)
+        const fetchUser = userController.getUserByUsername(req.params.username)
         .then((fetchedUser) => {
             return res.status(200).json(fetchedUser);
         })
@@ -97,7 +97,7 @@ router.route('/user/:userId')
     })
     // delete user with id
     .delete((req, res) => {
-        const deleteUser = userController.deleteUser(req.params.userId)
+        const deleteUser = userController.deleteUser(req.params.username)
         .then(() => {
             return res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
         })
