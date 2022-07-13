@@ -7,7 +7,7 @@ const userController = require('../controllers/user.controller');
 /**
  * Logged in user getting and making new posts
  */
-router.route('/posts/user/posts')
+router.route('/user/posts')
 .get(async (req, res) => {
     try {
         let user = await userController.getUserByUsername('www');
