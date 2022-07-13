@@ -8,32 +8,45 @@ const auth = require('../middlewares/auth');
 /**
  * Creating an account
  */
- router.post('/register', (req, res) => {
-    const user = userController.createUser(req.body)
-        .then((createdUser) => {
-            let token = jwt.sign({data: createdUser}, 'secret')
-            return res.status(200).send({
-                status: 1, 
-                data: createdUser,
-                token: token
-            });
-        })
-        .catch((err) => {
-            return res.status(400).send({
-                status: 0,
-                data: `Error creating user: ${err}`
-            });
-        })
+ router.post('/register', async (req, res) => {
+    try {
+        let createdUser = userController.createUser(req.body);
+        let token = jwt.sign({data: createdUser}, 'secret')
+        return res.status(200).send({
+            status: 1, 
+            data: createdUser,
+            token: token
+        });
+    } catch (err) {
+        return res.status(400).send({
+            status: 0,
+            data: `Error creating user: ${err}`
+        });
+    }
+    // const user = userController.createUser(req.body)
+    //     .then((createdUser) => {
+    //         let token = jwt.sign({data: createdUser}, 'secret')
+    //         return res.status(200).send({
+    //             status: 1, 
+    //             data: createdUser,
+    //             token: token
+    //         });
+    //     })
+    //     .catch((err) => {
+    //         return res.status(400).send({
+    //             status: 0,
+    //             data: `Error creating user: ${err}`
+    //         });
+    //     })
 });
 
 /**
  * Login
  */
-router.post('/login', (req, res) => {
-    let {email_or_username, password} = req.body;
-    console.log(email_or_username);
-    const user = userController.getUserAcctDetails(email_or_username)
-    .then((user) => {
+router.post('/login', async (req, res) => {
+    try {
+        let {email_or_username, password} = req.body;
+        let user = await userController.getUserAcctDetails(email_or_username);
         bcrypt.compare(password, user.password_hash, function(err, result) {
             delete user.password_hash;
             if (result){
@@ -51,13 +64,40 @@ router.post('/login', (req, res) => {
                 });
             }
         });
-    })
-    .catch((err) => {
+    } catch (err) {
         return res.status(400).send({
-                    status: 0,
-                    data: `Error signing: ${err}`
-                });
-    });
+            status: 0,
+            data: `Error signing: ${err}`
+        });
+    }
+    // let {email_or_username, password} = req.body;
+    // console.log(email_or_username);
+    // const user = userController.getUserAcctDetails(email_or_username)
+    // .then((user) => {
+    //     bcrypt.compare(password, user.password_hash, function(err, result) {
+    //         delete user.password_hash;
+    //         if (result){
+    //             let token = jwt.sign({data: user}, 'secret')
+    //             return res.status(200).send({
+    //                 status: 1, 
+    //                 data: user,
+    //                 token: token
+    //             });
+    //         }
+    //         else {
+    //             return res.status(400).send({
+    //                 status: 0,
+    //                 data: `Error signing: ${err}`
+    //             });
+    //         }
+    //     });
+    // })
+    // .catch((err) => {
+    //     return res.status(400).send({
+    //                 status: 0,
+    //                 data: `Error signing: ${err}`
+    //             });
+    // });
 });
 
 
@@ -69,46 +109,41 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
         status: 1,
         data: res.locals.user
     });
-})
+});
 
 
 /**
  * Get all users
  */
-router.get('', (req, res) => {
-        const users = userController.findAll()
-        .then((foundUsers) => {
-            return res.status(200).json(foundUsers);
-        })
-        .catch((err) => {
-            return res.status(400).send('Error fetching users: ' + err);
-        })
-    });
+router.get('', async (req, res) => {
+    try {
+        foundUsers = await userController.findAll();
+        return res.status(200).json(foundUsers);
+    } catch (err) {
+        return res.status(400).send('Error fetching users: ' + err);
+    }
+});
 
 
 /**
  * Dealing with one user
  */
 router.route('/user/:username')
-    // get user with id
-    .get((req, res) => {
-        const fetchUser = userController.getUserByUsername(req.params.username)
-        .then((fetchedUser) => {
+    .get(async (req, res) => {
+        try {
+            let fetchedUser = await userController.getUserByUsername(req.params.username);
             return res.status(200).json(fetchedUser);
-        })
-        .catch((err) => {
+        } catch (error) {
             return res.status(400).send('Error fetching user: ' + err);
-        })
+        }
     })
-    // delete user with id
-    .delete((req, res) => {
-        const deleteUser = userController.deleteUser(req.params.username)
-        .then(() => {
+    .delete(async (req, res) => {
+        try {
+            await userController.deleteUser(req.params.username);
             return res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
-        })
-        .catch((err) => {
+        } catch (err) {
             return res.status(400).send('Error deleting user: ' + err);
-        })
+        }
     });
 
 
