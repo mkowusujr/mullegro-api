@@ -6,11 +6,14 @@ const Post = require('../models/post')
  * Get loggin in users posts
  */
 exports.getCurrentUserPosts = async (currentUser) => {
-    return await currentUser.getPosts()
-    .then((posts) => {
+    try {
+        let posts = await currentUser.getPosts();
         return posts;
-    })
-    .catch((err) => console.error(err));
+    } catch (err) {
+        let errOutput = 'Error getting user\'s posts: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
 };
 
 
@@ -18,8 +21,15 @@ exports.getCurrentUserPosts = async (currentUser) => {
  * Loggin in user create a new post
  */
 exports.createNewPost = async (currentUser, newPost) => {
-    let createdPost = await currentUser.createPost(newPost);
-    return createdPost;
+    try {
+        let createdPost = await currentUser.createPost(newPost);
+        return createdPost;
+    } catch (err) {
+        let errOutput = 'Error creating post: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
+    
 };
 
 
@@ -50,6 +60,6 @@ exports.getPosts = async () => {
 /**
  * Get one post
  */
-exports.getPost = async () => {
+exports.getPost = async (postId) => {
 
 };
