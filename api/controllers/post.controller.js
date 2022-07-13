@@ -6,7 +6,11 @@ const Post = require('../models/post')
  * Get loggin in users posts
  */
 exports.getCurrentUserPosts = async (currentUser) => {
-
+    return await currentUser.getPosts()
+    .then((posts) => {
+        return posts;
+    })
+    .catch((err) => console.error(err));
 };
 
 
@@ -14,7 +18,8 @@ exports.getCurrentUserPosts = async (currentUser) => {
  * Loggin in user create a new post
  */
 exports.createNewPost = async (currentUser, newPost) => {
-
+    let createdPost = await currentUser.createPost(newPost);
+    return createdPost;
 };
 
 

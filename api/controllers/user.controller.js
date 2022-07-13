@@ -4,7 +4,6 @@ const User = db.users;
 
 async function usernameExists (username) {
     user = await User.findOne({
-        attributes: ['name','email', 'username', 'address', 'password_hash'],
         where: {
             username: username
         }
@@ -51,10 +50,7 @@ exports.createUser = async (userObj) => {
 };
 
 exports.getUser = async (userId) => {
-    return await User.findByPk(
-        userId,
-        {attributes: ['name', 'username', 'email','address']}
-        )
+    return await User.findByPk(userId)
     // check if user exists first
     .then((fetchedUser) => {
         if (fetchedUser != null)
@@ -75,7 +71,6 @@ exports.getUser = async (userId) => {
 
 exports.getUserByEmail = async (userEmail) => {
     return await User.findOne({
-        attributes: ['name','email', 'username', 'address', 'password_hash'],
         where: {
             email: userEmail
         }
@@ -100,7 +95,6 @@ exports.getUserByEmail = async (userEmail) => {
 
 exports.getUserByUsername = async (username) => {
     return await User.findOne({
-        attributes: ['name','email', 'username', 'address', 'password_hash'],
         where: {
             username: username
         }
