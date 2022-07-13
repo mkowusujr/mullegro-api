@@ -4,20 +4,23 @@ const auth = require('../middlewares/auth');
 const user = require('../models/user');
 const postController = require('../controllers/post.controller');
 const userController = require('../controllers/user.controller');
+
+
 /**
  * Logged in user getting and making new posts
  */
 router.route('/user/posts')
-.get(async (req, res) => {
+.get(auth.verifyToken, async (req, res) => {
     try {
-        let user = await userController.getUserByUsername('www');
-        let usersPosts = await postController.getCurrentUserPosts(user);
+        let username = res.locals.user.username;
+        let user = await userController.getUserByUsername(username);
+        let usersPosts = await postController.getAllPostsForUser(user);
         return res.status(200).send(usersPosts);
     } catch (err){
         return res.status(400).send(err);
     }
 })
-.post(async (req, res) => {
+.post(auth.verifyToken, async (req, res) => {
     try {
         let user = await userController.getUserByUsername('www');
         let usersPost = await postController.createNewPost(user, req.body);
@@ -32,36 +35,57 @@ router.route('/user/posts')
 /**
  * Logged in user modifying their posts
  */
-router.route('/users/user/posts/:postId')
+router.route('/user/posts/post/:postId')
 .put(auth.verifyToken, (req, res) => {
 
 })
-.delete(auth.verifyToken, (req, res) => {
-
+.delete(auth.verifyToken, async (req, res) => {
+    try {
+        await postController.deletePost(req.params.postId);
+        return res.status(200).send('Successfully deleted post');
+    } catch (err){
+        return res.status(400).send(err);
+    }
 });
 
 
 /**
  * Get all Posts
  */
-router.get('/posts', (req, res) =>{
-
+router.get('', async (req, res) =>{
+    try {
+        let allPosts = await postController.getAllPosts();
+        return res.status(200).send(allPosts);
+    } catch (err){
+        return res.status(400).send(err);
+    }
 });
 
 
 /**
  * Get all a users post
  */
-router.get('users/user/:username/posts', (req, res) => {
-
+router.get('users/user/:username/posts', async (req, res) => {
+    try {
+        let user = await userController.getUserByUsername(req.params.username);
+        let usersPosts = await postController.getAllPostsForUser(user);
+        return res.status(200).send(usersPosts);
+    } catch (err){
+        return res.status(400).send(err);
+    }
 })
 
 
 /**
  * Get one post
  */
-router.get('/posts/post/:id', (req, res) => {
-
+router.get('/post/:id', async (req, res) => {
+    try {
+        let post = await postController.getPost(req.params.id);
+        return res.status(200).send(post);
+    } catch (err){
+        return res.status(400).send(err);
+    }
 });
 
 

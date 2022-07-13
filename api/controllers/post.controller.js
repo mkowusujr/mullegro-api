@@ -5,7 +5,7 @@ const Post = require('../models/post')
 /**
  * Get loggin in users posts
  */
-exports.getCurrentUserPosts = async (currentUser) => {
+exports.getAllPostsForUser = async (currentUser) => {
     try {
         let posts = await currentUser.getPosts();
         return posts;
@@ -59,7 +59,7 @@ exports.deletePost = async (currentUser, postId) => {
 /**
  * Get all Posts
  */
-exports.getPosts = async () => {
+exports.getAllPosts = async () => {
     try {
         let allPosts = await Post.findAll();
         return allPosts;
