@@ -23,21 +23,6 @@ const auth = require('../middlewares/auth');
             data: `Error creating user: ${err}`
         });
     }
-    // const user = userController.createUser(req.body)
-    //     .then((createdUser) => {
-    //         let token = jwt.sign({data: createdUser}, 'secret')
-    //         return res.status(200).send({
-    //             status: 1, 
-    //             data: createdUser,
-    //             token: token
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         return res.status(400).send({
-    //             status: 0,
-    //             data: `Error creating user: ${err}`
-    //         });
-    //     })
 });
 
 /**
@@ -70,34 +55,6 @@ router.post('/login', async (req, res) => {
             data: `Error signing: ${err}`
         });
     }
-    // let {email_or_username, password} = req.body;
-    // console.log(email_or_username);
-    // const user = userController.getUserAcctDetails(email_or_username)
-    // .then((user) => {
-    //     bcrypt.compare(password, user.password_hash, function(err, result) {
-    //         delete user.password_hash;
-    //         if (result){
-    //             let token = jwt.sign({data: user}, 'secret')
-    //             return res.status(200).send({
-    //                 status: 1, 
-    //                 data: user,
-    //                 token: token
-    //             });
-    //         }
-    //         else {
-    //             return res.status(400).send({
-    //                 status: 0,
-    //                 data: `Error signing: ${err}`
-    //             });
-    //         }
-    //     });
-    // })
-    // .catch((err) => {
-    //     return res.status(400).send({
-    //                 status: 0,
-    //                 data: `Error signing: ${err}`
-    //             });
-    // });
 });
 
 
