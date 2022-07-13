@@ -45,7 +45,14 @@ exports.updatePost = async (currentUser, postId, updatedPost) => {
  * Loggin in user deleting one of their posts
  */
 exports.deletePost = async (currentUser, postId) => {
-
+    try {
+        await Post.destroy({where: {id: postId}});
+        return Promise.resolve();
+    } catch (err) {
+        let errOutput = 'Error deleting post: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
 };
 
 
@@ -53,7 +60,14 @@ exports.deletePost = async (currentUser, postId) => {
  * Get all Posts
  */
 exports.getPosts = async () => {
-
+    try {
+        let allPosts = await Post.findAll();
+        return allPosts;
+    } catch (err) {
+        let errOutput = 'Error getting posts: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
 };
 
 
@@ -61,5 +75,12 @@ exports.getPosts = async () => {
  * Get one post
  */
 exports.getPost = async (postId) => {
-
+    try {
+        let post = await Post.findByPk(postId);
+        return post;
+    } catch (err) {
+        let errOutput = 'Error getting post: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
 };
