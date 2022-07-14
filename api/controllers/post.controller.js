@@ -70,10 +70,9 @@ exports.updatePostStatus = async (postId, postStatus) => {
  */
 exports.deletePost = async (currentUser, postId) => {
     try {
-        await Post.destroy({where: {
-                id: postId,
-                userId: currentUser.id
-            }});
+        let posts = await currentUser.getPosts({where: {id: postId}});
+        let post = posts[0]
+        await post.destroy();
         return Promise.resolve();
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
