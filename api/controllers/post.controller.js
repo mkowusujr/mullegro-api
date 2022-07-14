@@ -3,12 +3,12 @@ const Post = require('../models/post')
 
 
 /**
- * Get loggin in users posts
+ * Get Logged in users posts
+ * @param {User Obj} currentUser The current User
  */
 exports.getAllPostsForUser = async (currentUser) => {
     try {
-        let posts = await currentUser.getPosts();
-        return posts;
+        return await currentUser.getPosts();
     } catch (err) {
         let errOutput = 'Error getting user\'s posts: ' + err;
         console.error(errOutput);
@@ -18,12 +18,11 @@ exports.getAllPostsForUser = async (currentUser) => {
 
 
 /**
- * Loggin in user create a new post
+ * Logged in user create a new post
  */
 exports.createNewPost = async (currentUser, newPost) => {
     try {
-        let createdPost = await currentUser.createPost(newPost);
-        return createdPost;
+        return await currentUser.createPost(newPost);
     } catch (err) {
         let errOutput = 'Error creating post: ' + err;
         console.error(errOutput);
@@ -34,19 +33,47 @@ exports.createNewPost = async (currentUser, newPost) => {
 
 
 /**
- * Loggin in user updating one of their posts
+ * Logged in user updating one of their posts
  */
 exports.updatePost = async (currentUser, postId, updatedPost) => {
-
+    try {
+        return await Post.Update(updatedPost, {where: {
+            id: postId,
+            userId: currentUser.id
+        }});
+    } catch (err) {
+        let errOutput = 'Error updating post: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
 };
 
 
 /**
- * Loggin in user deleting one of their posts
+ * Update a Post's status
+ * @param {number} postId 
+ * @param {string} postStatus 
+ */
+exports.updatePostStatus = async (postId, postStatus) => {
+    try {
+        await Post.Update({status: postStatus}, {where: {id: postId}})
+    } catch (err) {
+        let errOutput = 'Error updating post: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
+};
+
+
+/**
+ * Logged in user deleting one of their posts
  */
 exports.deletePost = async (currentUser, postId) => {
     try {
-        await Post.destroy({where: {id: postId}});
+        await Post.destroy({where: {
+                id: postId,
+                userId: currentUser.id
+            }});
         return Promise.resolve();
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
@@ -61,8 +88,7 @@ exports.deletePost = async (currentUser, postId) => {
  */
 exports.getAllPosts = async () => {
     try {
-        let allPosts = await Post.findAll();
-        return allPosts;
+        return await Post.findAll();
     } catch (err) {
         let errOutput = 'Error getting posts: ' + err;
         console.error(errOutput);
@@ -76,8 +102,7 @@ exports.getAllPosts = async () => {
  */
 exports.getPost = async (postId) => {
     try {
-        let post = await Post.findByPk(postId);
-        return post;
+        return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error getting post: ' + err;
         console.error(errOutput);

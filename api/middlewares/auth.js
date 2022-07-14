@@ -8,6 +8,7 @@ exports.verifyToken = (req, res, next) => {
         jwt.verify(req.headers.authorization, "secret", (err, decoded) => {
             if (decoded){
                 res.locals.user = decoded.data;
+                console.log('decoded user is ' + JSON.stringify(res.locals.user, null, 4))
                 next();
             }
             else {

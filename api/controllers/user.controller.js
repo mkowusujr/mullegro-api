@@ -124,6 +124,19 @@ exports.getUserAcctDetails = async (email_or_username) => {
         return this.getUserByUsername(email_or_username);
 };
 
+exports.getCurrentUser = async (res) => {
+    try {
+        let username = res.locals.user.username;
+        let user = await this.getUserByUsername(username);
+        return user;
+    } catch (err) {
+        let errOutput = 'Error getting user: ' + err;
+        console.error(errOutput);
+        return Promise.reject(errOutput);
+    }
+    
+}
+
 exports.findAll = async () => {
     return await User.findAll()
     .catch((err) => {

@@ -11,9 +11,9 @@ const userController = require('../controllers/user.controller');
 router.route('/user/posts')
 .get(auth.verifyToken, async (req, res) => {
     try {
-        let username = res.locals.user.username;
-        let user = await userController.getUserByUsername(username);
-        let usersPosts = await postController.getAllPostsForUser(user);
+        let usersPosts = await postController.getAllPostsForUser(
+            await userController.getCurrentUser(res)
+        );
         return res.status(200).send(usersPosts);
     } catch (err){
         return res.status(400).send(err);
@@ -21,8 +21,9 @@ router.route('/user/posts')
 })
 .post(auth.verifyToken, async (req, res) => {
     try {
-        let user = await userController.getUserByUsername('www');
-        let usersPost = await postController.createNewPost(user, req.body);
+        let usersPost = await postController.createNewPost(
+            await userController.getCurrentUser(res), req.body
+        );
         return res.status(200).send(usersPost);
     }
     catch (err){
@@ -35,12 +36,20 @@ router.route('/user/posts')
  * Logged in user modifying their posts
  */
 router.route('/user/posts/post/:postId')
-.put(auth.verifyToken, (req, res) => {
-
+.put(auth.verifyToken, async (req, res) => {
+    try {
+        await postController.updatePost(
+            await userController.getCurrentUser(res), req.params.postId
+        );
+    } catch (err) {
+        return res.status(400).send(err);
+    }
 })
 .delete(auth.verifyToken, async (req, res) => {
     try {
-        await postController.deletePost(req.params.postId);
+        await postController.deletePost(
+            await userController.getCurrentUser(res), req.params.postId
+        );
         return res.status(200).send('Successfully deleted post');
     } catch (err){
         return res.status(400).send(err);

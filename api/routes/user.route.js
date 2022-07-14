@@ -10,7 +10,7 @@ const auth = require('../middlewares/auth');
  */
  router.post('/register', async (req, res) => {
     try {
-        let createdUser = userController.createUser(req.body);
+        let createdUser = await userController.createUser(req.body);
         let token = jwt.sign({data: createdUser}, 'secret')
         return res.status(200).send({
             status: 1, 
