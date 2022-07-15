@@ -39,8 +39,11 @@ router.route('/user/posts/post/:postId')
 .put(auth.verifyToken, async (req, res) => {
     try {
         await postController.updatePost(
-            await userController.getCurrentUser(res), req.params.postId
+            await userController.getCurrentUser(res), 
+            req.params.postId, 
+            req.body
         );
+        return res.status(200).send('Successfully updated post');
     } catch (err) {
         return res.status(400).send(err);
     }
@@ -87,14 +90,23 @@ router.get('users/user/:username/posts', async (req, res) => {
 /**
  * Get one post
  */
-router.get('/post/:id', async (req, res) => {
+router.route('/post/:id')
+.get(async (req, res) => {
     try {
         let post = await postController.getPost(req.params.id);
         return res.status(200).send(post);
     } catch (err){
         return res.status(400).send(err);
     }
-});
+})
+.put(async (req, res) => {
+    try {
+        await postController.updatePostStatus(req.params.id, req.body);
+        return res.status(200).send('Successfully updated post');
+    } catch (err){
+        return res.status(400).send(err);
+    }
+})
 
 
 module.exports = router;

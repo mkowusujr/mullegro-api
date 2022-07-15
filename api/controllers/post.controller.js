@@ -1,6 +1,10 @@
 const db = require('../models');
-const Post = require('../models/post')
+const Post = db.posts;
 
+const sendRejectedPromise = (errOutput) => {
+    console.error(errOutput);
+    return Promise.reject(errOutput);
+}
 
 /**
  * Get Logged in users posts
@@ -11,10 +15,9 @@ exports.getAllPostsForUser = async (currentUser) => {
         return await currentUser.getPosts();
     } catch (err) {
         let errOutput = 'Error getting user\'s posts: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
-};
+}
 
 
 /**
@@ -25,10 +28,8 @@ exports.createNewPost = async (currentUser, newPost) => {
         return await currentUser.createPost(newPost);
     } catch (err) {
         let errOutput = 'Error creating post: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
-    
 };
 
 
@@ -37,16 +38,15 @@ exports.createNewPost = async (currentUser, newPost) => {
  */
 exports.updatePost = async (currentUser, postId, updatedPost) => {
     try {
-        return await Post.Update(updatedPost, {where: {
+        return await Post.update(updatedPost, {where: {
             id: postId,
             userId: currentUser.id
         }});
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return this.sendRejectedPromise(errOutput);
     }
-};
+}
 
 
 /**
@@ -56,11 +56,10 @@ exports.updatePost = async (currentUser, postId, updatedPost) => {
  */
 exports.updatePostStatus = async (postId, postStatus) => {
     try {
-        await Post.Update({status: postStatus}, {where: {id: postId}})
+        await Post.update({status: postStatus.status}, {where: {id: postId}})
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
 };
 
@@ -70,14 +69,11 @@ exports.updatePostStatus = async (postId, postStatus) => {
  */
 exports.deletePost = async (currentUser, postId) => {
     try {
-        let posts = await currentUser.getPosts({where: {id: postId}});
-        let post = posts[0]
-        await post.destroy();
+        await Post.destroy({where: {id: postId, userId: currentUser.id}});
         return Promise.resolve();
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
 };
 
@@ -90,8 +86,7 @@ exports.getAllPosts = async () => {
         return await Post.findAll();
     } catch (err) {
         let errOutput = 'Error getting posts: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
 };
 
@@ -104,7 +99,6 @@ exports.getPost = async (postId) => {
         return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error getting post: ' + err;
-        console.error(errOutput);
-        return Promise.reject(errOutput);
+        return sendRejectedPromise(errOutput);
     }
 };
