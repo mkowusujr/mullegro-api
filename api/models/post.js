@@ -18,6 +18,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT,
             allowNull: false
         },
+        condition: {
+            type: Sequelize.STRING(30),
+            allowNull: false
+        },
         address: {
             type: Sequelize.STRING,
             allowNull: false
