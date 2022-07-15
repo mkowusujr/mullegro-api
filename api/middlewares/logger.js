@@ -1,25 +1,14 @@
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.logger = (req, res, next) => {
     const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}`
     const bodyJSON = JSON.stringify(req.body, null, 2)
     
-    switch(req.method) {
-        case 'GET': console.log(colorize(requestOutput).magenta);
-        break;
-
-        case 'POST': console.log(colorize(requestOutput + '\n>> Request Body:').green);
-        console.log(`${bodyJSON}`);
-        break;
-
-        case 'PUT': console.log(colorize(requestOutput + '\n>> Request Body:').yellow);
-        console.log(`${bodyJSON}`);
-        break;
-
-        case 'DELETE': console.log(colorize(requestOutput).red);
-        break;
-
-        default: console.log(colorize(requestOutput).white);
-    }
-
+    logRequest(req.method, requestOutput, bodyJSON);
     next();
 };
 
@@ -45,4 +34,29 @@ const colorize = (...args) => ({
     bgMagenta: `\x1b[45m${args.join(' ')}\x1b[0m`,
     bgCyan: `\x1b[46m${args.join(' ')}\x1b[0m`,
     bgWhite: `\x1b[47m${args.join(' ')}\x1b[0m`
-  });
+})
+
+
+/**
+ * 
+ * @param {*} requestMethod 
+ */
+const logRequest = (requestMethod, requestOutput, bodyJSON) => {
+    switch(requestMethod) {
+        case 'GET': console.log(colorize(requestOutput).magenta);
+        break;
+
+        case 'POST': console.log(colorize(requestOutput + '\n>> Request Body:').green);
+        console.log(`${bodyJSON}`);
+        break;
+
+        case 'PUT': console.log(colorize(requestOutput + '\n>> Request Body:').yellow);
+        console.log(`${bodyJSON}`);
+        break;
+
+        case 'DELETE': console.log(colorize(requestOutput).red);
+        break;
+
+        default: console.log(colorize(requestOutput).white);
+    }
+}
