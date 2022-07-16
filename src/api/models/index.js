@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 // setup sequelize
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'mullegro.sqlite3',
+    storage: 'src/mullegro.sqlite3',
     logging: false
 });
 

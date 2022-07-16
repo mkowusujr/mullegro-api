@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "devStart": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "npx jasmine JASMINE_CONFIG_PATH=test/spec/support/jasmine.json"
   },
   "repository": {
     "type": "git",
