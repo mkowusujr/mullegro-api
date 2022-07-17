@@ -56,7 +56,7 @@ exports.updatePost = async (currentUser, postId, updatedPost) => {
  */
 exports.updatePostStatus = async (postId, postStatus) => {
     try {
-        await Post.update({status: postStatus.status}, {where: {id: postId}})
+        return await Post.update({status: postStatus.status}, {where: {id: postId}})
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
         return sendRejectedPromise(errOutput);
