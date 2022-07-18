@@ -96,7 +96,9 @@ exports.getAllPosts = async () => {
  */
 exports.getPost = async (postId) => {
     try {
-        return await Post.findByPk(postId);
+        let post = await Post.findByPk(postId);
+        if (!post) throw `Post with id of ${postId} does not exist`
+        return post
     } catch (err) {
         let errOutput = 'Error getting post: ' + err;
         return sendRejectedPromise(errOutput);
