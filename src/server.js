@@ -20,8 +20,8 @@ db.sequelize
     });
 
 
-// setup routes
-const apiRoutes = require('./api/routes/index');
+// setup api route controllers
+const apiRoutes = require('./api/controllers/index');
 app.use('/api', apiRoutes);
 
 

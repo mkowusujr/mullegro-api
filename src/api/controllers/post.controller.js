@@ -35,7 +35,7 @@ router.route('/user/posts')
 /**
  * Logged in user modifying their posts
  */
-router.delete(auth.verifyToken, '/user/posts/post/:postId', async (req, res) => {
+router.delete('/user/posts/post/:postId', auth.verifyToken, async (req, res) => {
     try {
         await postService.deletePost(
             await userService.getCurrentUser(res), req.params.postId
