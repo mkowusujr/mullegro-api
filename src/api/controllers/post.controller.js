@@ -36,11 +36,12 @@ exports.createNewPost = async (currentUser, newPost) => {
 /**
  * Update a Post's status
  * @param {number} postId 
- * @param {string} postStatus 
+ * @param {{status: string}} postStatus 
  */
 exports.updatePostStatus = async (postId, postStatus) => {
     try {
-        return await Post.update({status: postStatus.status}, {where: {id: postId}})
+        await Post.update({status: postStatus.status}, {where: {id: postId}});
+        return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
         return sendRejectedPromise(errOutput);
@@ -54,7 +55,7 @@ exports.updatePostStatus = async (postId, postStatus) => {
 exports.deletePost = async (currentUser, postId) => {
     try {
         await Post.destroy({where: {id: postId, userId: currentUser.id}});
-        return Promise.resolve();
+        return Promise.resolve('Deleted successfully');
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
         return sendRejectedPromise(errOutput);
