@@ -200,20 +200,60 @@ describe('PostController', () => {
 
   describe('updatePostStatus', () => {
     it('should update the status of a post', async () => {
-      pending();
+      await Post.create({
+        title: 'Dummy Post',
+        price: 100.00,
+        description: 'This is an instrument',
+        condition: 'Good',
+        address: 'USA',
+        type: "Clarinet",
+        status: "Not Sold"
+      });
+      let postId = 1;
+      let newStatus = {status: 'Sold'};
+      let response = await postController.updatePostStatus(postId, newStatus);
+
+      expect(response.id).toBe(postId);
+      expect(response.status).toBe(newStatus.status);
     });
     it('should throw an error if there is an issue', async () => {
-      pending();
+      try {
+        await postController.updatePostStatus(100, {})
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
     });
   });
 
   describe('deletePost', () => {
     it('should delete a post from the database', async () => {
-      pending();
+      let dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
+      await dummyUser.createPost({
+          title: 'Dummy Post',
+          price: 100.00,
+          description: 'This is an instrument',
+          condition: 'Mid',
+          address: 'CANADA',
+          type: "Clarinet",
+          status: "Not Sold"
+      });
+
+      let postId = 1;
+      let response = await postController.deletePost(dummyUser, postId);
+      
+      expect(response).toBe('Deleted successfully');
     });
     it('should throw an error if there is an issue', async () => {
-      pending();
+      try {
+        await postController.deletePost({}, 100);
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
     });
   });
-
 });
