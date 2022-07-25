@@ -34,22 +34,6 @@ exports.createNewPost = async (currentUser, newPost) => {
 
 
 /**
- * Logged in user updating one of their posts
- */
-exports.updatePost = async (currentUser, postId, updatedPost) => {
-    try {
-        return await Post.update(updatedPost, {where: {
-            id: postId,
-            userId: currentUser.id
-        }});
-    } catch (err) {
-        let errOutput = 'Error updating post: ' + err;
-        return this.sendRejectedPromise(errOutput);
-    }
-}
-
-
-/**
  * Update a Post's status
  * @param {number} postId 
  * @param {string} postStatus 

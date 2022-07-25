@@ -35,20 +35,7 @@ router.route('/user/posts')
 /**
  * Logged in user modifying their posts
  */
-router.route('/user/posts/post/:postId')
-.put(auth.verifyToken, async (req, res) => {
-    try {
-        await postController.updatePost(
-            await userController.getCurrentUser(res), 
-            req.params.postId, 
-            req.body
-        );
-        return res.status(200).send('Successfully updated post');
-    } catch (err) {
-        return res.status(400).send(err);
-    }
-})
-.delete(auth.verifyToken, async (req, res) => {
+router.delete(auth.verifyToken, '/user/posts/post/:postId', async (req, res) => {
     try {
         await postController.deletePost(
             await userController.getCurrentUser(res), req.params.postId

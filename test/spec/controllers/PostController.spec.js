@@ -149,19 +149,52 @@ describe('PostController', () => {
 
   describe('createNewPost', () => {
     it('should create a new post assiocated with a user', async () => {
-      pending();
-    });
-    it('should throw an error if there is an issue', async () => {
-      pending();
-    });
-  });
+      let dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
 
-  describe('updatePost', () => {
-    it('should update a user\'s post', async () => {
-      pending();
+      let postObject = {
+        title: 'Dummy Post',
+        price: 100.00,
+        description: 'This is an instrument',
+        condition: 'Good',
+        address: 'USA',
+        type: "Clarinet",
+        status: "Not Sold"
+      };
+
+      let response = await postController.createNewPost(dummyUser, postObject);
+
+      expect(response.title).toEqual(postObject.title);
+      expect(response.price).toEqual(postObject.price);
+      expect(response.description).toEqual(postObject.description);
+      expect(response.condition).toEqual(postObject.condition);
+      expect(response.address).toEqual(postObject.address);
+      expect(response.type).toEqual(postObject.type);
+      expect(response.status).toEqual(postObject.status);
+
+      expect(response.userId).toEqual(dummyUser.id);
     });
     it('should throw an error if there is an issue', async () => {
-      pending();
+      let dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
+
+      let postObject = {
+        title: 'Dummy Post'
+      };
+
+      try {
+        await postController.createNewPost(dummyUser, postObject);
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
     });
   });
 
