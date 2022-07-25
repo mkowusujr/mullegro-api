@@ -32,13 +32,7 @@ describe('PostController', () => {
       let response = await postController.getPost(postId);
 
       expect(response.id).toEqual(postId);
-      // expect(response.title).toEqual(dummyPost.title);
-      // expect(response.price).toEqual(dummyPost.price);
-      // expect(response.description).toEqual(dummyPost.description);
-      // expect(response.condition).toEqual(dummyPost.condition);
-      // expect(response.address).toEqual(dummyPost.address);
-      // expect(response.type).toEqual(dummyPost.type);
-      // expect(response.status).toEqual(dummyPost.status);
+      expect(response).toEqual(jasmine.any(Post));
     });
     it('should throw an error if there is an issue', async () => {
       try {
@@ -96,8 +90,7 @@ describe('PostController', () => {
         let response = await postController.getAllPosts();
         if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
-        console.info(error)
-        expect(console.error).toHaveBeenCalled();
+        expect(error).toEqual(jasmine.any(String));
       }
     });
   });
@@ -137,6 +130,7 @@ describe('PostController', () => {
         type: "Clarinet",
         status: "Not Sold"
       });
+
       let response = await postController.getAllPostsForUser(dummyUser);
       
       expect(response.length).toEqual(2);
