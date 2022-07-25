@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express('Router');
-const userController = require('../controllers/user.controller');
+const userService = require('../services/user.service');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
@@ -10,7 +10,7 @@ const auth = require('../middlewares/auth');
  */
  router.post('/register', async (req, res) => {
     try {
-        let createdUser = await userController.createUser(req.body);
+        let createdUser = await userService.createUser(req.body);
         let token = jwt.sign({data: createdUser}, 'secret')
         return res.status(200).send({
             status: 1, 
@@ -31,7 +31,7 @@ const auth = require('../middlewares/auth');
 router.post('/login', async (req, res) => {
     try {
         let {email_or_username, password} = req.body;
-        let user = await userController.getUserAcctDetails(email_or_username);
+        let user = await userService.getUserAcctDetails(email_or_username);
         bcrypt.compare(password, user.password_hash, function(err, result) {
             delete user.password_hash;
             if (result){
@@ -74,7 +74,7 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
  */
 router.get('', async (req, res) => {
     try {
-        foundUsers = await userController.findAll();
+        foundUsers = await userService.findAll();
         return res.status(200).json(foundUsers);
     } catch (err) {
         return res.status(400).send('Error fetching users: ' + err);
@@ -88,7 +88,7 @@ router.get('', async (req, res) => {
 router.route('/user/:username')
     .get(async (req, res) => {
         try {
-            let fetchedUser = await userController.getUserByUsername(req.params.username);
+            let fetchedUser = await userService.getUserByUsername(req.params.username);
             return res.status(200).json(fetchedUser);
         } catch (error) {
             return res.status(400).send('Error fetching user: ' + err);
@@ -96,7 +96,7 @@ router.route('/user/:username')
     })
     .delete(async (req, res) => {
         try {
-            await userController.deleteUser(req.params.username);
+            await userService.deleteUser(req.params.username);
             return res.status(200).send(`Successfully deleted user with id of ${req.params.userId}`);
         } catch (err) {
             return res.status(400).send('Error deleting user: ' + err);

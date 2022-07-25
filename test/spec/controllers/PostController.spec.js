@@ -1,11 +1,11 @@
-const postController = require('../../../src/api/controllers/post.controller');
+const postService = require('../../../src/api/services/post.service');
 let db;
 let Post;
 let User;
 
-describe('PostController', () => {
+describe('PostService', () => {
   it('should be created', () => {
-    expect(postController).toBeTruthy();
+    expect(postService).toBeTruthy();
   });
 
   beforeEach(async () => {
@@ -29,14 +29,14 @@ describe('PostController', () => {
       }); 
       let postId = 1;
 
-      let response = await postController.getPost(postId);
+      let response = await postService.getPost(postId);
 
       expect(response.id).toEqual(postId);
       expect(response).toEqual(jasmine.any(Post));
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        let response = await postController.getPost();
+        let response = await postService.getPost();
         if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('PostController', () => {
         {returning: true}
       );
 
-      let response = await postController.getAllPosts();
+      let response = await postService.getAllPosts();
 
       expect(response.length).toEqual(dummyPosts.length);
       for (let i = 0; i < response.length; i++){
@@ -86,8 +86,8 @@ describe('PostController', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        spyOn(postController, 'getAllPosts').and.returnValue(Promise.reject('Error'));
-        let response = await postController.getAllPosts();
+        spyOn(postService, 'getAllPosts').and.returnValue(Promise.reject('Error'));
+        let response = await postService.getAllPosts();
         if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(error).toEqual(jasmine.any(String));
@@ -131,7 +131,7 @@ describe('PostController', () => {
         status: "Not Sold"
       });
 
-      let response = await postController.getAllPostsForUser(dummyUser);
+      let response = await postService.getAllPostsForUser(dummyUser);
       
       expect(response.length).toEqual(2);
       response.forEach((post) => {
@@ -140,7 +140,7 @@ describe('PostController', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postController.getAllPostsForUser({});
+        await postService.getAllPostsForUser({});
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -166,7 +166,7 @@ describe('PostController', () => {
         status: "Not Sold"
       };
 
-      let response = await postController.createNewPost(dummyUser, postObject);
+      let response = await postService.createNewPost(dummyUser, postObject);
 
       expect(response.title).toEqual(postObject.title);
       expect(response.price).toEqual(postObject.price);
@@ -191,7 +191,7 @@ describe('PostController', () => {
       };
 
       try {
-        await postController.createNewPost(dummyUser, postObject);
+        await postService.createNewPost(dummyUser, postObject);
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -211,14 +211,14 @@ describe('PostController', () => {
       });
       let postId = 1;
       let newStatus = {status: 'Sold'};
-      let response = await postController.updatePostStatus(postId, newStatus);
+      let response = await postService.updatePostStatus(postId, newStatus);
 
       expect(response.id).toBe(postId);
       expect(response.status).toBe(newStatus.status);
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postController.updatePostStatus(100, {})
+        await postService.updatePostStatus(100, {})
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -244,13 +244,13 @@ describe('PostController', () => {
       });
 
       let postId = 1;
-      let response = await postController.deletePost(dummyUser, postId);
+      let response = await postService.deletePost(dummyUser, postId);
       
       expect(response).toBe('Deleted successfully');
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postController.deletePost({}, 100);
+        await postService.deletePost({}, 100);
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
