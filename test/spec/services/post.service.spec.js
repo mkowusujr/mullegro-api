@@ -3,7 +3,7 @@ let db;
 let Post;
 let User;
 
-describe('PostService', () => {
+describe('Post Service', () => {
   it('should be created', () => {
     expect(postService).toBeTruthy();
   });
