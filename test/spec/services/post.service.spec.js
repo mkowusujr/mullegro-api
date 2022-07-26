@@ -140,7 +140,8 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postService.getAllPostsForUser({});
+        let response = await postService.getAllPostsForUser({});
+        if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -191,7 +192,8 @@ describe('Post Service', () => {
       };
 
       try {
-        await postService.createNewPost(dummyUser, postObject);
+        let response = await postService.createNewPost(dummyUser, postObject);
+        if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -218,7 +220,8 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postService.updatePostStatus(100, {})
+        let response = await postService.updatePostStatus(100, {})
+        if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -250,7 +253,8 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        await postService.deletePost({}, 100);
+        let response = await postService.deletePost({}, 100);
+        if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }

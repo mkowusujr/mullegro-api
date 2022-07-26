@@ -15,11 +15,47 @@ describe('User Service', () => {
     });
 
     describe('createUser', () => {
-        it('', async() => {
-            pending();
+        it('can create a user', async() => {
+            let userObject = {
+                name:'John Doe',
+                username: "fake_user",
+                address: "America",
+                email: 'notreal@email.com',
+                password: 'safeAndSecurePassword'
+            };
+
+            let response = await userService.createUser(userObject);
+
+            expect(response.name).toBe(userObject.name);
+            expect(response.username).toBe(userObject.username);
+            expect(response.address).toBe(userObject.address);
+            expect(response.email).toBe(userObject.email);
+            expect(response.password).toBeTruthy();
         });        
         it('', async() => {
-            pending();
+            
+            try {
+                User.create({
+                    name:'John Doe',
+                    username: "fake_user",
+                    address: "America",
+                    email: 'notreal@email.com',
+                    password: 'safeAndSecurePassword'
+                })
+    
+                let userObject = {
+                    name:'John Doe',
+                    username: "fake_user",
+                    address: "America",
+                    email: 'notreal@email.com',
+                    password: 'safeAndSecurePassword'
+                };
+                
+                let response = await userService.createUser(userObject);
+                if (response || !response) fail('Didn\'t throw error');
+            } catch (error) {
+                expect(console.error).toHaveBeenCalled();
+            }
         });
     });
     

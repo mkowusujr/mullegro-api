@@ -3,49 +3,27 @@ const bcrypt = require('bcrypt');
 const User = db.users;
 
 async function usernameExists (username) {
-    user = await User.findOne({
-        where: {
-            username: username
-        }
-    });
-    if (user) {
-        return true;
-    }
-    else {
-        return false
-    }
+    user = await User.findOne({where: {username: username}});
+    if (user) throw `User with ${userObj.username} already exists`;
 }
 
-exports.createUser = async (userObj) => {
-    let doesUsernameExist = await usernameExists(userObj.username);
-    if (doesUsernameExist) {
-        throw `User with ${userObj.username} already exists`;
-    }
-    else {
-        return await User.create({
-        name: `${userObj.firstname} ${userObj.lastname}`,
-        username: userObj.username,
-        address: userObj.address,
-        email: userObj.email
-        })
-        .then((createdUser) => {
-            // hashing the password and added it to the created user
-            bcrypt.hash(userObj.password_1, 10, (err, hash) => {
-                createdUser.password_hash = hash;
-                createdUser.save();
-            });
+const sendRejectedPromise = (errOutput) => {
+    console.error(`>> ${errOutput}`);
+    return Promise.reject(errOutput);
+}
 
-            // removed password field and return obj to console for debugging
-            userObj = createdUser;
-            delete userObj.password_hash;
-            console.log(">> Created user:\n" + JSON.stringify(userObj, null, 4));
-            
-            // return created user
-            return userObj;
-        })
-        .catch((err) => {
-            console.error('>> Error creating user: ' + err);
-        })
+exports.createUser = async (user) => {
+    try {
+        await usernameExists(user.username);
+        let createdUser = await User.create(user);
+        
+        let bcryptSalt = await bcrypt.genSalt(10);
+        createdUser.password = await bcrypt.hash(createdUser.password, bcryptSalt);
+        await createdUser.save();
+        
+        return createdUser;
+    } catch (err) {
+        sendRejectedPromise('Error creating user');
     }
 };
 

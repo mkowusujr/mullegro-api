@@ -40,7 +40,8 @@ exports.createNewPost = async (currentUser, newPost) => {
  */
 exports.updatePostStatus = async (postId, postStatus) => {
     try {
-        await Post.update({status: postStatus.status}, {where: {id: postId}});
+        let post = await Post.update({status: postStatus.status}, {where: {id: postId}});
+        if (!post) throw `Post with id of ${postId} does not exist`
         return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
