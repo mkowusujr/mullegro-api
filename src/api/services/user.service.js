@@ -1,30 +1,27 @@
+const helperService = require('./helper.service');
 const db = require("../models");
 const bcrypt = require('bcrypt');
 const User = db.users;
 
-async function usernameExists (username) {
+const failIfUsernameExists = async (username) => {
     user = await User.findOne({where: {username: username}});
     if (user) throw `User with ${userObj.username} already exists`;
 }
 
-const sendRejectedPromise = (errOutput) => {
-    console.error(`>> ${errOutput}`);
-    return Promise.reject(errOutput);
+const encryptPassword = async (newUser) => {
+    let bcryptSalt = await bcrypt.genSalt(10);
+    newUser.password = await bcrypt.hash(newUser.password, bcryptSalt);
+    await newUser.save();
 }
 
 exports.createUser = async (user) => {
-    try {
-        await usernameExists(user.username);
+    return await failIfUsernameExists(user.username)
+    .then(async () => {
         let createdUser = await User.create(user);
-        
-        let bcryptSalt = await bcrypt.genSalt(10);
-        createdUser.password = await bcrypt.hash(createdUser.password, bcryptSalt);
-        await createdUser.save();
-        
+        await encryptPassword(createdUser);
         return createdUser;
-    } catch (err) {
-        sendRejectedPromise('Error creating user');
-    }
+    })
+    .catch( () => helperService.sendRejectedPromise('Error creating user'));
 };
 
 exports.getUser = async (userId) => {

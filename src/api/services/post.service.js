@@ -1,10 +1,6 @@
+const helperService = require('./helper.service');
 const db = require('../models');
 const Post = db.posts;
-
-const sendRejectedPromise = (errOutput) => {
-    console.error(errOutput);
-    return Promise.reject(errOutput);
-}
 
 /**
  * Get Logged in users posts
@@ -15,7 +11,7 @@ exports.getAllPostsForUser = async (currentUser) => {
         return await currentUser.getPosts();
     } catch (err) {
         let errOutput = 'Error getting user\'s posts: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 }
 
@@ -28,7 +24,7 @@ exports.createNewPost = async (currentUser, newPost) => {
         return await currentUser.createPost(newPost);
     } catch (err) {
         let errOutput = 'Error creating post: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 };
 
@@ -41,11 +37,11 @@ exports.createNewPost = async (currentUser, newPost) => {
 exports.updatePostStatus = async (postId, postStatus) => {
     try {
         let post = await Post.update({status: postStatus.status}, {where: {id: postId}});
-        if (!post) throw `Post with id of ${postId} does not exist`
+        if (post[0] == 0) throw `Post with id of ${postId} does not exist`;
         return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 };
 
@@ -59,7 +55,7 @@ exports.deletePost = async (currentUser, postId) => {
         return Promise.resolve('Deleted successfully');
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 };
 
@@ -72,7 +68,7 @@ exports.getAllPosts = async () => {
         return await Post.findAll();
     } catch (err) {
         let errOutput = 'Error getting posts: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 };
 
@@ -87,6 +83,6 @@ exports.getPost = async (postId) => {
         return post
     } catch (err) {
         let errOutput = 'Error getting post: ' + err;
-        return sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromise(errOutput);
     }
 };
