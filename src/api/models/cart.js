@@ -1,11 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
-  const Cart = sequelize.define("cart", {
+  const Cart = sequelize.define('cart', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
-    },
+      primaryKey: true
+    }
   });
   return Cart;
 };

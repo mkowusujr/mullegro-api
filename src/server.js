@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const db = require("./api/models/index");
+const express = require('express');
+const cors = require('cors');
+const db = require('./api/models/index');
 
 const app = express();
 
@@ -12,15 +12,15 @@ app.use(cors());
 db.sequelize
   .sync({ force: true })
   .then(() => {
-    console.log(">> Database synchronized");
+    console.log('>> Database synchronized');
   })
   .catch((err) => {
     console.error(err);
   });
 
 // setup api route controllers
-const apiRoutes = require("./api/controllers/index");
-app.use("/api", apiRoutes);
+const apiRoutes = require('./api/controllers/index');
+app.use('/api', apiRoutes);
 
 // start app
 const PORT = 3000;

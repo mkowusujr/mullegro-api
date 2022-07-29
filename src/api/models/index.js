@@ -1,20 +1,20 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
 // setup sequelize
 const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "src/mullegro.sqlite3",
-  logging: false,
+  dialect: 'sqlite',
+  storage: 'src/mullegro.sqlite3',
+  logging: false
 });
 
 // connect to db
 sequelize
   .authenticate()
   .then(() => {
-    console.log(">> Connected to database...");
+    console.log('>> Connected to database...');
   })
   .catch((err) => {
-    console.log(">> Error" + err);
+    console.log('>> Error' + err);
   });
 
 //setup db
@@ -23,10 +23,10 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // import models
-db.users = require("./user")(sequelize, Sequelize);
-db.posts = require("./post")(sequelize, Sequelize);
-db.carts = require("./cart")(sequelize, Sequelize);
-db.transactions = require("./transaction")(sequelize, Sequelize);
+db.users = require('./user')(sequelize, Sequelize);
+db.posts = require('./post')(sequelize, Sequelize);
+db.carts = require('./cart')(sequelize, Sequelize);
+db.transactions = require('./transaction')(sequelize, Sequelize);
 
 // establish relationships
 db.users.hasMany(db.posts);

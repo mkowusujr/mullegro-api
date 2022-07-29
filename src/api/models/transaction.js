@@ -1,15 +1,15 @@
 module.exports = (sequelize, Sequelize) => {
-  const transaction = sequelize.define("transaction", {
+  const transaction = sequelize.define('transaction', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
       type: Sequelize.STRING,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   });
   return transaction;
 };

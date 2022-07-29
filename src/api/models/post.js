@@ -1,39 +1,39 @@
 module.exports = (sequelize, Sequelize) => {
-  const Post = sequelize.define("post", {
+  const Post = sequelize.define('post', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     title: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     price: {
       type: Sequelize.FLOAT,
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: Sequelize.TEXT,
-      allowNull: false,
+      allowNull: false
     },
     condition: {
       type: Sequelize.STRING(30),
-      allowNull: false,
+      allowNull: false
     },
     address: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     type: {
       type: Sequelize.STRING(30),
-      allowNull: false,
+      allowNull: false
     },
     status: {
       type: Sequelize.STRING(10),
-      allowNull: false,
-    },
+      allowNull: false
+    }
   });
   return Post;
 };

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "test": "npx jasmine JASMINE_CONFIG_PATH=test/spec/support/jasmine.json",
-    "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
+    "pretty": "prettier --config .prettierrc --write \"./**/*.{js,jsx,json}\""
   },
   "repository": {
     "type": "git",
@@ -24,13 +24,13 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
-    "prettier": "^2.7.1",
     "sequelize": "^6.21.0",
     "sqlite3": "^5.0.8"
   },
   "devDependencies": {
     "jasmine": "^4.2.1",
     "nodemon": "^2.0.16",
+    "prettier": "^2.7.1",
     "supertest": "^6.2.4"
   }
 }

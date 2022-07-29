@@ -1,14 +1,14 @@
-const express = require("express");
-const router = express("Router");
-const auth = require("../middlewares/auth");
-const postService = require("../services/post.service");
-const userService = require("../services/user.service");
+const express = require('express');
+const router = express('Router');
+const auth = require('../middlewares/auth');
+const postService = require('../services/post.service');
+const userService = require('../services/user.service');
 
 /**
  * Logged in user getting and making new posts
  */
 router
-  .route("/user/posts")
+  .route('/user/posts')
   .get(auth.verifyToken, async (req, res) => {
     try {
       let usersPosts = await postService.findAllPostsForUser(
@@ -35,7 +35,7 @@ router
  * Logged in user modifying their posts
  */
 router.delete(
-  "/user/posts/post/:postId",
+  '/user/posts/post/:postId',
   auth.verifyToken,
   async (req, res) => {
     try {
@@ -43,7 +43,7 @@ router.delete(
         await userService.getCurrentUser(res),
         req.params.postId
       );
-      return res.status(200).send("Successfully deleted post");
+      return res.status(200).send('Successfully deleted post');
     } catch (err) {
       return res.status(400).send(err);
     }
@@ -53,7 +53,7 @@ router.delete(
 /**
  * Get all Posts
  */
-router.get("", async (req, res) => {
+router.get('', async (req, res) => {
   try {
     let allPosts = await postService.findAll();
     return res.status(200).send(allPosts);
@@ -65,7 +65,7 @@ router.get("", async (req, res) => {
 /**
  * Get all a users post
  */
-router.get("users/user/:username/posts", async (req, res) => {
+router.get('users/user/:username/posts', async (req, res) => {
   try {
     let user = await userService.getUserByUsername(req.params.username);
     let usersPosts = await postService.findAllPostsForUser(user);
@@ -79,7 +79,7 @@ router.get("users/user/:username/posts", async (req, res) => {
  * Get one post
  */
 router
-  .route("/post/:id")
+  .route('/post/:id')
   .get(async (req, res) => {
     try {
       let post = await postService.getPost(req.params.id);
@@ -91,7 +91,7 @@ router
   .put(async (req, res) => {
     try {
       await postService.updatePostStatus(req.params.id, req.body);
-      return res.status(200).send("Successfully updated post");
+      return res.status(200).send('Successfully updated post');
     } catch (err) {
       return res.status(404).send(err);
     }

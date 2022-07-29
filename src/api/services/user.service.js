@@ -1,6 +1,6 @@
-const helperService = require("./helper.service");
-const db = require("../models");
-const bcrypt = require("bcrypt");
+const helperService = require('./helper.service');
+const db = require('../models');
+const bcrypt = require('bcrypt');
 const User = db.users;
 
 const failIfUsernameExists = async (username) => {
@@ -27,7 +27,7 @@ exports.createUser = async (user) => {
       await encryptPassword(createdUser);
       return createdUser;
     })
-    .catch(() => helperService.sendRejectedPromiseWith("Error creating user"));
+    .catch(() => helperService.sendRejectedPromiseWith('Error creating user'));
 };
 
 exports.getUserById = async (userId) => {
@@ -36,7 +36,7 @@ exports.getUserById = async (userId) => {
     if (!fetchedUser) throw `User with id of ${userId} doesn't exist`;
     return fetchedUser;
   } catch (error) {
-    let errorOutput = "Error fetching user: " + error;
+    let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
@@ -47,7 +47,7 @@ exports.getUserByEmail = async (userEmail) => {
     if (!fetchedUser) throw `User with email of ${userEmail} doesn't exist`;
     return fetchedUser;
   } catch (error) {
-    let errorOutput = "Error fetching user: " + error;
+    let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
@@ -58,18 +58,18 @@ exports.getUserByUsername = async (username) => {
     if (!fetchedUser) throw `User with username of ${userEmail} doesn't exist`;
     return fetchedUser;
   } catch (error) {
-    let errorOutput = "Error fetching user: " + error;
+    let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
 
 exports.getUser = async (email_or_username) => {
   try {
-    if (email_or_username.includes("@"))
+    if (email_or_username.includes('@'))
       return this.getUserByEmail(email_or_username);
     else return this.getUserByUsername(email_or_username);
   } catch (error) {
-    let errorOutput = "Error fetching user: " + error;
+    let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
@@ -80,7 +80,7 @@ exports.getCurrentUser = async (res) => {
     let user = await this.getUserByUsername(username);
     return user;
   } catch (err) {
-    let errOutput = "Error getting user: " + err;
+    let errOutput = 'Error getting user: ' + err;
     console.error(errOutput);
     return Promise.reject(errOutput);
   }
@@ -90,7 +90,7 @@ exports.findAll = async () => {
   try {
     return await User.findAll();
   } catch (error) {
-    let errorOutput = "Error fetching all users: " + error;
+    let errorOutput = 'Error fetching all users: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
@@ -98,7 +98,7 @@ exports.findAll = async () => {
 exports.deleteUser = async (user) => {
   try {
     await user.destroy();
-    return Promise.resolve("Deleted successfully");
+    return Promise.resolve('Deleted successfully');
   } catch (error) {
     let errorOutput = "User doesn't exist";
     return helperService.sendRejectedPromiseWith(errorOutput);
