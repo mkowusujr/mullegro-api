@@ -1,33 +1,33 @@
-const postService = require('../../../src/api/services/post.service');
+const postService = require("../../../src/api/services/post.service");
 
-describe('Post Service', () => {
-  it('should be created', () => {
+describe("Post Service", () => {
+  it("should be created", () => {
     expect(postService).toBeTruthy();
   });
-  
+
   let db;
   let Post;
   let User;
-  
+
   beforeEach(async () => {
-    db = require('../../../src/api/models/index');
+    db = require("../../../src/api/models/index");
     Post = db.posts;
     User = db.users;
     await db.sequelize.sync({ force: true });
-    spyOn(console, 'error');
+    spyOn(console, "error");
   });
 
-  describe('getPost', () => {
-    it('should return a post', async () => {
+  describe("getPost", () => {
+    it("should return a post", async () => {
       let dummyPost = await Post.create({
-        title: 'Dummy Post',
-        price: 100.00,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'USA',
+        title: "Dummy Post",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Good",
+        address: "USA",
         type: "Clarinet",
-        status: "Not Sold"
-      }); 
+        status: "Not Sold",
+      });
       let postId = 1;
 
       let response = await postService.getPost(postId);
@@ -35,137 +35,139 @@ describe('Post Service', () => {
       expect(response.id).toEqual(postId);
       expect(response).toEqual(jasmine.any(Post));
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       try {
         let response = await postService.getPost();
-        if (response || !response) fail('Didn\'t throw error');
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
     });
   });
 
-  describe('findAll', () => {
-    it('should get all the posts in the database', async () => {
-      let dummyPosts = await Post.bulkCreate([
-        {
-          title: 'Dummy Post',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: "Clarinet",
-          status: "Not Sold"
-        },
-        {
-          title: 'Dummy Post 2',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: "Clarinet",
-          status: "Not Sold"
-        },
-        {
-          title: 'Dummy Post3',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'JAPAN',
-          type: "Clarinet",
-          status: "Not Sold"
-        }],
-        {returning: true}
+  describe("findAll", () => {
+    it("should get all the posts in the database", async () => {
+      let dummyPosts = await Post.bulkCreate(
+        [
+          {
+            title: "Dummy Post",
+            price: 100.0,
+            description: "This is an instrument",
+            condition: "Good",
+            address: "USA",
+            type: "Clarinet",
+            status: "Not Sold",
+          },
+          {
+            title: "Dummy Post 2",
+            price: 100.0,
+            description: "This is an instrument",
+            condition: "Mid",
+            address: "CANADA",
+            type: "Clarinet",
+            status: "Not Sold",
+          },
+          {
+            title: "Dummy Post3",
+            price: 100.0,
+            description: "This is an instrument",
+            condition: "Good",
+            address: "JAPAN",
+            type: "Clarinet",
+            status: "Not Sold",
+          },
+        ],
+        { returning: true }
       );
 
       let response = await postService.findAll();
 
       expect(response.length).toEqual(dummyPosts.length);
-      for (let i = 0; i < response.length; i++){
-        expect(response[i].id).toEqual(i+1);
+      for (let i = 0; i < response.length; i++) {
+        expect(response[i].id).toEqual(i + 1);
       }
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       try {
-        spyOn(postService, 'findAll').and.returnValue(Promise.reject('Error'));
+        spyOn(postService, "findAll").and.returnValue(Promise.reject("Error"));
         let response = await postService.findAll();
-        if (response || !response) fail('Didn\'t throw error');
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(error).toEqual(jasmine.any(String));
       }
     });
   });
 
-  describe('findAllPostsForUser', () => {
-    it('should get all of a user\'s posts', async () => {
+  describe("findAllPostsForUser", () => {
+    it("should get all of a user's posts", async () => {
       let dummyUser = await User.create({
-        name: 'Dummy User',
-        address: 'USA',
-        username: 'dummy_username',
-        email: 'dummay@email.com'
+        name: "Dummy User",
+        address: "USA",
+        username: "dummy_username",
+        email: "dummay@email.com",
       });
       await dummyUser.createPost({
-          title: 'Dummy Post 2',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: "Clarinet",
-          status: "Not Sold"
+        title: "Dummy Post 2",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Mid",
+        address: "CANADA",
+        type: "Clarinet",
+        status: "Not Sold",
       });
       await dummyUser.createPost({
-          title: 'Dummy Post3',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'JAPAN',
-          type: "Clarinet",
-          status: "Not Sold"
+        title: "Dummy Post3",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Good",
+        address: "JAPAN",
+        type: "Clarinet",
+        status: "Not Sold",
       });
       await Post.create({
-        title: 'Dummy Post',
-        price: 100.00,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'USA',
+        title: "Dummy Post",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Good",
+        address: "USA",
         type: "Clarinet",
-        status: "Not Sold"
+        status: "Not Sold",
       });
 
       let response = await postService.findAllPostsForUser(dummyUser);
-      
+
       expect(response.length).toEqual(2);
       response.forEach((post) => {
         expect(post.userId).toEqual(dummyUser.id);
       });
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       try {
         let response = await postService.findAllPostsForUser({});
-        if (response || !response) fail('Didn\'t throw error');
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
     });
   });
 
-  describe('createNewPost', () => {
-    it('should create a new post assiocated with a user', async () => {
+  describe("createNewPost", () => {
+    it("should create a new post assiocated with a user", async () => {
       let dummyUser = await User.create({
-        name: 'Dummy User',
-        address: 'USA',
-        username: 'dummy_username',
-        email: 'dummay@email.com'
+        name: "Dummy User",
+        address: "USA",
+        username: "dummy_username",
+        email: "dummay@email.com",
       });
 
       let postObject = {
-        title: 'Dummy Post',
-        price: 100.00,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'USA',
+        title: "Dummy Post",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Good",
+        address: "USA",
         type: "Clarinet",
-        status: "Not Sold"
+        status: "Not Sold",
       };
 
       let response = await postService.createNewPost(dummyUser, postObject);
@@ -180,82 +182,82 @@ describe('Post Service', () => {
 
       expect(response.userId).toEqual(dummyUser.id);
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       let dummyUser = await User.create({
-        name: 'Dummy User',
-        address: 'USA',
-        username: 'dummy_username',
-        email: 'dummay@email.com'
+        name: "Dummy User",
+        address: "USA",
+        username: "dummy_username",
+        email: "dummay@email.com",
       });
 
       let postObject = {
-        title: 'Dummy Post'
+        title: "Dummy Post",
       };
 
       try {
         let response = await postService.createNewPost(dummyUser, postObject);
-        if (response || !response) fail('Didn\'t throw error');
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
     });
   });
 
-  describe('updatePostStatus', () => {
-    it('should update the status of a post', async () => {
+  describe("updatePostStatus", () => {
+    it("should update the status of a post", async () => {
       await Post.create({
-        title: 'Dummy Post',
-        price: 100.00,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'USA',
+        title: "Dummy Post",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Good",
+        address: "USA",
         type: "Clarinet",
-        status: "Not Sold"
+        status: "Not Sold",
       });
       let postId = 1;
-      let newStatus = {status: 'Sold'};
+      let newStatus = { status: "Sold" };
       let response = await postService.updatePostStatus(postId, newStatus);
 
       expect(response.id).toBe(postId);
       expect(response.status).toBe(newStatus.status);
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       try {
-        let response = await postService.updatePostStatus(100, {})
-        if (response || !response) fail('Didn\'t throw error');
+        let response = await postService.updatePostStatus(100, {});
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
     });
   });
 
-  describe('deletePost', () => {
-    it('should delete a post from the database', async () => {
+  describe("deletePost", () => {
+    it("should delete a post from the database", async () => {
       let dummyUser = await User.create({
-        name: 'Dummy User',
-        address: 'USA',
-        username: 'dummy_username',
-        email: 'dummay@email.com'
+        name: "Dummy User",
+        address: "USA",
+        username: "dummy_username",
+        email: "dummay@email.com",
       });
       await dummyUser.createPost({
-          title: 'Dummy Post',
-          price: 100.00,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: "Clarinet",
-          status: "Not Sold"
+        title: "Dummy Post",
+        price: 100.0,
+        description: "This is an instrument",
+        condition: "Mid",
+        address: "CANADA",
+        type: "Clarinet",
+        status: "Not Sold",
       });
 
       let postId = 1;
       let response = await postService.deletePost(dummyUser, postId);
-      
-      expect(response).toBe('Deleted successfully');
+
+      expect(response).toBe("Deleted successfully");
     });
-    it('should throw an error if there is an issue', async () => {
+    it("should throw an error if there is an issue", async () => {
       try {
         let response = await postService.deletePost({}, 100);
-        if (response || !response) fail('Didn\'t throw error');
+        if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
