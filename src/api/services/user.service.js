@@ -25,47 +25,25 @@ exports.createUser = async (user) => {
 };
 
 exports.getUser = async (userId) => {
-    return await User.findByPk(userId)
-    // check if user exists first
-    .then((fetchedUser) => {
-        if (fetchedUser != null)
-            return fetchedUser;
-        else 
-            throw `User with id of ${userId} doesn't exist`;
-    })
-    // if exists return it
-    .then((fetchedUser) => {
-        console.log('>> Fetched user:\n' + JSON.stringify(fetchedUser, null, 4));
+    try {
+        let fetchedUser = await User.findByPk(userId);
+        if(!fetchedUser) throw `User with id of ${userId} doesn't exist`;
         return fetchedUser;
-    })
-    .catch((err) => {
-        console.error('>> Error fetching user: ' + err);
-        throw `User with id of ${userId} doesn't exist`;
-    })
+    } catch (error) {
+        let errorOutput = 'Error fetching user: '+ error;
+        return helperService.sendRejectedPromise(errorOutput);
+    }
 };
 
 exports.getUserByEmail = async (userEmail) => {
-    return await User.findOne({
-        where: {
-            email: userEmail
-        }
-    })
-    // check if user exists first
-    .then((fetchedUser) => {
-        if (fetchedUser != null)
-            return fetchedUser;
-        else 
-            throw `User with email of ${userEmail} doesn't exist`;
-    })
-    // if exists return it
-    .then((fetchedUser) => {
-        console.log('>> Fetched user:\n' + JSON.stringify(fetchedUser, null, 4));
+    try {
+        let fetchedUser = await User.findOne({where: {email: userEmail}});
+        if (!fetchedUser) throw `User with email of ${userEmail} doesn't exist`;
         return fetchedUser;
-    })
-    .catch((err) => {
-        console.error('>> Error fetching user: ' + err);
-        throw `User with email of ${userEmail} doesn't exist`;
-    })
+    } catch (error) {
+        let errorOutput = 'Error fetching user: ' + error;
+        return helperService.sendRejectedPromise(errorOutput);
+    }
 };
 
 exports.getUserByUsername = async (username) => {

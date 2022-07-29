@@ -33,7 +33,7 @@ describe('User Service', () => {
             expect(response.password).toBeTruthy();
             expect(response.password).not.toBe(userObject.password);
         });        
-        it('', async() => {
+        it('doesn\'t allow duplicate usernames in the database', async() => {
             
             try {
                 await User.create({
@@ -61,20 +61,56 @@ describe('User Service', () => {
     });
     
     describe('getUser', () => {
-        it('', async() => {
-            pending();
+        it('fetches a user from the database', async() => {
+            let user = await User.create({
+                name:'John Doe',
+                username: "fake_user",
+                address: "America",
+                email: 'notreal@email.com',
+                password: 'safeAndSecurePassword'
+            });
+            let userId = 1;
+
+            let response = await userService.getUser(userId);
+
+            expect(response.id).toEqual(userId)
+            expect(response.name).toEqual(user.name);
         });        
-        it('', async() => {
-            pending();
+        it('throws an error if there is an issue', async() => {
+            try {
+                let userId = 1;
+                let response = await userService.getUser(userId);
+                if (response || !response) fail('Didn\'t throw error');
+              } catch (error) {
+                expect(console.error).toHaveBeenCalled();
+              }
         });
     });
 
     describe('getUserByEmail', () => {
-        it('', async() => {
-            pending();
+        it('fetches a user from the database', async() => {
+            let user = await User.create({
+                name:'John Doe',
+                username: "fake_user",
+                address: "America",
+                email: 'notreal@email.com',
+                password: 'safeAndSecurePassword'
+            });
+            let userEmail = 'notreal@email.com';
+
+            let response = await userService.getUserByEmail(userEmail);
+
+            expect(response.email).toEqual(user.email);
+            expect(response.name).toEqual(user.name);
         });        
-        it('', async() => {
-            pending();
+        it('throws an error if there is an issue', async() => {
+            try {
+                let userEmail = 'notreal2@email.com';
+                let response = await userService.getUserByEmail(userEmail);
+                if (response || !response) fail('Didn\'t throw error');
+              } catch (error) {
+                expect(console.error).toHaveBeenCalled();
+              }
         });
     });
     
