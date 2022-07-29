@@ -5,7 +5,12 @@ const User = db.users;
 
 const failIfUsernameExists = async (username) => {
     user = await User.findOne({where: {username: username}});
-    if (user) throw `User with ${userObj.username} already exists`;
+    if (user) throw `User with the username ${userObj.username} already exists`;
+}
+
+const failIfEmailExists = async (userEmail) => {
+    user = await User.findOne({where: {email: userEmail}});
+    if (user) throw `User with the email ${userObj.username} already exists`;
 }
 
 const encryptPassword = async (newUser) => {
@@ -16,22 +21,23 @@ const encryptPassword = async (newUser) => {
 
 exports.createUser = async (user) => {
     return await failIfUsernameExists(user.username)
+    .then(async () => await failIfEmailExists(user.email))
     .then(async () => {
         let createdUser = await User.create(user);
         await encryptPassword(createdUser);
         return createdUser;
     })
-    .catch( () => helperService.sendRejectedPromise('Error creating user'));
+    .catch( () => helperService.sendRejectedPromiseWith('Error creating user'));
 };
 
-exports.getUser = async (userId) => {
+exports.getUserById= async (userId) => {
     try {
         let fetchedUser = await User.findByPk(userId);
         if(!fetchedUser) throw `User with id of ${userId} doesn't exist`;
         return fetchedUser;
     } catch (error) {
         let errorOutput = 'Error fetching user: '+ error;
-        return helperService.sendRejectedPromise(errorOutput);
+        return helperService.sendRejectedPromiseWith(errorOutput);
     }
 };
 
@@ -42,39 +48,31 @@ exports.getUserByEmail = async (userEmail) => {
         return fetchedUser;
     } catch (error) {
         let errorOutput = 'Error fetching user: ' + error;
-        return helperService.sendRejectedPromise(errorOutput);
+        return helperService.sendRejectedPromiseWith(errorOutput);
     }
 };
 
 exports.getUserByUsername = async (username) => {
-    return await User.findOne({
-        where: {
-            username: username
-        }
-    })
-    // check if user exists first
-    .then((fetchedUser) => {
-        if (fetchedUser != null)
-            return fetchedUser;
-        else 
-            throw `User with username of ${username} doesn't exist`;
-    })
-    // if exists return it
-    .then((fetchedUser) => {
-        console.log('>> Fetched user:\n' + JSON.stringify(fetchedUser, null, 4));
+    try {
+        let fetchedUser = await User.findOne({where: {username: username}});
+        if (!fetchedUser) throw `User with username of ${userEmail} doesn't exist`;
         return fetchedUser;
-    })
-    .catch((err) => {
-        console.error('>> Error fetching user: ' + err);
-        throw `User with username of ${username} doesn't exist`;
-    })
+    } catch (error) {
+        let errorOutput = 'Error fetching user: ' + error;
+        return helperService.sendRejectedPromiseWith(errorOutput);
+    }
 };
 
-exports.getUserAcctDetails = async (email_or_username) => {
-    if (email_or_username.includes('@'))
-        return this.getUserByEmail(email_or_username);
-    else
-        return this.getUserByUsername(email_or_username);
+exports.getUser = async (email_or_username) => {
+    try {
+        if (email_or_username.includes('@'))
+            return this.getUserByEmail(email_or_username);
+        else
+            return this.getUserByUsername(email_or_username);
+    } catch (error) {
+        let errorOutput = 'Error fetching user: ' + error;
+        return helperService.sendRejectedPromiseWith(errorOutput);
+    }
 };
 
 exports.getCurrentUser = async (res) => {
@@ -87,26 +85,23 @@ exports.getCurrentUser = async (res) => {
         console.error(errOutput);
         return Promise.reject(errOutput);
     }
-    
 }
 
 exports.findAll = async () => {
-    return await User.findAll()
-    .catch((err) => {
-        console.error('>> Error fetching all users: ' + err);
-    })
+    try {
+        return await User.findAll()
+    } catch (error) {
+        let errorOutput = 'Error fetching all users: ' + error;
+        return helperService.sendRejectedPromiseWith(errorOutput)
+    }
 };
 
-exports.deleteUser = async (username) => {
-    const deleteResult = await User.destroy({where: {username: username}})
-    // check if user exists
-    .then((deleteResult) => {
-        if (deleteResult == 0){
-            throw `User with username of ${username} doesn't exist`;
-        }
-    })
-    .catch((err) => {
-        console.error('>> Error fetching user: ' + err);
-        throw `User with username of ${username} doesn't exist`;
-    });
+exports.deleteUser = async (user) => {
+    try {
+        await user.destroy();
+        return Promise.resolve('Deleted successfully');
+    } catch (error) {
+        let errorOutput = 'User doesn\'t exist';
+        return helperService.sendRejectedPromiseWith(errorOutput);
+    }
 };

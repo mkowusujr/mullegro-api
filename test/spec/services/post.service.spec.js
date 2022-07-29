@@ -44,7 +44,7 @@ describe('Post Service', () => {
     });
   });
 
-  describe('getAllPosts', () => {
+  describe('findAll', () => {
     it('should get all the posts in the database', async () => {
       let dummyPosts = await Post.bulkCreate([
         {
@@ -77,7 +77,7 @@ describe('Post Service', () => {
         {returning: true}
       );
 
-      let response = await postService.getAllPosts();
+      let response = await postService.findAll();
 
       expect(response.length).toEqual(dummyPosts.length);
       for (let i = 0; i < response.length; i++){
@@ -86,8 +86,8 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        spyOn(postService, 'getAllPosts').and.returnValue(Promise.reject('Error'));
-        let response = await postService.getAllPosts();
+        spyOn(postService, 'findAll').and.returnValue(Promise.reject('Error'));
+        let response = await postService.findAll();
         if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(error).toEqual(jasmine.any(String));
@@ -95,7 +95,7 @@ describe('Post Service', () => {
     });
   });
 
-  describe('getAllPostsForUser', () => {
+  describe('findAllPostsForUser', () => {
     it('should get all of a user\'s posts', async () => {
       let dummyUser = await User.create({
         name: 'Dummy User',
@@ -131,7 +131,7 @@ describe('Post Service', () => {
         status: "Not Sold"
       });
 
-      let response = await postService.getAllPostsForUser(dummyUser);
+      let response = await postService.findAllPostsForUser(dummyUser);
       
       expect(response.length).toEqual(2);
       response.forEach((post) => {
@@ -140,7 +140,7 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        let response = await postService.getAllPostsForUser({});
+        let response = await postService.findAllPostsForUser({});
         if (response || !response) fail('Didn\'t throw error');
       } catch (error) {
         expect(console.error).toHaveBeenCalled();

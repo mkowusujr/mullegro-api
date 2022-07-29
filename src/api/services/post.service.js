@@ -6,12 +6,12 @@ const Post = db.posts;
  * Get Logged in users posts
  * @param {User Obj} currentUser The current User
  */
-exports.getAllPostsForUser = async (currentUser) => {
+exports.findAllPostsForUser = async (currentUser) => {
     try {
         return await currentUser.getPosts();
     } catch (err) {
         let errOutput = 'Error getting user\'s posts: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 }
 
@@ -24,7 +24,7 @@ exports.createNewPost = async (currentUser, newPost) => {
         return await currentUser.createPost(newPost);
     } catch (err) {
         let errOutput = 'Error creating post: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 };
 
@@ -41,7 +41,7 @@ exports.updatePostStatus = async (postId, postStatus) => {
         return await Post.findByPk(postId);
     } catch (err) {
         let errOutput = 'Error updating post: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 };
 
@@ -55,7 +55,7 @@ exports.deletePost = async (currentUser, postId) => {
         return Promise.resolve('Deleted successfully');
     } catch (err) {
         let errOutput = 'Error deleting post: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 };
 
@@ -63,12 +63,12 @@ exports.deletePost = async (currentUser, postId) => {
 /**
  * Get all Posts
  */
-exports.getAllPosts = async () => {
+exports.findAll = async () => {
     try {
         return await Post.findAll();
     } catch (err) {
         let errOutput = 'Error getting posts: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 };
 
@@ -83,6 +83,6 @@ exports.getPost = async (postId) => {
         return post
     } catch (err) {
         let errOutput = 'Error getting post: ' + err;
-        return helperService.sendRejectedPromise(errOutput);
+        return helperService.sendRejectedPromiseWith(errOutput);
     }
 };

@@ -11,7 +11,7 @@ const userService = require('../services/user.service');
 router.route('/user/posts')
 .get(auth.verifyToken, async (req, res) => {
     try {
-        let usersPosts = await postService.getAllPostsForUser(
+        let usersPosts = await postService.findAllPostsForUser(
             await userService.getCurrentUser(res)
         );
         return res.status(200).send(usersPosts);
@@ -52,7 +52,7 @@ router.delete('/user/posts/post/:postId', auth.verifyToken, async (req, res) => 
  */
 router.get('', async (req, res) =>{
     try {
-        let allPosts = await postService.getAllPosts();
+        let allPosts = await postService.findAll();
         return res.status(200).send(allPosts);
     } catch (err){
         return res.status(400).send(err);
@@ -66,7 +66,7 @@ router.get('', async (req, res) =>{
 router.get('users/user/:username/posts', async (req, res) => {
     try {
         let user = await userService.getUserByUsername(req.params.username);
-        let usersPosts = await postService.getAllPostsForUser(user);
+        let usersPosts = await postService.findAllPostsForUser(user);
         return res.status(200).send(usersPosts);
     } catch (err){
         return res.status(400).send(err);
