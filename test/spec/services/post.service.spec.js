@@ -1,13 +1,14 @@
 const postService = require('../../../src/api/services/post.service');
-let db;
-let Post;
-let User;
 
 describe('Post Service', () => {
   it('should be created', () => {
     expect(postService).toBeTruthy();
   });
-
+  
+  let db;
+  let Post;
+  let User;
+  
   beforeEach(async () => {
     db = require('../../../src/api/models/index');
     Post = db.posts;

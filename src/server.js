@@ -24,9 +24,10 @@ db.sequelize
 const apiRoutes = require('./api/controllers/index');
 app.use('/api', apiRoutes);
 
-
 // start app
 const PORT = 3000;
 app.listen(
     PORT, () => console.log(`>> Server is live at http://localhost:${PORT}`)
 );
+    
+    module.exports = app;

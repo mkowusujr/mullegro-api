@@ -1,12 +1,14 @@
 const userService = require('../../../src/api/services/user.service');
-let db;
-let User;
-let newUser;
 
 describe('User Service', () => {
     it('should be created', () => {
         expect(userService).toBeTruthy();
     });
+    
+    
+    let db;
+    let User;
+    let newUser;
 
     beforeEach(async () => {
         db = require('../../../src/api/models/index');
@@ -17,13 +19,6 @@ describe('User Service', () => {
             username: "fake_user",
             address: "America",
             email: 'notreal@email.com',
-            password: 'safeAndSecurePassword'
-        });
-        newUser2 = await User.create({
-            name:'Jessica Doe',
-            username: "not_real_user",
-            address: "America",
-            email: 'fake@email.com',
             password: 'safeAndSecurePassword'
         });
         spyOn(console, 'error');
@@ -196,6 +191,14 @@ describe('User Service', () => {
 
     describe('findAll', () => {
         it('can fetch all the users in the database', async() => {
+            newUser2 = await User.create({
+                name:'Jessica Doe',
+                username: "not_real_user",
+                address: "America",
+                email: 'fake@email.com',
+                password: 'safeAndSecurePassword'
+            });
+            
             let response = await userService.findAll();
 
             expect(response.length).toEqual(2);
@@ -217,8 +220,7 @@ describe('User Service', () => {
             let allUsers = await userService.findAll().catch() ;
 
             expect(response).toBe('Deleted successfully');
-            console.info(allUsers)
-            expect(allUsers.length).toBe(1);
+            expect(allUsers.length).toBe(0);
         });        
         it('throws an error if there is an issue', async() => {
             try {

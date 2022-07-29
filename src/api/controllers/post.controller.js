@@ -83,7 +83,7 @@ router.route('/post/:id')
         let post = await postService.getPost(req.params.id);
         return res.status(200).send(post);
     } catch (err){
-        return res.status(400).send(err);
+        return res.status(404).send(err);
     }
 })
 .put(async (req, res) => {
@@ -91,7 +91,7 @@ router.route('/post/:id')
         await postService.updatePostStatus(req.params.id, req.body);
         return res.status(200).send('Successfully updated post');
     } catch (err){
-        return res.status(400).send(err);
+        return res.status(404).send(err);
     }
 })
 
