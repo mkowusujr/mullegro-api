@@ -65,36 +65,35 @@ router.get('', async (req, res) => {
 /**
  * Get all a users post
  */
-router.get('users/user/:username/posts', async (req, res) => {
+router.get('/users/user/:username/posts', async (req, res) => {
   try {
     let user = await userService.getUserByUsername(req.params.username);
     let usersPosts = await postService.findAllPostsForUser(user);
     return res.status(200).send(usersPosts);
   } catch (err) {
-    return res.status(400).send(err);
+    return res.status(404).send(err);
   }
 });
 
 /**
  * Get one post
  */
-router
-  .route('/post/:id')
-  .get(async (req, res) => {
-    try {
-      let post = await postService.getPost(req.params.id);
-      return res.status(200).send(post);
-    } catch (err) {
-      return res.status(404).send(err);
-    }
-  })
-  .put(async (req, res) => {
-    try {
-      await postService.updatePostStatus(req.params.id, req.body);
-      return res.status(200).send('Successfully updated post');
-    } catch (err) {
-      return res.status(404).send(err);
-    }
-  });
+router.get('/post/:id', async (req, res) => {
+  try {
+    let post = await postService.getPost(req.params.id);
+    return res.status(200).send(post);
+  } catch (err) {
+    return res.status(404).send(err);
+  }
+});
+
+router.put('/post/:id', async (req, res) => {
+  try {
+    await postService.updatePostStatus(req.params.id, req.body);
+    return res.status(200).send('Successfully updated post');
+  } catch (err) {
+    return res.status(404).send(err);
+  }
+});
 
 module.exports = router;

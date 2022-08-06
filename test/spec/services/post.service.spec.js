@@ -141,6 +141,18 @@ describe('Post Service', () => {
         expect(post.userId).toEqual(dummyUser.id);
       });
     });
+    it('should return an empty list if user has no posts', async () => {
+      let dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
+
+      let response = await postService.findAllPostsForUser(dummyUser);
+
+      expect(response).toEqual([]);
+    });
     it('should throw an error if there is an issue', async () => {
       try {
         let response = await postService.findAllPostsForUser({});
