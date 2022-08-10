@@ -58,7 +58,7 @@ router.get('', async (req, res) => {
     let allPosts = await postService.findAll();
     return res.status(200).send(allPosts);
   } catch (err) {
-    return res.status(400).send(err);
+    return res.status(404).send(err);
   }
 });
 
@@ -87,6 +87,9 @@ router.get('/post/:id', async (req, res) => {
   }
 });
 
+/**
+ * Update a post
+ */
 router.put('/post/:id', async (req, res) => {
   try {
     await postService.updatePostStatus(req.params.id, req.body);

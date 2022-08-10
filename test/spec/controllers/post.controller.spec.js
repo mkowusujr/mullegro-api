@@ -1,6 +1,7 @@
 const server = require('../../../src/server');
 const postController = require('../../../src/api/controllers/post.controller');
 const request = require('supertest');
+const jwtMaker = require('../helpers/create-jwt')
 
 const checkToSeeIsPostObject = (object) => {
   expect(object.hasOwnProperty('id')).toBeTrue();
@@ -105,6 +106,69 @@ describe('Post Controller', () => {
     });
   });
 
+  describe("endpoint: '/api/posts', ", () => {
+    describe('HTTP GET method', () => {
+      it("can get all of a user's post", async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post 2',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Mid',
+          address: 'CANADA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post3',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'JAPAN',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await Post.create({
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+
+        try {
+          const response = await request(server)
+            .get(`/api/posts`)
+            .set('Content-Type', 'application/json');
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(3);
+          response.body.forEach(object => checkToSeeIsPostObject(object))
+        } catch (error) {
+          fail(error);
+        }
+      });
+      xit('sends a 404 response if there is an issue', async () => {
+        try {
+          const response = await request(server)
+            .get(`/api/posts`)
+            .set('Content-Type', 'application/json');
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
   describe("endpoint: '/api/posts/users/user/:username/posts', ", () => {
     describe('HTTP GET method', () => {
       it("can get all of a user's post", async () => {
@@ -149,8 +213,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          checkToSeeIsPostObject(response.body[0]);
-          checkToSeeIsPostObject(response.body[1]);
+          response.body.forEach(object => checkToSeeIsPostObject(object))
         } catch (error) {
           fail(error);
         }
@@ -160,6 +223,89 @@ describe('Post Controller', () => {
           const response = await request(server)
             .get(`/api/posts/users/user/FAKE_USER/posts`)
             .set('Content-Type', 'application/json');
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/posts/user/posts', ", () => {
+    describe('HTTP GET method', () => {
+      it('it should require authorization', async () => {
+        try {
+          const response = await request(server)
+            .get('/api/posts/user/posts')
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      })
+      it("can get all of the logged in user's post", async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post 2',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Mid',
+          address: 'CANADA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post3',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'JAPAN',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await Post.create({
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let token = jwtMaker.createJwt(dummyUser)
+        
+        try {
+          const response = await request(server)
+            .get(`/api/posts/user/posts`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token) 
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(2);
+          response.body.forEach(object => checkToSeeIsPostObject(object))
+        } catch (error) {
+          fail(error);
+        }
+      });
+      xit('sends a 404 response if there is an issue', async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        let token = jwtMaker.createJwt(dummyUser)
+
+        try {
+          const response = await request(server)
+            .get(`/api/posts/user/posts`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token) 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
