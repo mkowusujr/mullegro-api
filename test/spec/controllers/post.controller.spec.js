@@ -1,7 +1,7 @@
 const server = require('../../../src/server');
 const postController = require('../../../src/api/controllers/post.controller');
 const request = require('supertest');
-const jwtMaker = require('../helpers/create-jwt')
+const jwtMaker = require('../helpers/create-jwt');
 
 const checkToSeeIsPostObject = (object) => {
   expect(object.hasOwnProperty('id')).toBeTrue();
@@ -150,7 +150,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(3);
-          response.body.forEach(object => checkToSeeIsPostObject(object))
+          response.body.forEach((object) => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }
@@ -213,7 +213,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          response.body.forEach(object => checkToSeeIsPostObject(object))
+          response.body.forEach((object) => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }
@@ -236,13 +236,12 @@ describe('Post Controller', () => {
     describe('HTTP GET method', () => {
       it('it should require authorization', async () => {
         try {
-          const response = await request(server)
-            .get('/api/posts/user/posts')
+          const response = await request(server).get('/api/posts/user/posts');
           expect(response.status).toEqual(401);
         } catch (error) {
           fail(error);
         }
-      })
+      });
       it("can get all of the logged in user's post", async () => {
         let dummyUser = await User.create({
           name: 'Dummy User',
@@ -277,17 +276,17 @@ describe('Post Controller', () => {
           type: 'Clarinet',
           status: 'Not Sold'
         });
-        let token = jwtMaker.createJwt(dummyUser)
-        
+        let token = jwtMaker.createJwt(dummyUser);
+
         try {
           const response = await request(server)
             .get(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
-            .set('Authorization', token) 
+            .set('Authorization', token);
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          response.body.forEach(object => checkToSeeIsPostObject(object))
+          response.body.forEach((object) => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }
@@ -299,13 +298,13 @@ describe('Post Controller', () => {
           username: 'dummy_username',
           email: 'dummay@email.com'
         });
-        let token = jwtMaker.createJwt(dummyUser)
+        let token = jwtMaker.createJwt(dummyUser);
 
         try {
           const response = await request(server)
             .get(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
-            .set('Authorization', token) 
+            .set('Authorization', token);
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
