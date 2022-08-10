@@ -5,31 +5,33 @@ const postService = require('../services/post.service');
 const userService = require('../services/user.service');
 
 /**
- * Logged in user getting and making new posts
+ * Logged in user getting new posts
  */
-router
-  .route('/user/posts')
-  .get(auth.verifyToken, async (req, res) => {
-    try {
-      let usersPosts = await postService.findAllPostsForUser(
-        await userService.getCurrentUser(res)
-      );
-      return res.status(200).send(usersPosts);
-    } catch (err) {
-      return res.status(400).send(err);
-    }
-  })
-  .post(auth.verifyToken, async (req, res) => {
-    try {
-      let usersPost = await postService.createNewPost(
-        await userService.getCurrentUser(res),
-        req.body
-      );
-      return res.status(200).send(usersPost);
-    } catch (err) {
-      return res.status(400).send(err);
-    }
-  });
+router.get('/user/posts', auth.verifyToken, async (req, res) => {
+  try {
+    let usersPosts = await postService.findAllPostsForUser(
+      await userService.getCurrentUser(res)
+    );
+    return res.status(200).send(usersPosts);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
+
+/**
+ * Logged in user making new posts
+ */
+router.post('/user/posts', auth.verifyToken, async (req, res) => {
+  try {
+    let usersPost = await postService.createNewPost(
+      await userService.getCurrentUser(res),
+      req.body
+    );
+    return res.status(200).send(usersPost);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
 
 /**
  * Logged in user modifying their posts
