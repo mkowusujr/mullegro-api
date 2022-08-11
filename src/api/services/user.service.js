@@ -14,7 +14,6 @@ const failIfEmailExists = async (userEmail) => {
 };
 
 const encryptPassword = async (newUser) => {
-  // let bcryptSalt = await bcrypt.genSalt(10);
   newUser.password = await bcrypt.hashSync(newUser.password, 10);
   await newUser.save();
 };

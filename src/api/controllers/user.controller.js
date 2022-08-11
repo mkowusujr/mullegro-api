@@ -26,21 +26,13 @@ router.post('/register', async (req, res) => {
  * Login
  */
 router.post('/login', async (req, res) => {
-  try {
-    // let { email_or_username, password } = req.body;
-    // let user = await userService.getUser(email_or_username);
-    // let isCorrectPassword = await bcrypt.compareSync(password, user.password);
-    // if (isCorrectPassword) {
-    //   delete user.password_hash;
-    //   let token = jwt.sign({ data: user }, 'secret');
-    let user = await userService.getAuthorizedUser(req.body);
+  try {let user = await userService.getAuthorizedUser(req.body);
     let token = jwt.sign({ data: user }, 'secret');
     return res.status(200).send({
       data: user,
       token: token
     });
   } catch (error) {
-    // throw 'Incorrect Password'
     return res.status(400).send(`Error signing: ${error}`);
   }
 });
