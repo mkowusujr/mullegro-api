@@ -274,5 +274,19 @@ describe('Post Service', () => {
         expect(console.error).toHaveBeenCalled();
       }
     });
+    it('should send an error if the user tries to delete a post they don\'t have', async () => {
+      let dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
+      try {
+        let response = await postService.deletePost(dummyUser, 1);
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
+    })
   });
 });
