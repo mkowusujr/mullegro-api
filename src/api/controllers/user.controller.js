@@ -35,13 +35,11 @@ router.post('/login', async (req, res) => {
       if (result) {
         let token = jwt.sign({ data: user }, 'secret');
         return res.status(200).send({
-          status: 1,
           data: user,
           token: token
         });
       } else {
         return res.status(400).send({
-          status: 0,
           data: `Error signing: ${err}`
         });
       }
