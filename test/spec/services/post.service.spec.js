@@ -274,7 +274,7 @@ describe('Post Service', () => {
         expect(console.error).toHaveBeenCalled();
       }
     });
-    it('should send an error if the user tries to delete a post they don\'t have', async () => {
+    it("should send an error if the user tries to delete a post they don't have", async () => {
       let dummyUser = await User.create({
         name: 'Dummy User',
         address: 'USA',
@@ -287,6 +287,6 @@ describe('Post Service', () => {
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
-    })
+    });
   });
 });

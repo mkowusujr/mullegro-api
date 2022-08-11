@@ -381,8 +381,9 @@ describe('Post Controller', () => {
     describe('HTTP DELETE method', () => {
       it('it should require authorization', async () => {
         try {
-          const response = await request(server)
-            .delete('/api/posts/user/posts/post/:postId');
+          const response = await request(server).delete(
+            '/api/posts/user/posts/post/:postId'
+          );
           expect(response.status).toEqual(401);
         } catch (error) {
           fail(error);
@@ -440,6 +441,6 @@ describe('Post Controller', () => {
           fail(error);
         }
       });
-    })
-  })
+    });
+  });
 });

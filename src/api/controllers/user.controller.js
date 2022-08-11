@@ -28,8 +28,8 @@ router.post('/login', async (req, res) => {
   try {
     let { email_or_username, password } = req.body;
     let user = await userService.getUser(email_or_username);
-    console.info(password)
-    console.info(user.password)
+    console.info(password);
+    console.info(user.password);
     let isCorrectPassword = await bcrypt.compare(password, user.password);
     if (isCorrectPassword) {
       delete user.password_hash;

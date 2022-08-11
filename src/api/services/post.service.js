@@ -51,7 +51,9 @@ exports.updatePostStatus = async (postId, postStatus) => {
  */
 exports.deletePost = async (currentUser, postId) => {
   try {
-    let post = await Post.findOne({ where: { id: postId, userId: currentUser.id } });
+    let post = await Post.findOne({
+      where: { id: postId, userId: currentUser.id }
+    });
     if (!post) throw `Post with id of ${postId} does not exist`;
     await post.destroy();
     return Promise.resolve('Deleted successfully');
