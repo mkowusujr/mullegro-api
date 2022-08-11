@@ -242,7 +242,7 @@ describe('Post Controller', () => {
           fail(error);
         }
       });
-      it("can get all of the logged in user's post", async () => {
+      it("should get all of the logged in user's post", async () => {
         let dummyUser = await User.create({
           name: 'Dummy User',
           address: 'USA',
@@ -305,6 +305,69 @@ describe('Post Controller', () => {
             .get(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
             .set('Authorization', token);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+    describe('HTTP POST method', () => {
+      it('it should require authorization', async () => {
+        try {
+          const response = await request(server).post('/api/posts/user/posts');
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('should create a new post ownered by the logged in user', async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        let postObject = {
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        };
+        let token = jwtMaker.createJwt(dummyUser);
+
+        try {
+          const response = await request(server)
+            .post(`/api/posts/user/posts`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .send(postObject);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          checkToSeeIsPostObject(response.body);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        let postObject = {};
+        let token = jwtMaker.createJwt(dummyUser);
+
+        try {
+          const response = await request(server)
+            .post(`/api/posts/user/posts`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .send(postObject);
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
