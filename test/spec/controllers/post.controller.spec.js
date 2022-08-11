@@ -369,11 +369,77 @@ describe('Post Controller', () => {
             .set('Authorization', token)
             .send(postObject);
           expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
+          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
       });
     });
   });
+
+  describe("endpoint: '/api/posts/user/posts/post/:postId', ", () => {
+    describe('HTTP DELETE method', () => {
+      it('it should require authorization', async () => {
+        try {
+          const response = await request(server)
+            .delete('/api/posts/user/posts/post/:postId');
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it("should get all of the logged in user's post", async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post 2',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Mid',
+          address: 'CANADA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let postId = 1;
+        let token = jwtMaker.createJwt(dummyUser);
+
+        try {
+          const response = await request(server)
+            .delete(`/api/posts/user/posts/post/${postId}`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.text).toEqual('Successfully deleted post');
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        let dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        let postId = 1;
+        let token = jwtMaker.createJwt(dummyUser);
+
+        try {
+          const response = await request(server)
+            .delete(`/api/posts/user/posts/post/${postId}`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    })
+  })
 });
