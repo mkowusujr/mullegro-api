@@ -13,13 +13,11 @@ router.post('/register', async (req, res) => {
     let createdUser = await userService.createUser(req.body);
     let token = jwt.sign({ data: createdUser }, 'secret');
     return res.status(200).send({
-      status: 1,
       data: createdUser,
       token: token
     });
   } catch (err) {
     return res.status(400).send({
-      status: 0,
       data: `Error creating user: ${err}`
     });
   }
