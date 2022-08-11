@@ -30,20 +30,20 @@ router.post('/login', async (req, res) => {
   try {
     let { email_or_username, password } = req.body;
     let user = await userService.getUserAcctDetails(email_or_username);
-    bcrypt.compare(password, user.password_hash, function (err, result) {
+    
+    let isCorrectPassword = await bcrypt.compare(password, user.password_hash);//, function (err, result) {
+    if (isCorrectPassword) {
       delete user.password_hash;
-      if (result) {
-        let token = jwt.sign({ data: user }, 'secret');
-        return res.status(200).send({
-          data: user,
-          token: token
-        });
-      } else {
-        return res.status(400).send({
-          data: `Error signing: ${err}`
-        });
-      }
-    });
+      let token = jwt.sign({ data: user }, 'secret');
+      return res.status(200).send({
+        data: user,
+        token: token
+      });
+    } else {
+      return res.status(400).send({
+        data: `Error signing: ${err}`
+      });
+    }
   } catch (err) {
     return res.status(400).send({
       status: 0,
