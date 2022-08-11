@@ -47,7 +47,7 @@ router.delete(
       );
       return res.status(200).send('Successfully deleted post');
     } catch (err) {
-      return res.status(400).send(err);
+      return res.status(404).send(err);
     }
   }
 );
