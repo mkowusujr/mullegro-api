@@ -4,6 +4,7 @@ const userService = require('../services/user.service');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
+const user = require('../models/user');
 
 /**
  * Creating an account
@@ -26,20 +27,21 @@ router.post('/register', async (req, res) => {
  */
 router.post('/login', async (req, res) => {
   try {
-    let { email_or_username, password } = req.body;
-    let user = await userService.getUser(email_or_username);
-    console.info(password);
-    console.info(user.password);
-    let isCorrectPassword = await bcrypt.compare(password, user.password);
-    if (isCorrectPassword) {
-      delete user.password_hash;
-      let token = jwt.sign({ data: user }, 'secret');
-      return res.status(200).send({
+    // let { email_or_username, password } = req.body;
+    // let user = await userService.getUser(email_or_username);
+    // let isCorrectPassword = await bcrypt.compareSync(password, user.password);
+    // if (isCorrectPassword) {
+    //   delete user.password_hash;
+    //   let token = jwt.sign({ data: user }, 'secret');
+    let user = await userService.getAuthorizedUser(req.body)  
+    let token = jwt.sign({ data: user }, 'secret');
+    return res.status(200).send({
         data: user,
         token: token
       });
     }
-  } catch (error) {
+    // throw 'Incorrect Password'
+    catch (error) {
     return res.status(400).send(`Error signing: ${error}`);
   }
 });

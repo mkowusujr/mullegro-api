@@ -14,8 +14,8 @@ const failIfEmailExists = async (userEmail) => {
 };
 
 const encryptPassword = async (newUser) => {
-  let bcryptSalt = await bcrypt.genSalt(10);
-  newUser.password = await bcrypt.hash(newUser.password, bcryptSalt);
+  // let bcryptSalt = await bcrypt.genSalt(10);
+  newUser.password = await bcrypt.hashSync(newUser.password, 10);
   await newUser.save();
 };
 
@@ -85,6 +85,25 @@ exports.getCurrentUser = async (res) => {
     return Promise.reject(errOutput);
   }
 };
+
+exports.getAuthorizedUser = async (loginObject) => {
+  try {
+    let { email_or_username, password } = loginObject;
+    let user = await this.getUser(email_or_username);
+    let isCorrectPassword = await bcrypt.compareSync(password, user.password);
+    if (isCorrectPassword) {
+      return await User.findByPk(user.id, 
+        {attributes: ['name', 'username', 'email','address']}
+        )
+    }
+    else {
+      throw 'Incorrect Password'
+    }
+  } catch (error) {
+    let errorOutput = 'Error fetching user: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+}
 
 exports.findAll = async () => {
   try {

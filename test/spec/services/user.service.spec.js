@@ -177,7 +177,7 @@ describe('User Service', () => {
       expect(response.email).toEqual(newUser.email);
       expect(response.username).toEqual(newUser.username);
     });
-    it("throws an error if the isername doesn't exist", async () => {
+    it("throws an error if the username doesn't exist", async () => {
       try {
         let res = {};
         let response = await userService.getCurrentUser(res);
@@ -187,6 +187,51 @@ describe('User Service', () => {
       }
     });
   });
+
+  describe('getAuthorizedUser', () => {
+    it('should get a user without a password field', async () => {
+      let userObject = {
+        name: 'William Doe',
+        username: 'fake_user2',
+        address: 'America',
+        email: 'williamdoe@email.com',
+        password: 'safeAndSecurePassword'
+      };
+      let dummyUser = await userService.createUser(userObject);
+
+      let loginObject = {
+        email_or_username: dummyUser.username,
+        password: userObject.password
+      };
+
+      let response = await userService.getAuthorizedUser(loginObject);
+      expect(response.name).toBe(dummyUser.name);
+      expect(response.username).toBe(dummyUser.username);
+      expect(response.address).toBe(dummyUser.address);
+      expect(response.email).toBe(dummyUser.email);
+      expect(response.password).toBeFalsy();
+    });
+    it('should throw an error in the input password is incorrect', async () => {
+      try {
+        let userObject = {
+        name: 'William Doe',
+        username: 'fake_user2',
+        address: 'America',
+        email: 'williamdoe@email.com',
+        password: 'safeAndSecurePassword'
+      };
+      let dummyUser = await userService.createUser(userObject);
+        let loginObject = {
+          email_or_username: dummyUser.username,
+          password: 'incorrectPassword'
+        };
+        let response = await userService.getAuthorizedUser(loginObject);
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
+    })
+  })
 
   describe('findAll', () => {
     it('can fetch all the users in the database', async () => {
