@@ -17,9 +17,7 @@ router.post('/register', async (req, res) => {
       token: token
     });
   } catch (err) {
-    return res.status(400).send({
-      data: `Error creating user: ${err}`
-    });
+    return res.status(400).send(`Error creating user: ${err}`);
   }
 });
 
@@ -29,9 +27,10 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     let { email_or_username, password } = req.body;
-    let user = await userService.getUserAcctDetails(email_or_username);
-    
-    let isCorrectPassword = await bcrypt.compare(password, user.password_hash);//, function (err, result) {
+    let user = await userService.getUser(email_or_username);
+    console.info(password)
+    console.info(user.password)
+    let isCorrectPassword = await bcrypt.compare(password, user.password);
     if (isCorrectPassword) {
       delete user.password_hash;
       let token = jwt.sign({ data: user }, 'secret');
@@ -39,16 +38,9 @@ router.post('/login', async (req, res) => {
         data: user,
         token: token
       });
-    } else {
-      return res.status(400).send({
-        data: `Error signing: ${err}`
-      });
     }
-  } catch (err) {
-    return res.status(400).send({
-      status: 0,
-      data: `Error signing: ${err}`
-    });
+  } catch (error) {
+    return res.status(400).send(`Error signing: ${error}`);
   }
 });
 
