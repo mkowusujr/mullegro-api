@@ -352,7 +352,7 @@ describe('Post Controller', () => {
           fail(error);
         }
       });
-      it('sends a 404 response if there is an issue', async () => {
+      it('sends a 400 response if there is an issue', async () => {
         let dummyUser = await User.create({
           name: 'Dummy User',
           address: 'USA',
