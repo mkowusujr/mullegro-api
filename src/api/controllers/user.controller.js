@@ -33,15 +33,14 @@ router.post('/login', async (req, res) => {
     // if (isCorrectPassword) {
     //   delete user.password_hash;
     //   let token = jwt.sign({ data: user }, 'secret');
-    let user = await userService.getAuthorizedUser(req.body)  
+    let user = await userService.getAuthorizedUser(req.body);
     let token = jwt.sign({ data: user }, 'secret');
     return res.status(200).send({
-        data: user,
-        token: token
-      });
-    }
+      data: user,
+      token: token
+    });
+  } catch (error) {
     // throw 'Incorrect Password'
-    catch (error) {
     return res.status(400).send(`Error signing: ${error}`);
   }
 });

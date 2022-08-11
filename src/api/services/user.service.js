@@ -92,18 +92,17 @@ exports.getAuthorizedUser = async (loginObject) => {
     let user = await this.getUser(email_or_username);
     let isCorrectPassword = await bcrypt.compareSync(password, user.password);
     if (isCorrectPassword) {
-      return await User.findByPk(user.id, 
-        {attributes: ['name', 'username', 'email','address']}
-        )
-    }
-    else {
-      throw 'Incorrect Password'
+      return await User.findByPk(user.id, {
+        attributes: ['name', 'username', 'email', 'address']
+      });
+    } else {
+      throw 'Incorrect Password';
     }
   } catch (error) {
     let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
-}
+};
 
 exports.findAll = async () => {
   try {

@@ -214,13 +214,13 @@ describe('User Service', () => {
     it('should throw an error in the input password is incorrect', async () => {
       try {
         let userObject = {
-        name: 'William Doe',
-        username: 'fake_user2',
-        address: 'America',
-        email: 'williamdoe@email.com',
-        password: 'safeAndSecurePassword'
-      };
-      let dummyUser = await userService.createUser(userObject);
+          name: 'William Doe',
+          username: 'fake_user2',
+          address: 'America',
+          email: 'williamdoe@email.com',
+          password: 'safeAndSecurePassword'
+        };
+        let dummyUser = await userService.createUser(userObject);
         let loginObject = {
           email_or_username: dummyUser.username,
           password: 'incorrectPassword'
@@ -230,8 +230,8 @@ describe('User Service', () => {
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
-    })
-  })
+    });
+  });
 
   describe('findAll', () => {
     it('can fetch all the users in the database', async () => {
