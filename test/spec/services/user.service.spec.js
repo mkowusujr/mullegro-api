@@ -5,9 +5,7 @@ describe('User Service', () => {
     expect(userService).toBeTruthy();
   });
 
-  let db;
-  let User;
-  let newUser;
+  let db, User, newUser;
 
   beforeEach(async () => {
     db = require('../../../src/api/models/index');
