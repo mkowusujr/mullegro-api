@@ -1,6 +1,6 @@
 const cartService = require('../../../src/api/services/cart.service');
-// const userService = require('../../../src/api/services/user.service');
-// const postService = require('../../../src/api/services/post.service');
+const userService = require('../../../src/api/services/user.service');
+const postService = require('../../../src/api/services/post.service');
 
 describe('Cart Service', () => {
     it('should be created', () => {
@@ -28,7 +28,10 @@ describe('Cart Service', () => {
             });
 
             let response = await cartService.createCart(dummyUser);
-            expect(response).toBe('Cart created successfully');
+            let cart = await Cart.findByPk(1);
+
+            expect(cart.userId).toBe(dummyUser.id)
+            expect(response).toBe('Created cart successfully');
         });
         it('throws an error if there is an issue', async () => {
             try {
@@ -43,10 +46,45 @@ describe('Cart Service', () => {
 
     describe('addToCart', () => {
         it('adds one item to the cart', async () => {
-            pending()
+            let dummyUser = await User.create({
+                name: 'Dummy User',
+                address: 'USA',
+                username: 'dummy_username',
+                email: 'dummay@email.com'
+            });
+            cartService.createCart(dummyUser);
+            let post = await Post.create({
+                title: 'Dummy Post',
+                price: 100.0,
+                description: 'This is an instrument',
+                condition: 'Good',
+                address: 'USA',
+                type: 'Clarinet',
+                status: 'Not Sold'
+              });
+              let postId = 1;
+
+              await cartService.addToCart(dummyUser, postId);
+              
+              expect(post.cartId).toBe(dummyUser.cartId)
+              expect(console.error).not.toHaveBeenCalled();
         });
         it('throws an error if there is an issue', async () => {
-            pending()
+            try {
+                let dummyUser = await User.create({
+                    name: 'Dummy User',
+                    address: 'USA',
+                    username: 'dummy_username',
+                    email: 'dummay@email.com'
+                });
+                cartService.createCart(dummyUser);
+                let postId = 1;
+
+                await cartService.addToCart(dummyUser, postId);
+                if (response || !response) fail("Didn't throw error");
+              } catch (error) {
+                expect(console.error).toHaveBeenCalled();
+              }
         });
     });
 
