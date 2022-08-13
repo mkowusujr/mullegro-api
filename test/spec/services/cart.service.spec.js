@@ -1,6 +1,7 @@
 const cartService = require('../../../src/api/services/cart.service');
 const userService = require('../../../src/api/services/user.service');
 const postService = require('../../../src/api/services/post.service');
+const cart = require('../../../src/api/models/cart');
 
 describe('Cart Service', () => {
   it('should be created', () => {
@@ -123,19 +124,89 @@ describe('Cart Service', () => {
 
   describe('getCartItems', () => {
     it('gets all the items in the cart', async () => {
-      pending();
+      try {
+        let post = await Post.create({
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let post2 = await Post.create({
+          title: 'Dummy Post2',
+          price: 100.0,
+          description: 'This is an instrument too',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let postId1 = 1,
+          postId2 = 2;
+        await cartService.addToCart(dummyUser, postId1);
+        await cartService.addToCart(dummyUser, postId2);
+
+        let response = await cartService.getCartItems(dummyUser);
+
+        expect(response.length).toEqual(2);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
-      pending();
+      try {
+        let dummyUser2 = {};
+        let response = await cartService.getCartItems(dummyUser2);
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
     });
   });
 
   describe('clearCart', () => {
     it('removes all the items in the cart', async () => {
-      pending();
+      try {
+        let post = await Post.create({
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let post2 = await Post.create({
+          title: 'Dummy Post2',
+          price: 100.0,
+          description: 'This is an instrument too',
+          condition: 'Good',
+          address: 'USA',
+          type: 'Clarinet',
+          status: 'Not Sold'
+        });
+        let postId1 = 1,
+          postId2 = 2;
+        await cartService.addToCart(dummyUser, postId1);
+        await cartService.addToCart(dummyUser, postId2);
+
+        let response = await cartService.clearCart(dummyUser);
+
+        expect(response).toBe('Successfully cleared cart');
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
-      pending();
+      try {
+        let dummyUser2 = {};
+        let response = await cartService.clearCart(dummyUser2);
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
     });
   });
 });
