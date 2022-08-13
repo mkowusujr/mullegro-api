@@ -26,7 +26,8 @@ router.post('/register', async (req, res) => {
  * Login
  */
 router.post('/login', async (req, res) => {
-  try {let user = await userService.getAuthorizedUser(req.body);
+  try {
+    let user = await userService.getAuthorizedUser(req.body);
     let token = jwt.sign({ data: user }, 'secret');
     return res.status(200).send({
       data: user,
