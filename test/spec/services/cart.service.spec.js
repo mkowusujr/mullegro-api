@@ -1,7 +1,4 @@
 const cartService = require('../../../src/api/services/cart.service');
-const userService = require('../../../src/api/services/user.service');
-const postService = require('../../../src/api/services/post.service');
-const cart = require('../../../src/api/models/cart');
 
 describe('Cart Service', () => {
   it('should be created', () => {
