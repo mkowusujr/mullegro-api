@@ -8,37 +8,45 @@ describe('User Service', () => {
   let db, User, newUser;
 
   beforeEach(async () => {
-    db = require('../../../src/api/models/index');
-    await db.sequelize.sync({ force: true });
-    User = db.users;
-    newUser = await User.create({
-      name: 'John Doe',
-      username: 'fake_user',
-      address: 'America',
-      email: 'notreal@email.com',
-      password: 'safeAndSecurePassword'
-    });
-    spyOn(console, 'error');
+    try {
+      db = require('../../../src/api/models/index');
+      await db.sequelize.sync({ force: true });
+      User = db.users;
+      newUser = await User.create({
+        name: 'John Doe',
+        username: 'fake_user',
+        address: 'America',
+        email: 'notreal@email.com',
+        password: 'safeAndSecurePassword'
+      });
+      spyOn(console, 'error');
+    } catch (error) {
+      fail(error);
+    }
   });
 
   describe('createUser', () => {
     it('can create a user', async () => {
-      let userObject = {
-        name: 'William Doe',
-        username: 'fake_user2',
-        address: 'America',
-        email: 'williamdoe@email.com',
-        password: 'safeAndSecurePassword'
-      };
+      try {
+        let userObject = {
+          name: 'William Doe',
+          username: 'fake_user2',
+          address: 'America',
+          email: 'williamdoe@email.com',
+          password: 'safeAndSecurePassword'
+        };
 
-      let response = await userService.createUser(userObject);
+        let response = await userService.createUser(userObject);
 
-      expect(response.name).toBe(userObject.name);
-      expect(response.username).toBe(userObject.username);
-      expect(response.address).toBe(userObject.address);
-      expect(response.email).toBe(userObject.email);
-      expect(response.password).toBeTruthy();
-      expect(response.password).not.toBe(userObject.password);
+        expect(response.name).toBe(userObject.name);
+        expect(response.username).toBe(userObject.username);
+        expect(response.address).toBe(userObject.address);
+        expect(response.email).toBe(userObject.email);
+        expect(response.password).toBeTruthy();
+        expect(response.password).not.toBe(userObject.password);
+      } catch (error) {
+        fail(error);
+      }
     });
     it("doesn't allow duplicate usernames in the database", async () => {
       try {
@@ -76,12 +84,16 @@ describe('User Service', () => {
 
   describe('getUserById', () => {
     it('fetches a user from the database', async () => {
-      let userId = 1;
+      try {
+        let userId = 1;
 
-      let response = await userService.getUserById(userId);
+        let response = await userService.getUserById(userId);
 
-      expect(response.id).toEqual(userId);
-      expect(response.name).toEqual(newUser.name);
+        expect(response.id).toEqual(userId);
+        expect(response.name).toEqual(newUser.name);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
       try {
@@ -96,12 +108,16 @@ describe('User Service', () => {
 
   describe('getUserByEmail', () => {
     it('fetches a user from the database', async () => {
-      let userEmail = 'notreal@email.com';
+      try {
+        let userEmail = 'notreal@email.com';
 
-      let response = await userService.getUserByEmail(userEmail);
+        let response = await userService.getUserByEmail(userEmail);
 
-      expect(response.email).toEqual(userEmail);
-      expect(response.name).toEqual(newUser.name);
+        expect(response.email).toEqual(userEmail);
+        expect(response.name).toEqual(newUser.name);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
       try {
@@ -116,12 +132,16 @@ describe('User Service', () => {
 
   describe('getUserByUsername', () => {
     it('fetches a user from the database', async () => {
-      let userUsername = 'fake_user';
+      try {
+        let userUsername = 'fake_user';
 
-      let response = await userService.getUserByUsername(userUsername);
+        let response = await userService.getUserByUsername(userUsername);
 
-      expect(response.username).toEqual(userUsername);
-      expect(response.name).toEqual(newUser.name);
+        expect(response.username).toEqual(userUsername);
+        expect(response.name).toEqual(newUser.name);
+      } catch (error) {
+        fail(error);
+      }
     });
     it("throws an error if the username doesn't exist", async () => {
       try {
@@ -144,16 +164,24 @@ describe('User Service', () => {
 
   describe('getUser', () => {
     it('can fetch a user by email', async () => {
-      let userEmail = 'notreal@email.com';
-      let response = await userService.getUser(userEmail);
+      try {
+        let userEmail = 'notreal@email.com';
+        let response = await userService.getUser(userEmail);
 
-      expect(response.email).toEqual(userEmail);
+        expect(response.email).toEqual(userEmail);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('can fetch a user by username', async () => {
-      let userUsername = 'fake_user';
-      let response = await userService.getUser(userUsername);
+      try {
+        let userUsername = 'fake_user';
+        let response = await userService.getUser(userUsername);
 
-      expect(response.username).toEqual(userUsername);
+        expect(response.username).toEqual(userUsername);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if nothing is passed in', async () => {
       try {
@@ -167,13 +195,17 @@ describe('User Service', () => {
 
   describe('getCurrentUser', () => {
     it('should get the current user from the http response', async () => {
-      let res = { locals: { user: newUser } };
+      try {
+        let res = { locals: { user: newUser } };
 
-      let response = await userService.getCurrentUser(res);
-      expect(response.id).toEqual(newUser.id);
-      expect(response.name).toEqual(newUser.name);
-      expect(response.email).toEqual(newUser.email);
-      expect(response.username).toEqual(newUser.username);
+        let response = await userService.getCurrentUser(res);
+        expect(response.id).toEqual(newUser.id);
+        expect(response.name).toEqual(newUser.name);
+        expect(response.email).toEqual(newUser.email);
+        expect(response.username).toEqual(newUser.username);
+      } catch (error) {
+        fail(error);
+      }
     });
     it("throws an error if the username doesn't exist", async () => {
       try {
@@ -188,26 +220,30 @@ describe('User Service', () => {
 
   describe('getAuthorizedUser', () => {
     it('should get a user without a password field', async () => {
-      let userObject = {
-        name: 'William Doe',
-        username: 'fake_user2',
-        address: 'America',
-        email: 'williamdoe@email.com',
-        password: 'safeAndSecurePassword'
-      };
-      let dummyUser = await userService.createUser(userObject);
+      try {
+        let userObject = {
+          name: 'William Doe',
+          username: 'fake_user2',
+          address: 'America',
+          email: 'williamdoe@email.com',
+          password: 'safeAndSecurePassword'
+        };
+        let dummyUser = await userService.createUser(userObject);
 
-      let loginObject = {
-        email_or_username: dummyUser.username,
-        password: userObject.password
-      };
+        let loginObject = {
+          email_or_username: dummyUser.username,
+          password: userObject.password
+        };
 
-      let response = await userService.getAuthorizedUser(loginObject);
-      expect(response.name).toBe(dummyUser.name);
-      expect(response.username).toBe(dummyUser.username);
-      expect(response.address).toBe(dummyUser.address);
-      expect(response.email).toBe(dummyUser.email);
-      expect(response.password).toBeFalsy();
+        let response = await userService.getAuthorizedUser(loginObject);
+        expect(response.name).toBe(dummyUser.name);
+        expect(response.username).toBe(dummyUser.username);
+        expect(response.address).toBe(dummyUser.address);
+        expect(response.email).toBe(dummyUser.email);
+        expect(response.password).toBeFalsy();
+      } catch (error) {
+        fail(error);
+      }
     });
     it('should throw an error in the input password is incorrect', async () => {
       try {
@@ -233,17 +269,21 @@ describe('User Service', () => {
 
   describe('findAll', () => {
     it('can fetch all the users in the database', async () => {
-      newUser2 = await User.create({
-        name: 'Jessica Doe',
-        username: 'not_real_user',
-        address: 'America',
-        email: 'fake@email.com',
-        password: 'safeAndSecurePassword'
-      });
+      try {
+        newUser2 = await User.create({
+          name: 'Jessica Doe',
+          username: 'not_real_user',
+          address: 'America',
+          email: 'fake@email.com',
+          password: 'safeAndSecurePassword'
+        });
 
-      let response = await userService.findAll();
+        let response = await userService.findAll();
 
-      expect(response.length).toEqual(2);
+        expect(response.length).toEqual(2);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
       try {
@@ -258,11 +298,15 @@ describe('User Service', () => {
 
   describe('deleteUser', () => {
     it('delete a user', async () => {
-      let response = await userService.deleteUser(newUser);
-      let allUsers = await userService.findAll().catch();
+      try {
+        let response = await userService.deleteUser(newUser);
+        let allUsers = await userService.findAll().catch();
 
-      expect(response).toBe('Deleted successfully');
-      expect(allUsers.length).toBe(0);
+        expect(response).toBe('Deleted successfully');
+        expect(allUsers.length).toBe(0);
+      } catch (error) {
+        fail(error);
+      }
     });
     it('throws an error if there is an issue', async () => {
       try {

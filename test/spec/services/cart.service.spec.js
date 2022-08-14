@@ -8,12 +8,16 @@ describe('Cart Service', () => {
   let db, Cart, User, Post, dummyUser, dummyUserCart;
 
   beforeEach(async () => {
-    db = require('../../../src/api/models/index');
-    Cart = db.carts;
-    User = db.users;
-    Post = db.posts;
-    await db.sequelize.sync({ force: true });
-    spyOn(console, 'error');
+    try {
+      db = require('../../../src/api/models/index');
+      Cart = db.carts;
+      User = db.users;
+      Post = db.posts;
+      await db.sequelize.sync({ force: true });
+      spyOn(console, 'error');
+    } catch (error) {
+      fail(error);
+    }
 
     dummyUser = await User.create({
       name: 'Dummy User',

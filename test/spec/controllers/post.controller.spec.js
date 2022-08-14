@@ -19,32 +19,34 @@ describe('Post Controller', () => {
     expect(postController).toBeTruthy();
   });
 
-  let db;
-  let Post;
-  let User;
+  let db, Post, User;
 
   beforeEach(async () => {
-    db = require('../../../src/api/models/index');
-    await db.sequelize.sync({ force: true });
-    Post = db.posts;
-    User = db.users;
-    spyOn(console, 'log');
-    spyOn(console, 'error');
+    try {
+      db = require('../../../src/api/models/index');
+      await db.sequelize.sync({ force: true });
+      Post = db.posts;
+      User = db.users;
+      spyOn(console, 'log');
+      spyOn(console, 'error');
+    } catch (error) {
+      fail(error);
+    }
   });
 
   describe("'endpoint: /api/posts/post/:id', ", () => {
     describe('HTTP GET method', () => {
       it('can get a post', async () => {
-        let dummyPost = await Post.create({
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
         try {
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
           const response = await request(server)
             .get('/api/posts/post/1')
             .set('Content-Type', 'application/json');
@@ -69,18 +71,18 @@ describe('Post Controller', () => {
     });
     describe('HTTP PUT method', () => {
       it('can update a post', async () => {
-        let dummyPost = await Post.create({
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        let newStatus = { status: 'sold' };
-
         try {
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          let newStatus = { status: 'sold' };
+
           const response = await request(server)
             .put('/api/posts/post/1')
             .set('Content-Type', 'application/json')
@@ -109,41 +111,41 @@ describe('Post Controller', () => {
   describe("endpoint: '/api/posts', ", () => {
     describe('HTTP GET method', () => {
       it("can get all of a user's post", async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post 2',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post3',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'JAPAN',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await Post.create({
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'JAPAN',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+
           const response = await request(server)
             .get(`/api/posts`)
             .set('Content-Type', 'application/json');
@@ -172,41 +174,41 @@ describe('Post Controller', () => {
   describe("endpoint: '/api/posts/users/user/:username/posts', ", () => {
     describe('HTTP GET method', () => {
       it("can get all of a user's post", async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post 2',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post3',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'JAPAN',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await Post.create({
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'JAPAN',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+
           const response = await request(server)
             .get(`/api/posts/users/user/${dummyUser.username}/posts`)
             .set('Content-Type', 'application/json');
@@ -243,42 +245,42 @@ describe('Post Controller', () => {
         }
       });
       it("should get all of the logged in user's post", async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post 2',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post3',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'JAPAN',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        await Post.create({
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'JAPAN',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .get(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
@@ -292,15 +294,15 @@ describe('Post Controller', () => {
         }
       });
       xit('sends a 404 response if there is an issue', async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .get(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
@@ -322,24 +324,24 @@ describe('Post Controller', () => {
         }
       });
       it('should create a new post ownered by the logged in user', async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        let postObject = {
-          title: 'Dummy Post',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Good',
-          address: 'USA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        };
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          let postObject = {
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          };
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .post(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
@@ -353,16 +355,16 @@ describe('Post Controller', () => {
         }
       });
       it('sends a 400 response if there is an issue', async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        let postObject = {};
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          let postObject = {};
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .post(`/api/posts/user/posts`)
             .set('Content-Type', 'application/json')
@@ -390,25 +392,25 @@ describe('Post Controller', () => {
         }
       });
       it("should get all of the logged in user's post", async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        await dummyUser.createPost({
-          title: 'Dummy Post 2',
-          price: 100.0,
-          description: 'This is an instrument',
-          condition: 'Mid',
-          address: 'CANADA',
-          type: 'Clarinet',
-          status: 'Not Sold'
-        });
-        let postId = 1;
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          });
+          let postId = 1;
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .delete(`/api/posts/user/posts/post/${postId}`)
             .set('Content-Type', 'application/json')
@@ -421,16 +423,16 @@ describe('Post Controller', () => {
         }
       });
       it('sends a 404 response if there is an issue', async () => {
-        let dummyUser = await User.create({
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com'
-        });
-        let postId = 1;
-        let token = jwtMaker.createJwt(dummyUser);
-
         try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          let postId = 1;
+          let token = jwtMaker.createJwt(dummyUser);
+
           const response = await request(server)
             .delete(`/api/posts/user/posts/post/${postId}`)
             .set('Content-Type', 'application/json')

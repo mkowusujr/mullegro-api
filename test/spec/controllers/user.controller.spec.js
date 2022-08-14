@@ -9,29 +9,32 @@ describe('User Controller', () => {
     expect(userController).toBeTruthy();
   });
 
-  let db;
-  let User;
+  let db, User;
 
   beforeEach(async () => {
-    db = require('../../../src/api/models/index');
-    await db.sequelize.sync({ force: true });
-    User = db.users;
-    spyOn(console, 'log');
-    spyOn(console, 'error');
+    try {
+      db = require('../../../src/api/models/index');
+      await db.sequelize.sync({ force: true });
+      User = db.users;
+      spyOn(console, 'log');
+      spyOn(console, 'error');
+    } catch (error) {
+      fail(error);
+    }
   });
 
   describe("endpoint: '/api/users/register', ", () => {
     describe('HTTP POST method', () => {
       it('should create an account and token for a user', async () => {
-        let userObject = {
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com',
-          password: 'dummyPassword'
-        };
-
         try {
+          let userObject = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+
           let response = await request(server)
             .post('/api/users/register')
             .set('Content-Type', 'application/json')
@@ -45,9 +48,9 @@ describe('User Controller', () => {
         }
       });
       it('sends a 404 response if there is an issue', async () => {
-        let userObject = {};
-
         try {
+          let userObject = {};
+
           const response = await request(server)
             .post('/api/users/register')
             .set('Content-Type', 'application/json')
@@ -64,21 +67,21 @@ describe('User Controller', () => {
   describe("endpoint: '/api/users/login', ", () => {
     describe('HTTP POST method', () => {
       it("should accepts a user's username and password and return a token", async () => {
-        let userObject = {
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com',
-          password: 'dummyPassword'
-        };
-        await userService.createUser(userObject);
-
-        let loginObject = {
-          email_or_username: 'dummy_username',
-          password: 'dummyPassword'
-        };
-
         try {
+          let userObject = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+          await userService.createUser(userObject);
+
+          let loginObject = {
+            email_or_username: 'dummy_username',
+            password: 'dummyPassword'
+          };
+
           let response = await request(server)
             .post('/api/users/login')
             .set('Content-Type', 'application/json')
@@ -94,21 +97,21 @@ describe('User Controller', () => {
         }
       });
       it("should accepts a user's email and password and return a token", async () => {
-        let userObject = {
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com',
-          password: 'dummyPassword'
-        };
-        await userService.createUser(userObject);
-
-        let loginObject = {
-          email_or_username: 'dummay@email.com',
-          password: 'dummyPassword'
-        };
-
         try {
+          let userObject = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+          await userService.createUser(userObject);
+
+          let loginObject = {
+            email_or_username: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+
           let response = await request(server)
             .post('/api/users/login')
             .set('Content-Type', 'application/json')
@@ -124,20 +127,21 @@ describe('User Controller', () => {
         }
       });
       it('sends a 400 response if there is an issue', async () => {
-        let userObject = {
-          name: 'Dummy User',
-          address: 'USA',
-          username: 'dummy_username',
-          email: 'dummay@email.com',
-          password: 'dummyPassword'
-        };
-        await userService.createUser(userObject);
-
-        let loginObject = {
-          email_or_username: 'dummy_username',
-          password: 'incorrectPassword'
-        };
         try {
+          let userObject = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+          await userService.createUser(userObject);
+
+          let loginObject = {
+            email_or_username: 'dummy_username',
+            password: 'incorrectPassword'
+          };
+
           const response = await request(server)
             .post('/api/users/login')
             .set('Content-Type', 'application/json')
