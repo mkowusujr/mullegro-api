@@ -70,7 +70,7 @@ router.get('/user/:username', async (req, res) => {
 });
 
 /**
- * 
+ *
  */
 router.delete('/user/:username', async (req, res) => {
   try {
@@ -86,7 +86,15 @@ router.delete('/user/:username', async (req, res) => {
 /**
  * Finding users with query
  */
-router.get('/search', (req, res) => {});
+router.get('/search', async (req, res) => {
+  try {
+    let queryString = req.query.query;
+    let users = await userService.findAll(queryString);
+    return res.status(200).send(users);
+  } catch (error) {
+    return res.status(404).send('Error fetching users: ' + error);
+  }
+});
 
 // export user router
 module.exports = router;

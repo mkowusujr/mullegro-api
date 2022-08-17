@@ -2,6 +2,8 @@ const helperService = require('./helper.service');
 const db = require('../models');
 const bcrypt = require('bcrypt');
 const User = db.users;
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const failIfUsernameExists = async (username) => {
   user = await User.findOne({ where: { username: username } });
@@ -103,9 +105,16 @@ exports.getAuthorizedUser = async (loginObject) => {
   }
 };
 
-exports.findAll = async () => {
+exports.findAll = async (searchQuery) => {
   try {
-    return await User.findAll();
+    if (!searchQuery) return await User.findAll();
+    return await User.findAll({
+      where: {
+        username: {
+          [Op.like]: `%${searchQuery}%`
+        }
+      }
+    });
   } catch (error) {
     let errorOutput = 'Error fetching all users: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);

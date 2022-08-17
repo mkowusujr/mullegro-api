@@ -285,6 +285,23 @@ describe('User Service', () => {
         fail(error);
       }
     });
+    it('can search for the users by username', async () => {
+      try {
+        newUser2 = await User.create({
+          name: 'Jessica Doe',
+          username: 'jenny_is_cool',
+          address: 'America',
+          email: 'fake@email.com',
+          password: 'safeAndSecurePassword'
+        });
+
+        let response = await userService.findAll('jenny');
+
+        expect(response.length).toEqual(1);
+      } catch (error) {
+        fail(error);
+      }
+    });
     it('throws an error if there is an issue', async () => {
       try {
         spyOn(userService, 'findAll').and.returnValue(Promise.reject('Error'));

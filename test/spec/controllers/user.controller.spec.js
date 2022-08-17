@@ -3,6 +3,7 @@ const userController = require('../../../src/api/controllers/user.controller');
 const userService = require('../../../src/api/services/user.service');
 const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
+const { response } = require('../../../src/api/controllers/user.controller');
 
 const checkToSeeIsUserObject = (object) => {
   expect(object.hasOwnProperty('id')).toBeTrue();
@@ -308,6 +309,49 @@ describe('User Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint '/api/users/search, ", () => {
+    describe('HTTP GET METHOD', () => {
+      it('should be able to find users with a query string', async () => {
+        try {
+          await User.bulkCreate([
+            {
+              name: 'Dummy User',
+              address: 'USA',
+              username: 'water_is_the_best',
+              email: 'water_is_the_best@email.com',
+              password: 'dummyPassword'
+            },
+            {
+              name: 'Dummy User2',
+              address: 'USA',
+              username: 'johny_applesauce',
+              email: 'johny_applesauce@email.com',
+              password: 'dummyPassword'
+            },
+            {
+              name: 'Dummy User3',
+              address: 'USA',
+              username: 'george_is_cool',
+              email: 'george_is_cool@email.com',
+              password: 'dummyPassword'
+            }
+          ]);
+          let searchTerm = 'a';
+          let queryUrl = '?query=' + searchTerm;
+
+          const response = await request(server)
+            .get('/api/users/search' + queryUrl)
+            .set('Content-Type', 'application/json');
+
+          expect(response.body.length).toEqual(2);
+          response.body.forEach((user) => expect(user.username).toContain('a'));
         } catch (error) {
           fail(error);
         }
