@@ -299,7 +299,7 @@ describe('User Service', () => {
   describe('deleteUser', () => {
     it('delete a user', async () => {
       try {
-        let response = await userService.deleteUser(newUser);
+        let response = await userService.deleteUser(newUser.username);
         let allUsers = await userService.findAll().catch();
 
         expect(response).toBe('Deleted successfully');
@@ -310,7 +310,7 @@ describe('User Service', () => {
     });
     it('throws an error if there is an issue', async () => {
       try {
-        let response = await userService.deleteUser({});
+        let response = await userService.deleteUser('a_fake_username');
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();

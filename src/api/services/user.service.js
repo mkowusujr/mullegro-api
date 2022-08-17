@@ -112,8 +112,9 @@ exports.findAll = async () => {
   }
 };
 
-exports.deleteUser = async (user) => {
+exports.deleteUser = async (email_or_username) => {
   try {
+    let user = await this.getUser(email_or_username);
     await user.destroy();
     return Promise.resolve('Deleted successfully');
   } catch (error) {

@@ -42,10 +42,7 @@ router.post('/login', async (req, res) => {
  * Get looged in user's details
  */
 router.get('/user/details', auth.verifyToken, (req, res) => {
-  return res.status(200).send({
-    status: 1,
-    data: res.locals.user
-  });
+  return res.status(200).send(res.locals.user);
 });
 
 /**
@@ -54,7 +51,7 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
 router.get('', async (req, res) => {
   try {
     foundUsers = await userService.findAll();
-    return res.status(200).json(foundUsers);
+    return res.status(200).send(foundUsers);
   } catch (err) {
     return res.status(400).send('Error fetching users: ' + err);
   }
@@ -72,7 +69,7 @@ router
       );
       return res.status(200).json(fetchedUser);
     } catch (error) {
-      return res.status(400).send('Error fetching user: ' + err);
+      return res.status(404).send('Error fetching user: ' + error);
     }
   })
   .delete(async (req, res) => {
@@ -81,8 +78,8 @@ router
       return res
         .status(200)
         .send(`Successfully deleted user with id of ${req.params.userId}`);
-    } catch (err) {
-      return res.status(400).send('Error deleting user: ' + err);
+    } catch (error) {
+      return res.status(404).send('Error deleting user: ' + error);
     }
   });
 
