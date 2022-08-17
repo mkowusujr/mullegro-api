@@ -194,7 +194,7 @@ describe('Cart Controller', () => {
     });
   });
 
-  xdescribe("endpoint: '/api/cart/post/:id', ", () => {
+  describe("endpoint: '/api/cart/post/:id', ", () => {
     describe('HTTP DELETE method', () => {
       it('it should require authorization', async () => {
         try {
