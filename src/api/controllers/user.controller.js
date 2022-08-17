@@ -60,28 +60,28 @@ router.get('', async (req, res) => {
 /**
  * Dealing with one user
  */
-router
-  .route('/user/:username')
-  .get(async (req, res) => {
-    try {
-      let fetchedUser = await userService.getUserByUsername(
-        req.params.username
-      );
-      return res.status(200).json(fetchedUser);
-    } catch (error) {
-      return res.status(404).send('Error fetching user: ' + error);
-    }
-  })
-  .delete(async (req, res) => {
-    try {
-      await userService.deleteUser(req.params.username);
-      return res
-        .status(200)
-        .send(`Successfully deleted user with id of ${req.params.userId}`);
-    } catch (error) {
-      return res.status(404).send('Error deleting user: ' + error);
-    }
-  });
+router.get('/user/:username', async (req, res) => {
+  try {
+    let fetchedUser = await userService.getUserByUsername(req.params.username);
+    return res.status(200).json(fetchedUser);
+  } catch (error) {
+    return res.status(404).send('Error fetching user: ' + error);
+  }
+});
+
+/**
+ * 
+ */
+router.delete('/user/:username', async (req, res) => {
+  try {
+    await userService.deleteUser(req.params.username);
+    return res
+      .status(200)
+      .send(`Successfully deleted user with id of ${req.params.userId}`);
+  } catch (error) {
+    return res.status(404).send('Error deleting user: ' + error);
+  }
+});
 
 /**
  * Finding users with query
