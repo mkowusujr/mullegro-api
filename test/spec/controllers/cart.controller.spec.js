@@ -1,4 +1,4 @@
-const { request } = require('../../../src/api/controllers/cart.controller');
+const request = require('supertest');
 const server = require('../../../src/server');
 const cartController = require('../../../src/api/controllers/cart.controller');
 const userService = require('../../../src/api/services/user.service');
@@ -96,19 +96,20 @@ describe('Cart Controller', () => {
           fail(error);
         }
       });
-      xit('sends a 404 response if there is an issue', async () => {
+      xit('sends a 400 response if there is an issue', async () => {
         try {
           const response = await request(server)
             .get('/api/cart')
             .set('Content-Type', 'application/json')
             .set('Authorization', token);
           expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
+          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
       });
     });
+
     describe('HTTP POST method', () => {
       it('it should require authorization', async () => {
         try {
@@ -120,21 +121,19 @@ describe('Cart Controller', () => {
       });
       it("should add a post to a user's cart", async () => {
         try {
-          let body = { postId: 1 };
-
+          let post = { postId: 1 };
           const response = await request(server)
             .post('/api/cart')
             .set('Content-Type', 'application/json')
             .set('Authorization', token)
-            .send(body);
+            .send(post);
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
-          expect(response);
         } catch (error) {
           fail(error);
         }
       });
-      it('sends a 404 response if there is an issue', async () => {
+      it('sends a 400 response if there is an issue', async () => {
         try {
           let badPost = {};
 
@@ -145,12 +144,13 @@ describe('Cart Controller', () => {
             .send(badPost);
 
           expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
+          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
       });
     });
+
     describe('HTTP DELETE method', () => {
       it('it should require authorization', async () => {
         try {
@@ -173,12 +173,11 @@ describe('Cart Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
-          expect(response);
         } catch (error) {
           fail(error);
         }
       });
-      xit('sends a 404 response if there is an issue', async () => {
+      xit('sends a 400 response if there is an issue', async () => {
         try {
           const response = await request(server)
             .delete('/api/cart')
@@ -186,7 +185,7 @@ describe('Cart Controller', () => {
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
+          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
@@ -216,7 +215,6 @@ describe('Cart Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
-          expect(response);
         } catch (error) {
           fail(error);
         }
