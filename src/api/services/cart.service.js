@@ -1,5 +1,4 @@
 const db = require('../models/index');
-const Cart = db.carts;
 const Post = db.posts;
 const helperService = require('./helper.service');
 

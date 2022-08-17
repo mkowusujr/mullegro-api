@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = db.users;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const cartService = require('./cart.service');
 
 const failIfUsernameExists = async (username) => {
   user = await User.findOne({ where: { username: username } });
@@ -26,6 +27,7 @@ exports.createUser = async (user) => {
     .then(async () => {
       let createdUser = await User.create(user);
       await encryptPassword(createdUser);
+      await cartService.createCart(createdUser);
       return createdUser;
     })
     .catch(() => helperService.sendRejectedPromiseWith('Error creating user'));

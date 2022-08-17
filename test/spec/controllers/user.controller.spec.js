@@ -3,7 +3,7 @@ const userController = require('../../../src/api/controllers/user.controller');
 const userService = require('../../../src/api/services/user.service');
 const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
-const { response } = require('../../../src/api/controllers/user.controller');
+// const { response } = require('../../../src/api/controllers/user.controller');
 
 const checkToSeeIsUserObject = (object) => {
   expect(object.hasOwnProperty('id')).toBeTrue();
