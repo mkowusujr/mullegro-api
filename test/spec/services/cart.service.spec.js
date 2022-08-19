@@ -15,18 +15,18 @@ describe('Cart Service', () => {
       Post = db.posts;
       await db.sequelize.sync({ force: true });
       spyOn(console, 'error');
+
+      dummyUser = await User.create({
+        name: 'Dummy User',
+        address: 'USA',
+        username: 'dummy_username',
+        email: 'dummay@email.com'
+      });
+      await cartService.createCart(dummyUser);
+      dummyUserCart = await dummyUser.getCart();
     } catch (error) {
       fail(error);
     }
-
-    dummyUser = await User.create({
-      name: 'Dummy User',
-      address: 'USA',
-      username: 'dummy_username',
-      email: 'dummay@email.com'
-    });
-    await cartService.createCart(dummyUser);
-    dummyUserCart = await dummyUser.getCart();
   });
 
   describe('createCart', () => {
@@ -107,6 +107,10 @@ describe('Cart Service', () => {
         await cartService.removeFromCart(dummyUser, postId);
 
         expect(await dummyUserCart.getPosts()).toEqual([]);
+
+        let oldPost = await Post.findByPk(postId);
+
+        expect(oldPost).toBeTruthy();
       } catch (error) {
         fail(error);
       }
