@@ -26,7 +26,7 @@ db.sequelize = sequelize;
 db.users = require('./user')(sequelize, Sequelize);
 db.posts = require('./post')(sequelize, Sequelize);
 db.carts = require('./cart')(sequelize, Sequelize);
-db.transcationHistories = require('./transactionHistories')(
+db.transcationHistories = require('./transactionHistory')(
   sequelize,
   Sequelize
 );

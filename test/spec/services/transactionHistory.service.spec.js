@@ -1,9 +1,9 @@
-const transcationService = require('../../../src/api/services/transactionHistories.service');
+const transcationHistoryService = require('../../../src/api/services/transcationHistoryService.service');
 const userService = require('../../../src/api/services/user.service');
 
-describe('Transcation Service', () => {
+describe('Transcation History Service', () => {
   it('should be created', () => {
-    expect(transcationService).toBeTruthy();
+    expect(transcationHistoryService).toBeTruthy();
   });
 
   let db, Post, dummyUser, dummyPosts;
@@ -61,17 +61,36 @@ describe('Transcation Service', () => {
   });
 
   describe('createTransactionHistory', () => {
-    it('', async () => {});
-    it('', async () => {});
+    it('creates a transaction history log for a user', async () => {
+      try {
+        
+      } catch (error) {
+        
+      }
+    });
+    it('throws an error if there is an issue', async () => {
+      try {
+        //let dummyUser = {};
+        let response = await transcationHistoryService
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
+    });
   });
 
   describe('AddToTranscationHistory', () => {
-    it('', async () => {});
-    it('', async () => {});
+    it('adds a transaction to a user\'s transaction history', async () => {});
+    it('throws an error if there is an issue', async () => {});
   });
 
-  describe('', () => {
-    it('', async () => {});
-    it('', async () => {});
+  describe('GetFullTransactionHistory', () => {
+    it('gets all a user\'s transactions', async () => {});
+    it('throws an error if there is an issue', async () => {});
+  });
+
+  describe('GetTransaction', () => {
+    it('gets one transcation from a user\'s transaction history', async () => {});
+    it('throws an error if there is an issue', async () => {});
   });
 });
