@@ -26,7 +26,7 @@ db.sequelize = sequelize;
 db.users = require('./user')(sequelize, Sequelize);
 db.posts = require('./post')(sequelize, Sequelize);
 db.carts = require('./cart')(sequelize, Sequelize);
-db.transactions = require('./transaction')(sequelize)(Sequelize);
+db.transactions = require('./transaction')(sequelize, Sequelize);
 
 // establish relationships
 db.users.hasMany(db.posts);
