@@ -1,41 +1,49 @@
-const helperService = require('./helper.service');
-// const cartService = require('./cart.service');
 const db = require('../models');
-const post = require('../models/post');
-const Post = db.posts;
-const Cart = db.carts;
-const User = db.users;
 const Transaction = db.transactions;
-const verifyUserHasCart = async (user) => {
-  let userCart = await user.getCart();
-  if (!userCart) throw `User with id of ${user.id} doesn\'t have a cart`;
-};
+const helperService = require('./helper.service');
+
 exports.addTotranscations = async (user) => {
   try {
-    await verifyUserHasCart(user);
-
     let userCart = await user.getCart();
     let posts = await userCart.getPosts();
-    let totalAmount = 0,
-      itemCount = 0;
-
-    posts.forEach((post) => {
-      totalAmount += post.price;
-      itemCount += 1;
-    });
 
     let transaction = await user.createTransaction({
       dateString: new Date().toLocaleDateString(),
-      totalAmount: totalAmount,
-      itemCount: itemCount
-    });
-    posts.forEach(async (post) => {
-      await transaction.addPost(post);
+      totalAmount: 0,
+      itemCount: 0
     });
 
+    posts.forEach(async (post) => {
+      transaction.totalAmount += post.price;
+      transaction.itemCount += 1;
+      await transaction.addPost(post);
+    });
+    await userCart.removePosts();
+    await transaction.save();
     return transaction;
   } catch (error) {
     errorOutput = 'Error creating transaction history: ' + error;
-    helperService.sendRejectedPromiseWith(errorOutput);
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+};
+
+exports.getFullTransactionHistory = async (user) => {
+  try {
+    return await user.getTransactions();
+  } catch (error) {
+    errorOutput = 'Error getting transaction history: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+};
+
+exports.GetTransaction = async (user, transactionId) => {
+  try {
+    let transaction = await Transaction.findByPk(transactionId);
+    if (!transaction)
+      throw `Transaction with id ${transactionId} doesn't exist`;
+    return transaction;
+  } catch (error) {
+    errorOutput = 'Error getting transaction history: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };

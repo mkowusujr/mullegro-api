@@ -200,7 +200,6 @@ describe('User Controller', () => {
           fail(error);
         }
       });
-      xit('sends 404 if there is an error', async () => {});
     });
   });
 

@@ -157,17 +157,6 @@ describe('Post Controller', () => {
           fail(error);
         }
       });
-      xit('sends a 404 response if there is an issue', async () => {
-        try {
-          const response = await request(server)
-            .get(`/api/posts`)
-            .set('Content-Type', 'application/json');
-          expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
-        } catch (error) {
-          fail(error);
-        }
-      });
     });
   });
 
@@ -289,26 +278,6 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
           response.body.forEach((object) => checkToSeeIsPostObject(object));
-        } catch (error) {
-          fail(error);
-        }
-      });
-      xit('sends a 404 response if there is an issue', async () => {
-        try {
-          let dummyUser = await User.create({
-            name: 'Dummy User',
-            address: 'USA',
-            username: 'dummy_username',
-            email: 'dummay@email.com'
-          });
-          let token = jwtMaker.createJwt(dummyUser);
-
-          const response = await request(server)
-            .get(`/api/posts/user/posts`)
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token);
-          expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(404);
         } catch (error) {
           fail(error);
         }

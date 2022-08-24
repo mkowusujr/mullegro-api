@@ -11,8 +11,6 @@ describe('Transaction Service', () => {
     Post,
     dummyUser,
     dummyPosts,
-    totalAmount = 0.0,
-    itemCount = 0,
     dateString = new Date().toLocaleDateString();
 
   beforeEach(async () => {
@@ -62,16 +60,7 @@ describe('Transaction Service', () => {
         ],
         { returning: true }
       );
-
       dummyPosts = await Post.findAll();
-
-      let userCart = await dummyUser.getCart();
-      
-      dummyPosts.forEach(async (post) => {
-        await userCart.addPost(post);
-        totalAmount += post.price;
-        itemCount += 1;
-      });
     } catch (error) {
       fail(error);
     }
@@ -80,13 +69,18 @@ describe('Transaction Service', () => {
   describe('AddTotranscations', () => {
     it("adds a transaction to a user's transaction history", async () => {
       try {
+        for (let i = 0; i < dummyPosts.length; i++) {
+          await cartService.addToCart(dummyUser, dummyPosts[i].id);
+        }
+
         let transaction = await transactionService.addTotranscations(dummyUser);
+        let transactionPosts = await transaction.getPosts();
+        let itemCount = 3,
+          totalAmount = 300;
 
         expect(transaction.itemCount).toEqual(itemCount);
         expect(transaction.totalAmount).toEqual(totalAmount);
         expect(transaction.dateString).toEqual(dateString);
-        let transactionPosts = await transaction.getPosts();
-        console.info(JSON.stringify(transactionPosts))
         expect(transactionPosts.length).toEqual(3);
       } catch (error) {
         fail(error);
@@ -105,13 +99,16 @@ describe('Transaction Service', () => {
     });
   });
 
-  xdescribe('GetFullTransactionHistory', () => {
+  describe('GetFullTransactionHistory', () => {
     it("gets all a user's transactions", async () => {
       try {
-        dummyPosts.forEach(async (post) => {
-          await cartService.addToCart(dummyUser, post.id);
-          await transactionService.addTotranscations(dummyUser);
-        });
+        for (let i = 0; i < dummyPosts.length; i++) {
+          await cartService
+            .addToCart(dummyUser, dummyPosts[i].id)
+            .then(async () => {
+              await transactionService.addTotranscations(dummyUser);
+            });
+        }
 
         let transactions = await transactionService.getFullTransactionHistory(
           dummyUser
@@ -140,13 +137,13 @@ describe('Transaction Service', () => {
     });
   });
 
-  xdescribe('GetTransaction', () => {
+  describe('GetTransaction', () => {
     it("gets one transcation from a user's transaction history", async () => {
       try {
-        dummyPosts.forEach(async (post) => {
-          await cartService.addToCart(dummyUser, post.id);
+        for (let i = 0; i < dummyPosts.length; i++) {
+          await cartService.addToCart(dummyUser, dummyPosts[i].id);
           await transactionService.addTotranscations(dummyUser);
-        });
+        }
         let transactionId = 2;
         let transaction = await transactionService.GetTransaction(
           dummyUser,

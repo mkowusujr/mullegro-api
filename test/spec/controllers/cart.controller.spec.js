@@ -96,18 +96,6 @@ describe('Cart Controller', () => {
           fail(error);
         }
       });
-      xit('sends a 400 response if there is an issue', async () => {
-        try {
-          const response = await request(server)
-            .get('/api/cart')
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token);
-          expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(400);
-        } catch (error) {
-          fail(error);
-        }
-      });
     });
 
     describe('HTTP POST method', () => {
@@ -173,19 +161,6 @@ describe('Cart Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
-        } catch (error) {
-          fail(error);
-        }
-      });
-      xit('sends a 400 response if there is an issue', async () => {
-        try {
-          const response = await request(server)
-            .delete('/api/cart')
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token);
-
-          expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
