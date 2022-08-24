@@ -22,6 +22,6 @@ exports.addTotranscations = async (user) => {
     return transaction;
   } catch (error) {
     errorOutput = 'Error creating transaction history: ' + error;
-    helperService.sendRejectedPromiseWith(errorOutput);
+    return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };

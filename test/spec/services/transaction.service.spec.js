@@ -84,7 +84,7 @@ describe('Transaction Service', () => {
         fail(error);
       }
     });
-    xit('throws an error if there is an issue', async () => {
+    it('throws an error if there is an issue', async () => {
       try {
         let dummyInvalidUser = {};
         let response = await transactionService.addTotranscations(
