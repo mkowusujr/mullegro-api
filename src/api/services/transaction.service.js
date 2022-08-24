@@ -4,22 +4,32 @@ exports.addTotranscations = async (user) => {
   try {
     let userCart = await user.getCart();
     let posts = await userCart.getPosts();
-    let totalAmount = 0,
-      itemCount = 0;
-
-    posts.forEach((post) => {
-      totalAmount += post.price;
-      itemCount += 1;
-    });
-
+    // let totalAmount = 0,
+    //   itemCount = 0;
     let transaction = await user.createTransaction({
       dateString: new Date().toLocaleDateString(),
-      totalAmount: totalAmount,
-      itemCount: itemCount
+      totalAmount: 0,
+      itemCount: 0
     });
+
     posts.forEach(async (post) => {
+      transaction.totalAmount += post.price;
+      transaction.itemCount += 1;
+      console.info(transaction.itemCount);
+
+      console.info(transaction.totalAmount);
       await transaction.addPost(post);
     });
+
+    await transaction.save();
+    // let transaction = await user.createTransaction({
+    //   dateString: new Date().toLocaleDateString(),
+    //   totalAmount: totalAmount,
+    //   itemCount: itemCount
+    // });
+    // posts.forEach(async (post) => {
+    //   await transaction.addPost(post);
+    // });
 
     return transaction;
   } catch (error) {
