@@ -16,12 +16,20 @@ exports.addTotranscations = async (user) => {
       transaction.itemCount += 1;
       await transaction.addPost(post);
     });
-
+    await userCart.removePosts();
     await transaction.save();
-
     return transaction;
   } catch (error) {
     errorOutput = 'Error creating transaction history: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+};
+
+exports.getFullTransactionHistory = async (user) => {
+  try {
+    return await user.getTransactions();
+  } catch (error) {
+    errorOutput = 'Error getting transaction history: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };

@@ -10,6 +10,7 @@ describe('Transaction Service', () => {
   let db,
     Post,
     dummyUser,
+    userCart,
     dummyPosts,
     dateString = new Date().toLocaleDateString();
 
@@ -28,42 +29,40 @@ describe('Transaction Service', () => {
         password: 'dummyPassword'
       });
 
-      await Post.create({
-        title: 'Dummy Post',
-        price: 100.0,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'USA',
-        type: 'Clarinet',
-        status: 'Not Sold'
-      });
-
-      await Post.create({
-        title: 'Dummy Post 2',
-        price: 100.0,
-        description: 'This is an instrument',
-        condition: 'Mid',
-        address: 'CANADA',
-        type: 'Clarinet',
-        status: 'Not Sold'
-      });
-      await Post.create({
-        title: 'Dummy Post3',
-        price: 100.0,
-        description: 'This is an instrument',
-        condition: 'Good',
-        address: 'JAPAN',
-        type: 'Clarinet',
-        status: 'Not Sold'
-      });
-
+      await Post.bulkCreate(
+        [
+          {
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          },
+          {
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          },
+          {
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'JAPAN',
+            type: 'Clarinet',
+            status: 'Not Sold'
+          }
+        ],
+        { returning: true }
+      );
       dummyPosts = await Post.findAll();
-
-      let userCart = await dummyUser.getCart();
-
-      dummyPosts.forEach(async (post) => {
-        await userCart.addPost(post.id);
-      });
+      userCart = await dummyUser.getCart();
     } catch (error) {
       fail(error);
     }
@@ -72,10 +71,15 @@ describe('Transaction Service', () => {
   describe('AddTotranscations', () => {
     it("adds a transaction to a user's transaction history", async () => {
       try {
+        dummyPosts.forEach(async (post) => {
+          await userCart.addPost(post.id);
+        });
+
         let transaction = await transactionService.addTotranscations(dummyUser);
         let transactionPosts = await transaction.getPosts();
         let itemCount = 3,
           totalAmount = 300;
+
         expect(transaction.itemCount).toEqual(itemCount);
         expect(transaction.totalAmount).toEqual(totalAmount);
         expect(transaction.dateString).toEqual(dateString);
@@ -97,13 +101,15 @@ describe('Transaction Service', () => {
     });
   });
 
-  xdescribe('GetFullTransactionHistory', () => {
+  describe('GetFullTransactionHistory', () => {
     it("gets all a user's transactions", async () => {
       try {
-        dummyPosts.forEach(async (post) => {
-          await cartService.addToCart(dummyUser, post.id);
-          await transactionService.addTotranscations(dummyUser);
-        });
+        for (let i = 0; i < dummyPosts.length; i++) {
+          await userCart.addPost(dummyPosts[i].id).then(async () => {
+            await transactionService.addTotranscations(dummyUser);
+          });
+          console.info(dummyPosts[i].id);
+        }
 
         let transactions = await transactionService.getFullTransactionHistory(
           dummyUser
