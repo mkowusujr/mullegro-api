@@ -11,8 +11,6 @@ describe('Transaction Service', () => {
     Post,
     dummyUser,
     dummyPosts,
-    totalAmount = 0.0,
-    itemCount = 0,
     dateString = new Date().toLocaleDateString();
 
   beforeEach(async () => {
@@ -65,9 +63,6 @@ describe('Transaction Service', () => {
 
       dummyPosts.forEach(async (post) => {
         await userCart.addPost(post.id);
-        // await cartService.addToCart(dummyUser, post.id);
-        totalAmount += post.price;
-        itemCount += 1;
       });
     } catch (error) {
       fail(error);
@@ -78,12 +73,12 @@ describe('Transaction Service', () => {
     it("adds a transaction to a user's transaction history", async () => {
       try {
         let transaction = await transactionService.addTotranscations(dummyUser);
-
-        expect(transaction.itemCount).toEqual(3);
-        expect(transaction.totalAmount).toEqual(300);
-        expect(transaction.dateString).toEqual(dateString);
         let transactionPosts = await transaction.getPosts();
-        // console.info(JSON.stringify(transactionPosts));
+        let itemCount = 3,
+          totalAmount = 300;
+        expect(transaction.itemCount).toEqual(itemCount);
+        expect(transaction.totalAmount).toEqual(totalAmount);
+        expect(transaction.dateString).toEqual(dateString);
         expect(transactionPosts.length).toEqual(3);
       } catch (error) {
         fail(error);
