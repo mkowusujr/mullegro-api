@@ -108,7 +108,6 @@ describe('Transaction Service', () => {
           await userCart.addPost(dummyPosts[i].id).then(async () => {
             await transactionService.addTotranscations(dummyUser);
           });
-          console.info(dummyPosts[i].id);
         }
 
         let transactions = await transactionService.getFullTransactionHistory(
@@ -138,13 +137,13 @@ describe('Transaction Service', () => {
     });
   });
 
-  xdescribe('GetTransaction', () => {
+  describe('GetTransaction', () => {
     it("gets one transcation from a user's transaction history", async () => {
       try {
-        dummyPosts.forEach(async (post) => {
-          await cartService.addToCart(dummyUser, post.id);
+        for (let i = 0; i < dummyPosts.length; i++) {
+          await cartService.addToCart(dummyUser, dummyPosts[i].id);
           await transactionService.addTotranscations(dummyUser);
-        });
+        }
         let transactionId = 2;
         let transaction = await transactionService.GetTransaction(
           dummyUser,

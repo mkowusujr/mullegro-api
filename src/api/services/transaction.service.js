@@ -1,3 +1,5 @@
+const db = require('../models');
+const Transaction = db.transactions;
 const helperService = require('./helper.service');
 
 exports.addTotranscations = async (user) => {
@@ -28,6 +30,18 @@ exports.addTotranscations = async (user) => {
 exports.getFullTransactionHistory = async (user) => {
   try {
     return await user.getTransactions();
+  } catch (error) {
+    errorOutput = 'Error getting transaction history: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+};
+
+exports.GetTransaction = async (user, transactionId) => {
+  try {
+    let transaction = await Transaction.findByPk(transactionId);
+    if (!transaction)
+      throw `Transaction with id ${transactionId} doesn't exist`;
+    return transaction;
   } catch (error) {
     errorOutput = 'Error getting transaction history: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
