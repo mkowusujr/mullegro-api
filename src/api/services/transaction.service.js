@@ -1,12 +1,13 @@
 const db = require('../models');
+const Post = db.posts;
 const Transaction = db.transactions;
 const helperService = require('./helper.service');
 
-exports.addTotranscations = async (user) => {
+exports.addToTransactions = async (user) => {
   try {
     let userCart = await user.getCart();
     let posts = await userCart.getPosts();
-
+    if (posts.length == 0) throw 'Cart is empty';
     let transaction = await user.createTransaction({
       dateString: new Date().toLocaleDateString(),
       totalAmount: 0,
@@ -18,9 +19,10 @@ exports.addTotranscations = async (user) => {
       transaction.itemCount += 1;
       await transaction.addPost(post);
     });
+
     await userCart.removePosts();
     await transaction.save();
-    return transaction;
+    return await this.getTransaction(transaction.id);
   } catch (error) {
     errorOutput = 'Error creating transaction history: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
@@ -36,9 +38,11 @@ exports.getFullTransactionHistory = async (user) => {
   }
 };
 
-exports.GetTransaction = async (user, transactionId) => {
+exports.getTransaction = async (transactionId) => {
   try {
-    let transaction = await Transaction.findByPk(transactionId);
+    let transaction = await Transaction.findByPk(transactionId, {
+      include: Post
+    });
     if (!transaction)
       throw `Transaction with id ${transactionId} doesn't exist`;
     return transaction;

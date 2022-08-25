@@ -70,7 +70,7 @@ describe('Cart Controller', () => {
 
   describe("endpoint: '/api/cart', ", () => {
     describe('HTTP GET method', () => {
-      it('it should require authorization', async () => {
+      it('should require authorization', async () => {
         try {
           const response = await request(server).get('/api/cart');
           expect(response.status).toEqual(401);
@@ -99,7 +99,7 @@ describe('Cart Controller', () => {
     });
 
     describe('HTTP POST method', () => {
-      it('it should require authorization', async () => {
+      it('should require authorization', async () => {
         try {
           const response = await request(server).post('/api/cart');
           expect(response.status).toEqual(401);
@@ -140,7 +140,7 @@ describe('Cart Controller', () => {
     });
 
     describe('HTTP DELETE method', () => {
-      it('it should require authorization', async () => {
+      it('should require authorization', async () => {
         try {
           const response = await request(server).delete('/api/cart');
           expect(response.status).toEqual(401);
@@ -170,7 +170,7 @@ describe('Cart Controller', () => {
 
   describe("endpoint: '/api/cart/post/:id', ", () => {
     describe('HTTP DELETE method', () => {
-      it('it should require authorization', async () => {
+      it('should require authorization', async () => {
         try {
           const response = await request(server).delete('/api/cart/post/1');
           expect(response.status).toEqual(401);

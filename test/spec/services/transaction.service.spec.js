@@ -66,22 +66,24 @@ describe('Transaction Service', () => {
     }
   });
 
-  describe('AddTotranscations', () => {
+  describe('addToTransactions', () => {
     it("adds a transaction to a user's transaction history", async () => {
       try {
+        let itemCount = 0,
+          totalAmount = 0;
+
         for (let i = 0; i < dummyPosts.length; i++) {
           await cartService.addToCart(dummyUser, dummyPosts[i].id);
+          itemCount += 1;
+          totalAmount += dummyPosts[i].price;
         }
 
-        let transaction = await transactionService.addTotranscations(dummyUser);
-        let transactionPosts = await transaction.getPosts();
-        let itemCount = 3,
-          totalAmount = 300;
+        let transaction = await transactionService.addToTransactions(dummyUser);
 
         expect(transaction.itemCount).toEqual(itemCount);
         expect(transaction.totalAmount).toEqual(totalAmount);
         expect(transaction.dateString).toEqual(dateString);
-        expect(transactionPosts.length).toEqual(3);
+        expect(transaction.posts.length).toEqual(3);
       } catch (error) {
         fail(error);
       }
@@ -89,7 +91,7 @@ describe('Transaction Service', () => {
     it('throws an error if there is an issue', async () => {
       try {
         let dummyInvalidUser = {};
-        let response = await transactionService.addTotranscations(
+        let response = await transactionService.addToTransactions(
           dummyInvalidUser
         );
         if (response || !response) fail("Didn't throw error");
@@ -106,7 +108,7 @@ describe('Transaction Service', () => {
           await cartService
             .addToCart(dummyUser, dummyPosts[i].id)
             .then(async () => {
-              await transactionService.addTotranscations(dummyUser);
+              await transactionService.addToTransactions(dummyUser);
             });
         }
 
@@ -142,11 +144,10 @@ describe('Transaction Service', () => {
       try {
         for (let i = 0; i < dummyPosts.length; i++) {
           await cartService.addToCart(dummyUser, dummyPosts[i].id);
-          await transactionService.addTotranscations(dummyUser);
+          await transactionService.addToTransactions(dummyUser);
         }
         let transactionId = 2;
-        let transaction = await transactionService.GetTransaction(
-          dummyUser,
+        let transaction = await transactionService.getTransaction(
           transactionId
         );
 
@@ -160,10 +161,8 @@ describe('Transaction Service', () => {
     });
     it('throws an error if there is an issue', async () => {
       try {
-        let dummyInvalidUser = {},
-          invalidTransactionId = 404;
-        let response = await transactionService.GetTransaction(
-          dummyInvalidUser,
+        invalidTransactionId = 404;
+        let response = await transactionService.getTransaction(
           invalidTransactionId
         );
         if (response || !response) fail("Didn't throw error");
