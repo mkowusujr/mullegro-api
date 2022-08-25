@@ -3,6 +3,7 @@ const server = require('../../../src/server');
 const transactionController = require('../../../src/api/controllers/transaction.controller');
 const userService = require('../../../src/api/services/user.service');
 const cartService = require('../../../src/api/services/cart.service');
+const transactionService = require('../../../src/api/services/transaction.service');
 const jwtMaker = require('../helpers/create-jwt');
 
 describe('Transaction Controller', () => {
@@ -72,7 +73,7 @@ describe('Transaction Controller', () => {
     }
   });
 
-  describe("endpoint: '/api/transaction', ", () => {
+  describe("endpoint: '/api/transactions', ", () => {
     describe('HTTP POST method', () => {
       it('should require authorization', async () => {
         try {
@@ -99,6 +100,7 @@ describe('Transaction Controller', () => {
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
           expect(response.body.itemCount).toEqual(itemCount);
           expect(response.body.totalAmount).toEqual(totalAmount);
           expect(response.body.dateString).toEqual(dateString);
@@ -116,6 +118,83 @@ describe('Transaction Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+
+    describe('HTTP GET method', () => {
+      it('should require authorization', async () => {
+        try {
+          const response = await request(server).get('/api/transactions');
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it("gets all a user's transactions", async () => {
+        try {
+          for (let i = 0; i < dummyPosts.length; i++) {
+            await cartService
+              .addToCart(dummyUser, dummyPosts[i].id)
+              .then(async () => {
+                await transactionService.addToTransactions(dummyUser);
+              });
+          }
+
+          const response = await request(server)
+            .get('/api/transactions')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token);
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(3);
+          response.body.forEach((transaction) => {
+            expect(transaction.dateString).toBeTruthy();
+            expect(transaction.totalAmount).toBeTruthy();
+            expect(transaction.itemCount).toBeTruthy();
+          });
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/transactions/:transactionId', ", () => {
+    describe('HTTP GET method', () => {
+      it('should require authorization', async () => {
+        try {
+          const response = await request(server).get('/api/transactions/1');
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it("gets a transcation from a user's transaction history", async () => {
+        try {
+          for (let i = 0; i < dummyPosts.length; i++) {
+            await cartService
+              .addToCart(dummyUser, dummyPosts[i].id)
+              .then(async () => {
+                await transactionService.addToTransactions(dummyUser);
+              });
+          }
+          let transactionId = 2;
+
+          const response = await request(server)
+            .get(`/api/transactions/${transactionId}`)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token);
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.id).toEqual(transactionId);
+          expect(response.body.dateString).toBeTruthy();
+          expect(response.body.totalAmount).toBeTruthy();
+          expect(response.body.itemCount).toBeTruthy();
         } catch (error) {
           fail(error);
         }

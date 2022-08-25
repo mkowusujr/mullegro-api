@@ -140,7 +140,7 @@ describe('Transaction Service', () => {
   });
 
   describe('GetTransaction', () => {
-    it("gets one transcation from a user's transaction history", async () => {
+    it("gets a transcation from a user's transaction history", async () => {
       try {
         for (let i = 0; i < dummyPosts.length; i++) {
           await cartService.addToCart(dummyUser, dummyPosts[i].id);
