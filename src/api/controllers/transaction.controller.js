@@ -5,7 +5,14 @@ const transactionService = require('../services/transaction.service');
 const userService = require('../services/user.service');
 
 /**
- *
+ * @swagger
+ * /api/transactions:
+ *    post:
+ *      tags: ['Transaction Controller']
+ *      description: Add a new transaction
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.post('', auth.verifyToken, async (req, res) => {
   try {

@@ -5,7 +5,14 @@ const userService = require('../services/user.service');
 const cartService = require('../services/cart.service');
 
 /**
- *
+ * @swagger
+ * /api/cart:
+ *    get:
+ *      tags: ['Cart Controller']
+ *      description: Getts all the posts in a user's cart
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('', auth.verifyToken, async (req, res) => {
   try {

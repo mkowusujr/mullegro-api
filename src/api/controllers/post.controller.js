@@ -5,7 +5,14 @@ const postService = require('../services/post.service');
 const userService = require('../services/user.service');
 
 /**
- * Logged in user getting new posts
+ * @swagger
+ * /api/posts/user/posts:
+ *    get:
+ *      tags: ['Post Controller']
+ *      description: Logged in user getting new posts
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('/user/posts', auth.verifyToken, async (req, res) => {
   try {

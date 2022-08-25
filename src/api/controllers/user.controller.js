@@ -2,12 +2,18 @@ const express = require('express');
 const router = express('Router');
 const userService = require('../services/user.service');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
 const user = require('../models/user');
 
 /**
- * Creating an account
+ * @swagger
+ * /api/users/register:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Creating an account
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.post('/register', async (req, res) => {
   try {
