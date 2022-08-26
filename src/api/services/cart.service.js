@@ -2,17 +2,17 @@ const db = require('../models/index');
 const Post = db.posts;
 const helperService = require('./helper.service');
 
-const verifyUserHasCart = async (user) => {
+const verifyUserHasCart = async user => {
   let userCart = await user.getCart();
   if (!userCart) throw `User with id of ${user.id} doesn\'t have a cart`;
 };
 
-const verifyPostExists = async (postId) => {
+const verifyPostExists = async postId => {
   let post = await Post.findByPk(postId);
   if (!post) throw `Post with id of ${postId} does not exist`;
 };
 
-exports.createCart = async (user) => {
+exports.createCart = async user => {
   try {
     await user.createCart();
     return Promise.resolve('Created cart successfully');
@@ -56,7 +56,7 @@ exports.removeFromCart = async (user, postId) => {
   }
 };
 
-exports.getCartItems = async (user) => {
+exports.getCartItems = async user => {
   try {
     await verifyUserHasCart(user);
     let userCart = await user.getCart();
@@ -67,7 +67,7 @@ exports.getCartItems = async (user) => {
   }
 };
 
-exports.clearCart = async (user) => {
+exports.clearCart = async user => {
   try {
     await verifyUserHasCart(user);
     let userCart = await user.getCart();

@@ -3,7 +3,7 @@ const postController = require('../../../src/api/controllers/post.controller');
 const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
 
-const checkToSeeIsPostObject = (object) => {
+const checkToSeeIsPostObject = object => {
   expect(object.hasOwnProperty('id')).toBeTrue();
   expect(object.hasOwnProperty('title')).toBeTrue();
   expect(object.hasOwnProperty('price')).toBeTrue();
@@ -152,7 +152,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(3);
-          response.body.forEach((object) => checkToSeeIsPostObject(object));
+          response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }
@@ -204,7 +204,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          response.body.forEach((object) => checkToSeeIsPostObject(object));
+          response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }
@@ -277,7 +277,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          response.body.forEach((object) => checkToSeeIsPostObject(object));
+          response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
         }

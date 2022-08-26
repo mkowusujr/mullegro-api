@@ -6,22 +6,22 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const cartService = require('./cart.service');
 
-const failIfUsernameExists = async (username) => {
+const failIfUsernameExists = async username => {
   user = await User.findOne({ where: { username: username } });
   if (user) throw `User with the username ${userObj.username} already exists`;
 };
 
-const failIfEmailExists = async (userEmail) => {
+const failIfEmailExists = async userEmail => {
   user = await User.findOne({ where: { email: userEmail } });
   if (user) throw `User with the email ${userObj.username} already exists`;
 };
 
-const encryptPassword = async (newUser) => {
+const encryptPassword = async newUser => {
   newUser.password = await bcrypt.hashSync(newUser.password, 10);
   await newUser.save();
 };
 
-exports.createUser = async (user) => {
+exports.createUser = async user => {
   return await failIfUsernameExists(user.username)
     .then(async () => await failIfEmailExists(user.email))
     .then(async () => {
@@ -33,7 +33,7 @@ exports.createUser = async (user) => {
     .catch(() => helperService.sendRejectedPromiseWith('Error creating user'));
 };
 
-exports.getUserById = async (userId) => {
+exports.getUserById = async userId => {
   try {
     let fetchedUser = await User.findByPk(userId);
     if (!fetchedUser) throw `User with id of ${userId} doesn't exist`;
@@ -44,7 +44,7 @@ exports.getUserById = async (userId) => {
   }
 };
 
-exports.getUserByEmail = async (userEmail) => {
+exports.getUserByEmail = async userEmail => {
   try {
     let fetchedUser = await User.findOne({ where: { email: userEmail } });
     if (!fetchedUser) throw `User with email of ${userEmail} doesn't exist`;
@@ -55,7 +55,7 @@ exports.getUserByEmail = async (userEmail) => {
   }
 };
 
-exports.getUserByUsername = async (username) => {
+exports.getUserByUsername = async username => {
   try {
     let fetchedUser = await User.findOne({ where: { username: username } });
     if (!fetchedUser) throw `User with username of ${userEmail} doesn't exist`;
@@ -66,7 +66,7 @@ exports.getUserByUsername = async (username) => {
   }
 };
 
-exports.getUser = async (email_or_username) => {
+exports.getUser = async email_or_username => {
   try {
     if (email_or_username.includes('@'))
       return this.getUserByEmail(email_or_username);
@@ -77,7 +77,7 @@ exports.getUser = async (email_or_username) => {
   }
 };
 
-exports.getCurrentUser = async (res) => {
+exports.getCurrentUser = async res => {
   try {
     let username = res.locals.user.username;
     let user = await this.getUserByUsername(username);
@@ -89,7 +89,7 @@ exports.getCurrentUser = async (res) => {
   }
 };
 
-exports.getAuthorizedUser = async (loginObject) => {
+exports.getAuthorizedUser = async loginObject => {
   try {
     let { email_or_username, password } = loginObject;
     let user = await this.getUser(email_or_username);
@@ -107,7 +107,7 @@ exports.getAuthorizedUser = async (loginObject) => {
   }
 };
 
-exports.findAll = async (searchQuery) => {
+exports.findAll = async searchQuery => {
   try {
     if (!searchQuery) return await User.findAll();
     return await User.findAll({
@@ -123,7 +123,7 @@ exports.findAll = async (searchQuery) => {
   }
 };
 
-exports.deleteUser = async (email_or_username) => {
+exports.deleteUser = async email_or_username => {
   try {
     let user = await this.getUser(email_or_username);
     await user.destroy();

@@ -117,7 +117,7 @@ describe('Transaction Service', () => {
         );
 
         expect(transactions.length).toEqual(3);
-        transactions.forEach((transaction) => {
+        transactions.forEach(transaction => {
           expect(transaction.dateString).toBeTruthy();
           expect(transaction.totalAmount).toBeTruthy();
           expect(transaction.itemCount).toBeTruthy();

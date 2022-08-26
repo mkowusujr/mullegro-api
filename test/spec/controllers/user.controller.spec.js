@@ -4,7 +4,7 @@ const userService = require('../../../src/api/services/user.service');
 const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
 
-const checkToSeeIsUserObject = (object) => {
+const checkToSeeIsUserObject = object => {
   expect(object.hasOwnProperty('id')).toBeTrue();
   expect(object.hasOwnProperty('name')).toBeTrue();
   expect(object.hasOwnProperty('email')).toBeTrue();
@@ -230,7 +230,7 @@ describe('User Controller', () => {
 
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
-          response.body.forEach((object) => checkToSeeIsUserObject(object));
+          response.body.forEach(object => checkToSeeIsUserObject(object));
         } catch (error) {
           fail(error);
         }
@@ -349,7 +349,7 @@ describe('User Controller', () => {
             .set('Content-Type', 'application/json');
 
           expect(response.body.length).toEqual(2);
-          response.body.forEach((user) => expect(user.username).toContain('a'));
+          response.body.forEach(user => expect(user.username).toContain('a'));
         } catch (error) {
           fail(error);
         }

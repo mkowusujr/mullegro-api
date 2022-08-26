@@ -148,7 +148,7 @@ describe('Post Service', () => {
         let response = await postService.findAllPostsForUser(dummyUser);
 
         expect(response.length).toEqual(2);
-        response.forEach((post) => {
+        response.forEach(post => {
           expect(post.userId).toEqual(dummyUser.id);
         });
       } catch (error) {

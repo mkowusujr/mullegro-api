@@ -13,7 +13,7 @@ sequelize
   .then(() => {
     console.log('>> Connected to database...');
   })
-  .catch((err) => {
+  .catch(err => {
     console.log('>> Error' + err);
   });
 

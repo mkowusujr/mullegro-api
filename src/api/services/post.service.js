@@ -6,7 +6,7 @@ const Post = db.posts;
  * Get Logged in users posts
  * @param {User Obj} currentUser The current User
  */
-exports.findAllPostsForUser = async (currentUser) => {
+exports.findAllPostsForUser = async currentUser => {
   try {
     return await currentUser.getPosts();
   } catch (err) {
@@ -78,7 +78,7 @@ exports.findAll = async () => {
 /**
  * Get one post
  */
-exports.getPost = async (postId) => {
+exports.getPost = async postId => {
   try {
     let post = await Post.findByPk(postId);
     if (!post) throw `Post with id of ${postId} does not exist`;

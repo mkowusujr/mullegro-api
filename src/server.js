@@ -16,7 +16,7 @@ db.sequelize
   .then(() => {
     console.log('>> Database synchronized');
   })
-  .catch((err) => {
+  .catch(err => {
     console.error(err);
   });
 

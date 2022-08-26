@@ -3,7 +3,7 @@ const Post = db.posts;
 const Transaction = db.transactions;
 const helperService = require('./helper.service');
 
-exports.addToTransactions = async (user) => {
+exports.addToTransactions = async user => {
   try {
     let userCart = await user.getCart();
     let posts = await userCart.getPosts();
@@ -14,7 +14,7 @@ exports.addToTransactions = async (user) => {
       itemCount: 0
     });
 
-    posts.forEach(async (post) => {
+    posts.forEach(async post => {
       transaction.totalAmount += post.price;
       transaction.itemCount += 1;
       await transaction.addPost(post);
@@ -29,7 +29,7 @@ exports.addToTransactions = async (user) => {
   }
 };
 
-exports.getFullTransactionHistory = async (user) => {
+exports.getFullTransactionHistory = async user => {
   try {
     return await user.getTransactions();
   } catch (error) {
@@ -38,7 +38,7 @@ exports.getFullTransactionHistory = async (user) => {
   }
 };
 
-exports.getTransaction = async (transactionId) => {
+exports.getTransaction = async transactionId => {
   try {
     let transaction = await Transaction.findByPk(transactionId, {
       include: Post

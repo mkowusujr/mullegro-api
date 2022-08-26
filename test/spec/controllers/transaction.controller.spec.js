@@ -151,7 +151,7 @@ describe('Transaction Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(3);
-          response.body.forEach((transaction) => {
+          response.body.forEach(transaction => {
             expect(transaction.dateString).toBeTruthy();
             expect(transaction.totalAmount).toBeTruthy();
             expect(transaction.itemCount).toBeTruthy();
