@@ -231,7 +231,7 @@ describe('User Service', () => {
         let dummyUser = await userService.createUser(userObject);
 
         let loginObject = {
-          email_or_username: dummyUser.username,
+          emailOrUsername: dummyUser.username,
           password: userObject.password
         };
 
@@ -256,7 +256,7 @@ describe('User Service', () => {
         };
         let dummyUser = await userService.createUser(userObject);
         let loginObject = {
-          email_or_username: dummyUser.username,
+          emailOrUsername: dummyUser.username,
           password: 'incorrectPassword'
         };
         let response = await userService.getAuthorizedUser(loginObject);

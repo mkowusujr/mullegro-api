@@ -66,11 +66,11 @@ exports.getUserByUsername = async username => {
   }
 };
 
-exports.getUser = async email_or_username => {
+exports.getUser = async emailOrUsername => {
   try {
-    if (email_or_username.includes('@'))
-      return this.getUserByEmail(email_or_username);
-    else return this.getUserByUsername(email_or_username);
+    if (emailOrUsername.includes('@'))
+      return this.getUserByEmail(emailOrUsername);
+    else return this.getUserByUsername(emailOrUsername);
   } catch (error) {
     let errorOutput = 'Error fetching user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
@@ -91,8 +91,8 @@ exports.getCurrentUser = async res => {
 
 exports.getAuthorizedUser = async loginObject => {
   try {
-    let { email_or_username, password } = loginObject;
-    let user = await this.getUser(email_or_username);
+    let { emailOrUsername, password } = loginObject;
+    let user = await this.getUser(emailOrUsername);
     let isCorrectPassword = await bcrypt.compareSync(password, user.password);
     if (isCorrectPassword) {
       return await User.findByPk(user.id, {
@@ -123,9 +123,9 @@ exports.findAll = async searchQuery => {
   }
 };
 
-exports.deleteUser = async email_or_username => {
+exports.deleteUser = async emailOrUsername => {
   try {
-    let user = await this.getUser(email_or_username);
+    let user = await this.getUser(emailOrUsername);
     await user.destroy();
     return Promise.resolve('Deleted successfully');
   } catch (error) {

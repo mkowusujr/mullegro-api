@@ -86,7 +86,7 @@ describe('User Controller', () => {
           await userService.createUser(userObject);
 
           let loginObject = {
-            email_or_username: 'dummy_username',
+            emailOrUsername: 'dummy_username',
             password: 'dummyPassword'
           };
 
@@ -116,7 +116,7 @@ describe('User Controller', () => {
           await userService.createUser(userObject);
 
           let loginObject = {
-            email_or_username: 'dummay@email.com',
+            emailOrUsername: 'dummay@email.com',
             password: 'dummyPassword'
           };
 
@@ -146,7 +146,7 @@ describe('User Controller', () => {
           await userService.createUser(userObject);
 
           let loginObject = {
-            email_or_username: 'dummy_username',
+            emailOrUsername: 'dummy_username',
             password: 'incorrectPassword'
           };
 
