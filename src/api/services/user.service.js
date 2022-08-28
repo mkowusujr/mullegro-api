@@ -30,7 +30,9 @@ exports.createUser = async user => {
       await cartService.createCart(createdUser);
       return createdUser;
     })
-    .catch(() => helperService.sendRejectedPromiseWith('Error creating user'));
+    .catch(err =>
+      helperService.sendRejectedPromiseWith('Error creating user' + err)
+    );
 };
 
 exports.getUserById = async userId => {
