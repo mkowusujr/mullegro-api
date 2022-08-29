@@ -26,7 +26,11 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
-    }
+    },
+    bio: {
+      type: Sequelize.STRING(),
+      allowNull: true
+    },
   });
   return User;
 };

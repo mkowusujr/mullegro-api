@@ -4,12 +4,16 @@ const userService = require('../src/api/services/user.service');
 exports.createMockUsers = async amount => {
   let users = [];
   for (let i = 0; i < amount; i++) {
+    let firstName = faker.name.firstName();
+    let lastName = faker.name.lastName();
+    
     let user = await userService.createUser({
-      name: faker.name.fullName(),
-      username: faker.internet.userName(),
-      email: faker.internet.email(),
+      name: `${firstName} ${lastName}`,
+      username: faker.internet.userName(firstName, lastName),
+      email: faker.internet.email(firstName, lastName),
       address: faker.address.streetAddress(),
-      password: faker.internet.password(20)
+      password: faker.internet.password(20),
+      bio: faker.lorem.sentences()
     });
 
     users.push(user);
