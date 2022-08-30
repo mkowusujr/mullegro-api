@@ -31,6 +31,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING(),
       allowNull: true
     },
+    profile_picture: {
+      type: Sequelize.STRING(),
+      allowNull: true
+    }
   });
   return User;
 };

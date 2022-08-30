@@ -13,7 +13,8 @@ exports.createMockUsers = async amount => {
       email: faker.internet.email(firstName, lastName),
       address: faker.address.streetAddress(),
       password: faker.internet.password(20),
-      bio: faker.lorem.sentences()
+      bio: faker.lorem.sentences(),
+      profile_picture: faker.image.image(500, 500, false)
     });
 
     users.push(user);
