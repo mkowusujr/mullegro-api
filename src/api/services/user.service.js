@@ -60,7 +60,7 @@ exports.getUserByEmail = async userEmail => {
 exports.getUserByUsername = async username => {
   try {
     let fetchedUser = await User.findOne({ where: { username: username } });
-    if (!fetchedUser) throw `User with username of ${userEmail} doesn't exist`;
+    if (!fetchedUser) throw `User with username of ${username} doesn't exist`;
     return fetchedUser;
   } catch (error) {
     let errorOutput = 'Error fetching user: ' + error;
