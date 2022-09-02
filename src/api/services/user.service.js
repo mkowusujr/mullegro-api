@@ -5,6 +5,7 @@ const User = db.users;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const cartService = require('./cart.service');
+const { faker } = require('@faker-js/faker');
 
 const failIfUsernameExists = async username => {
   user = await User.findOne({ where: { username: username } });
@@ -28,6 +29,10 @@ exports.createUser = async user => {
       let createdUser = await User.create(user);
       await encryptPassword(createdUser);
       await cartService.createCart(createdUser);
+
+      createdUser.profile_picture = faker.image.cats(500, 500, true);
+      await createdUser.save();
+
       return createdUser;
     })
     .catch(err =>

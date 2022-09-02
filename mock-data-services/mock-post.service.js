@@ -53,7 +53,8 @@ exports.createPosts = async users => {
         condition: randomCondition(),
         address: user.address,
         type: instrumentType,
-        status: 'Available'
+        status: 'Available',
+        display_picture: faker.image.cats(500, 500, true)
       });
     }
   });

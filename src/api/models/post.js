@@ -33,6 +33,10 @@ module.exports = (sequelize, Sequelize) => {
     status: {
       type: Sequelize.STRING(10),
       allowNull: false
+    },
+    display_picture: {
+      type: Sequelize.STRING(),
+      allowNull: true
     }
   });
   return Post;
