@@ -44,11 +44,12 @@ exports.removeFromCart = async (user, postId) => {
     await verifyUserHasCart(user);
     await verifyPostExists(postId);
 
-    console.log(JSON.stringify(await Post.findByPk(postId)));
     let userCart = await user.getCart();
+
+    let post = await Post.findByPk(postId);
     await userCart.removePost(postId);
     await userCart.save();
-    console.log(JSON.stringify(await Post.findByPk(postId)));
+    
     return Promise.resolve({
       message: `Successfully removed post with id ${postId} to cart belonging to user with id of ${user.id}`
     });
