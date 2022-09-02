@@ -30,9 +30,9 @@ exports.addToCart = async (user, postId) => {
     let userCart = await user.getCart();
     await userCart.addPost(postId);
 
-    return Promise.resolve(
-      `Successfully added post with id ${postId} to cart belonging to user with id of ${user.id}`
-    );
+    return Promise.resolve({
+      message: `Successfully added post with id ${postId} to cart belonging to user with id of ${user.id}`
+    });
   } catch (error) {
     let errorOutput = 'Error adding to cart: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
@@ -44,12 +44,14 @@ exports.removeFromCart = async (user, postId) => {
     await verifyUserHasCart(user);
     await verifyPostExists(postId);
 
+    console.log(JSON.stringify(await Post.findByPk(postId)));
     let userCart = await user.getCart();
     await userCart.removePost(postId);
-
-    return Promise.resolve(
-      `Successfully removed post with id ${postId} to cart belonging to user with id of ${user.id}`
-    );
+    await userCart.save();
+    console.log(JSON.stringify(await Post.findByPk(postId)));
+    return Promise.resolve({
+      message: `Successfully removed post with id ${postId} to cart belonging to user with id of ${user.id}`
+    });
   } catch (error) {
     let errorOutput = 'Error adding to cart: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
@@ -62,7 +64,7 @@ exports.getCartItems = async user => {
     let userCart = await user.getCart();
     return await userCart.getPosts();
   } catch (error) {
-    let errorOutput = "Error gettinf user's cart items: " + error;
+    let errorOutput = "Error getting user's cart items: " + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
@@ -71,8 +73,12 @@ exports.clearCart = async user => {
   try {
     await verifyUserHasCart(user);
     let userCart = await user.getCart();
-    await userCart.removePosts();
-    return Promise.resolve('Successfully cleared cart');
+    
+    let posts = await userCart.getPosts();
+    posts.forEach( async post => await userCart.removePost(post))
+
+    await userCart.save();
+    return Promise.resolve({ message: 'Successfully cleared cart' });
   } catch (error) {
     let errorOutput = 'Error clearing cart: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
