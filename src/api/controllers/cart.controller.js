@@ -30,7 +30,7 @@ router.get('', auth.verifyToken, async (req, res) => {
  */
 router.post('', auth.verifyToken, async (req, res) => {
   try {
-    let postId = req.body.postId;
+    let postId = req.body.id;
     let response = await cartService.addToCart(
       await userService.getCurrentUser(res),
       postId
