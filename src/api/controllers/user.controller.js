@@ -66,7 +66,7 @@ router.get('', async (req, res) => {
 /**
  * Dealing with one user
  */
- router.get('/user/byId/:id', async (req, res) => {
+router.get('/user/byId/:id', async (req, res) => {
   try {
     let fetchedUser = await userService.getUserById(req.params.id);
     return res.status(200).json(fetchedUser);

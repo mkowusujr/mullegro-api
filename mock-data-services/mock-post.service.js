@@ -10,7 +10,8 @@ getInstrumentsList = () => {
 };
 
 getRandomInt = max => {
-  return Math.floor(Math.random() * max);
+  let min = 0;
+  return Math.floor(Math.random() * (max - min));
 };
 
 randomTitlePrefix = () => {
@@ -26,13 +27,13 @@ randomCondition = () => {
     'Used - Good',
     'Used - Acceptable'
   ];
-  randomIndex = getRandomInt(conditionOptions.length);
+  randomIndex = getRandomInt(conditionOptions.length - 1);
   return conditionOptions[randomIndex];
 };
 
 randomType = () => {
   const typeOptions = getInstrumentsList();
-  randomIndex = getRandomInt(typeOptions.length);
+  randomIndex = getRandomInt(typeOptions.length - 1);
   return typeOptions[randomIndex];
 };
 

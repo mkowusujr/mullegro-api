@@ -105,8 +105,8 @@ describe('Cart Service', () => {
         await cartService.addToCart(dummyUser, postId);
 
         await cartService.removeFromCart(dummyUser, postId);
-
-        expect(await dummyUserCart.getPosts()).toEqual([]);
+        let cartItems = await dummyUserCart.getPosts();
+        expect(cartItems.length).toBe(0);
 
         let oldPost = await Post.findByPk(postId);
 
@@ -198,8 +198,10 @@ describe('Cart Service', () => {
         await cartService.addToCart(dummyUser, postId2);
 
         let response = await cartService.clearCart(dummyUser);
-
-        expect(response).toBe('Successfully cleared cart');
+        let cartItems = await cartService.getCartItems(dummyUser);
+        console.log(JSON.stringify(cartItems))
+        expect(response.message).toBe('Successfully cleared cart');
+        expect(cartItems.length).toEqual(0);
       } catch (error) {
         fail(error);
       }

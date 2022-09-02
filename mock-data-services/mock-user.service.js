@@ -6,7 +6,7 @@ exports.createMockUsers = async amount => {
   for (let i = 0; i < amount; i++) {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
-    
+
     let user = await userService.createUser({
       name: `${firstName} ${lastName}`,
       username: faker.internet.userName(firstName, lastName),
@@ -14,7 +14,7 @@ exports.createMockUsers = async amount => {
       address: faker.address.streetAddress(),
       password: faker.internet.password(20),
       bio: faker.lorem.sentences(),
-      profile_picture: faker.image.image(500, 500, false)
+      profile_picture: faker.image.cats(500, 500, true)
     });
 
     users.push(user);

@@ -109,7 +109,7 @@ describe('Cart Controller', () => {
       });
       it("should add a post to a user's cart", async () => {
         try {
-          let post = { postId: 1 };
+          let post = { id: 1 };
           const response = await request(server)
             .post('/api/cart')
             .set('Content-Type', 'application/json')
