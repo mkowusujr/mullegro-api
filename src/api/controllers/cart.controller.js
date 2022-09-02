@@ -61,7 +61,7 @@ router.delete('', auth.verifyToken, async (req, res) => {
 router.delete('/post/:id', auth.verifyToken, async (req, res) => {
   try {
     let postId = req.params.id;
-    console.log(postId);
+    
     let response = await cartService.removeFromCart(
       await userService.getCurrentUser(res),
       postId
