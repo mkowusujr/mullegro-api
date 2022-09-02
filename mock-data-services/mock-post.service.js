@@ -48,7 +48,7 @@ exports.createPosts = async users => {
       await postService.createNewPost(user, {
         title: `${randomTitlePrefix()} ${instrumentType}`,
         price: faker.commerce.price(minPrice, maxPrice),
-        description: '',
+        description: faker.lorem.sentences(),
         condition: randomCondition(),
         address: user.address,
         type: instrumentType,
