@@ -3,17 +3,47 @@ const router = express('Router');
 const userService = require('../services/user.service');
 const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
-const user = require('../models/user');
 
 /**
  * @swagger
  * /api/users/register:
- *    post:
+ *   post:
  *      tags: ['User Controller']
- *      description: Creating an account
+ *      summary: Creating an account
+ *      requestBody:
+ *        description: The user to create
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                - name
+ *                - email
+ *                - username
+ *                - address
+ *                - password
+ *              properties:
+ *                name:
+ *                  type: string
+ *                  default: jane doe
+ *                email:
+ *                  type: string
+ *                  default: jane.doe@example.com
+ *                username:
+ *                  type: string
+ *                  default: jane.doe
+ *                address:
+ *                  type: string
+ *                  default: somewhere 1234 dr
+ *                password:
+ *                  type: string
+ *                  default: goodPassword
  *      responses:
  *        200:
- *          description: Success
+ *          description: Successfully created user
+ *        400:
+ *          description: Error trying to create user
  */
 router.post('/register', async (req, res) => {
   try {
@@ -33,10 +63,29 @@ router.post('/register', async (req, res) => {
  * /api/users/login:
  *    post:
  *      tags: ['User Controller']
- *      description: Create a login token
+ *      summary: Create a login token
+ *      requestBody:
+ *        description: The user's login credentials
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                - emailOrUsername
+ *                - password
+ *              properties:
+ *                emailOrUsername:
+ *                  type: string
+ *                  default: jane.doe@example.com
+ *                password:
+ *                  type: string
+ *                  default: goodPassword
  *      responses:
  *        200:
- *          description: Success
+ *          description: Successfully logged in
+ *        400:
+ *          description: Error trying to login
  */
 router.post('/login', async (req, res) => {
   try {
@@ -54,7 +103,7 @@ router.post('/login', async (req, res) => {
 /**
  * @swagger
  * /api/users/user/details:
- *    post:
+ *    get:
  *      tags: ['User Controller']
  *      description: Get the logged in user's details
  *      responses:
@@ -68,7 +117,7 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
 /**
  * @swagger
  * /api/users:
- *    post:
+ *    get:
  *      tags: ['User Controller']
  *      description: Get all users from the database
  *      responses:
@@ -87,7 +136,7 @@ router.get('', async (req, res) => {
 /**
  * @swagger
  * /api/users/user/byId/:id:
- *    post:
+ *    get:
  *      tags: ['User Controller']
  *      description: Get a user from the database by id
  *      responses:
@@ -106,7 +155,7 @@ router.get('/user/byId/:id', async (req, res) => {
 /**
  * @swagger
  * /api/users/user/:username:
- *    post:
+ *    get:
  *      tags: ['User Controller']
  *      description: Get a user from the database by username
  *      responses:
@@ -125,7 +174,7 @@ router.get('/user/:username', async (req, res) => {
 /**
  * @swagger
  * /api/users/user/:username:
- *    post:
+ *    delete:
  *      tags: ['User Controller']
  *      description: Delete a user from the database by username
  *      responses:
@@ -145,8 +194,8 @@ router.delete('/user/:username', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/user/:username:
- *    post:
+ * /api/users/search:
+ *    get:
  *      tags: ['User Controller']
  *      description: Search and retrieve all the users in the database whose username matched the search query
  *      responses:
