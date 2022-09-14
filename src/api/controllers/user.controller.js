@@ -29,7 +29,14 @@ router.post('/register', async (req, res) => {
 });
 
 /**
- * Login
+ * @swagger
+ * /api/users/login:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Create a login token
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.post('/login', async (req, res) => {
   try {
@@ -45,14 +52,28 @@ router.post('/login', async (req, res) => {
 });
 
 /**
- * Get looged in user's details
+ * @swagger
+ * /api/users/user/details:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Get the logged in user's details
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('/user/details', auth.verifyToken, (req, res) => {
   return res.status(200).send(res.locals.user);
 });
 
 /**
- * Get all users
+ * @swagger
+ * /api/users:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Get all users from the database
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('', async (req, res) => {
   try {
@@ -64,7 +85,14 @@ router.get('', async (req, res) => {
 });
 
 /**
- * Dealing with one user
+ * @swagger
+ * /api/users/user/byId/:id:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Get a user from the database by id
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('/user/byId/:id', async (req, res) => {
   try {
@@ -76,7 +104,14 @@ router.get('/user/byId/:id', async (req, res) => {
 });
 
 /**
- * Dealing with one user
+ * @swagger
+ * /api/users/user/:username:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Get a user from the database by username
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('/user/:username', async (req, res) => {
   try {
@@ -88,7 +123,14 @@ router.get('/user/:username', async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/users/user/:username:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Delete a user from the database by username
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.delete('/user/:username', async (req, res) => {
   try {
@@ -102,7 +144,14 @@ router.delete('/user/:username', async (req, res) => {
 });
 
 /**
- * Finding users with query
+ * @swagger
+ * /api/users/user/:username:
+ *    post:
+ *      tags: ['User Controller']
+ *      description: Search and retrieve all the users in the database whose username matched the search query
+ *      responses:
+ *        200:
+ *          description: Success
  */
 router.get('/search', async (req, res) => {
   try {
