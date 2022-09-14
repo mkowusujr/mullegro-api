@@ -199,7 +199,7 @@ describe('Cart Service', () => {
 
         let response = await cartService.clearCart(dummyUser);
         let cartItems = await cartService.getCartItems(dummyUser);
-        console.log(JSON.stringify(cartItems))
+        console.log(JSON.stringify(cartItems));
         expect(response.message).toBe('Successfully cleared cart');
         expect(cartItems.length).toEqual(0);
       } catch (error) {

@@ -49,7 +49,7 @@ exports.removeFromCart = async (user, postId) => {
     let post = await Post.findByPk(postId);
     await userCart.removePost(postId);
     await userCart.save();
-    
+
     return Promise.resolve({
       message: `Successfully removed post with id ${postId} to cart belonging to user with id of ${user.id}`
     });
@@ -74,9 +74,9 @@ exports.clearCart = async user => {
   try {
     await verifyUserHasCart(user);
     let userCart = await user.getCart();
-    
+
     let posts = await userCart.getPosts();
-    posts.forEach( async post => await userCart.removePost(post))
+    posts.forEach(async post => await userCart.removePost(post));
 
     await userCart.save();
     return Promise.resolve({ message: 'Successfully cleared cart' });
