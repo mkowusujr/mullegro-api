@@ -26,7 +26,7 @@ describe('Post Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -60,7 +60,7 @@ describe('Post Service', () => {
               title: 'Dummy Post',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -69,7 +69,7 @@ describe('Post Service', () => {
               title: 'Dummy Post 2',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Mid',
+              condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -78,7 +78,7 @@ describe('Post Service', () => {
               title: 'Dummy Post3',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -105,7 +105,7 @@ describe('Post Service', () => {
               title: 'Dummy Post',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -114,7 +114,7 @@ describe('Post Service', () => {
               title: 'Dummy Post 2',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Mid',
+              condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -123,7 +123,7 @@ describe('Post Service', () => {
               title: 'Dummy Post 3',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -163,7 +163,7 @@ describe('Post Service', () => {
           title: 'Dummy Post 2',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Mid',
+          condition: 'Used - Acceptable',
           address: 'CANADA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -172,7 +172,7 @@ describe('Post Service', () => {
           title: 'Dummy Post3',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'JAPAN',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -181,7 +181,7 @@ describe('Post Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -237,7 +237,7 @@ describe('Post Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -286,7 +286,7 @@ describe('Post Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -324,7 +324,7 @@ describe('Post Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Mid',
+          condition: 'Used - Acceptable',
           address: 'CANADA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -362,8 +362,8 @@ describe('Post Service', () => {
     });
   });
 
-  describe('getPostsOfCategory', () => {
-    it('should return a post', async () => {
+  describe('filter', () => {
+    it('should return all posts of a certain category', async () => {
       try {
         await Post.bulkCreate(
           [
@@ -371,7 +371,7 @@ describe('Post Service', () => {
               title: 'Dummy Post',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -380,7 +380,7 @@ describe('Post Service', () => {
               title: 'Dummy Post 2',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Mid',
+              condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Trumpet',
               status: 'Not Sold'
@@ -389,7 +389,7 @@ describe('Post Service', () => {
               title: 'Dummy Post3',
               price: 100.0,
               description: 'This is an instrument',
-              condition: 'Good',
+              condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
               status: 'Not Sold'
@@ -398,25 +398,67 @@ describe('Post Service', () => {
           { returning: true }
         );
 
-        let response = await postService.getPostsOfCategory('Clarinet');
+        let queryCategory = 'Clarinet';
+        let response = await postService.filterPosts(queryCategory, null);
 
         expect(response.length).toEqual(2);
       } catch (error) {
         fail(error);
       }
     });
-    it('should throw an error if there is an issue', async () => {
+    it('should return all posts of a certain condition', async () => {
       try {
-        let response = await postService.getPost();
-        if (response || !response) fail("Didn't throw error");
+        await Post.bulkCreate(
+          [
+            {
+              title: 'Dummy Post',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Used - Very Good',
+              address: 'USA',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post 2',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Used - Acceptable',
+              address: 'CANADA',
+              category: 'Trumpet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post3',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Used - Very Good',
+              address: 'JAPAN',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            }
+          ],
+          { returning: true }
+        );
+        let queryCondition = 'Used - Very Good';
+        let response = await postService.filterPosts(null, queryCondition);
+
+        expect(response.length).toEqual(2);
       } catch (error) {
-        expect(console.error).toHaveBeenCalled();
+        fail(error);
       }
     });
   });
 
-  describe('getPostsOfCategory', () => {
-    it('should get all possible post categories', () => {
+  describe('getAllConditionNames', () => {
+    it('should get all possible post condition names', () => {
+      response = postService.getAllConditionNames();
+      expect(response.length).toEqual(6);
+    });
+  });
+
+  describe('getAllCategoryNames', () => {
+    it('should get all possible post category names', () => {
       response = postService.getAllCategoryNames();
       expect(response.length).toEqual(83);
     });

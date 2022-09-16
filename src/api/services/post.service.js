@@ -104,11 +104,11 @@ exports.getPost = async postId => {
  * @param {*} category
  * @returns
  */
-exports.getPostsOfCategory = async category => {
+const getPostsOfCategory = async category => {
   try {
     return await Post.findAll({ where: { category: category } });
   } catch (error) {
-    let errOutput = 'Error getting posts: ' + err;
+    let errOutput = 'Error getting posts of category: ' + err;
     return helperService.sendRejectedPromiseWith(errOutput);
   }
 };
@@ -118,4 +118,42 @@ exports.getAllCategoryNames = () => {
   const contents = readFileSync(filename, 'utf-8');
   let instrumentsList = JSON.parse(contents);
   return instrumentsList.sort();
+};
+
+const getPostsOfCondition = async condition => {
+  try {
+    return Post.findAll({ where: { condition: condition } });
+  } catch (error) {
+    let errOutput = 'Error getting posts by condition: ' + err;
+    return helperService.sendRejectedPromiseWith(errOutput);
+  }
+};
+
+exports.getAllConditionNames = () => {
+  const conditionOptions = [
+    'New',
+    'Renewed',
+    'Used - Like New',
+    'Used - Very Good',
+    'Used - Good',
+    'Used - Acceptable'
+  ];
+  return conditionOptions;
+};
+
+exports.filterPosts = async (queryCategory, queryCondition) => {
+  try {
+    let filteredPosts = [];
+
+    let postsByCategory = await getPostsOfCategory(queryCategory);
+
+    let postsByCondition = await getPostsOfCondition(queryCondition);
+    filteredPosts.push(postsByCondition);
+
+    filteredPosts = [...postsByCategory, ...postsByCondition];
+    return filteredPosts;
+  } catch (error) {
+    let errOutput = 'Error filtering posts: ' + error;
+    return helperService.sendRejectedPromiseWith(errOutput);
+  }
 };

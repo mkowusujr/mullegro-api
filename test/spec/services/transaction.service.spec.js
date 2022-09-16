@@ -34,7 +34,7 @@ describe('Transaction Service', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -43,7 +43,7 @@ describe('Transaction Service', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -52,7 +52,7 @@ describe('Transaction Service', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'

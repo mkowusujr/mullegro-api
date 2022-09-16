@@ -42,7 +42,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -76,7 +76,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -122,7 +122,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -131,7 +131,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -140,7 +140,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -174,7 +174,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -183,7 +183,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -192,7 +192,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -245,7 +245,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -254,7 +254,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -263,7 +263,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -304,7 +304,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -372,7 +372,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -429,7 +429,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -438,7 +438,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -447,7 +447,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Trumpet',
             status: 'Not Sold'
@@ -463,6 +463,57 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(2);
+          response.body.forEach(object => checkToSeeIsPostObject(object));
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('can get all of a certain condition', async () => {
+        try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Used - Acceptable',
+            address: 'CANADA',
+            category: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Used - Very Good',
+            address: 'JAPAN',
+            category: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Used - Very Good',
+            address: 'USA',
+            category: 'Trumpet',
+            status: 'Not Sold'
+          });
+
+          let searchTerm = 'Used - Acceptable';
+          let queryUrl = '?condition=' + searchTerm;
+
+          const response = await request(server)
+            .get(`/api/posts/filter` + queryUrl)
+            .set('Content-Type', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(1);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
           fail(error);
@@ -485,7 +536,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post 2',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Mid',
+            condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -494,7 +545,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post3',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
             status: 'Not Sold'
@@ -503,7 +554,7 @@ describe('Post Controller', () => {
             title: 'Dummy Post',
             price: 100.0,
             description: 'This is an instrument',
-            condition: 'Good',
+            condition: 'Used - Very Good',
             address: 'USA',
             category: 'Trumpet',
             status: 'Not Sold'

@@ -76,8 +76,9 @@ router.get('', async (req, res) => {
  */
 router.get('/filter', async (req, res) => {
   try {
-    let queryCategory = req.query.category;
-    let allPosts = await postService.getPostsOfCategory(queryCategory);
+    let queryCategory = req.query.category ?? null;
+    let queryCondition = req.query.condition ?? null;
+    let allPosts = await postService.filterPosts(queryCategory, queryCondition);
     return res.status(200).send(allPosts);
   } catch (err) {
     return res.status(404).send(err);

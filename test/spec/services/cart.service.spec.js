@@ -62,7 +62,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -96,7 +96,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -134,7 +134,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -143,7 +143,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post2',
           price: 100.0,
           description: 'This is an instrument too',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -178,7 +178,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post',
           price: 100.0,
           description: 'This is an instrument',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
@@ -187,7 +187,7 @@ describe('Cart Service', () => {
           title: 'Dummy Post2',
           price: 100.0,
           description: 'This is an instrument too',
-          condition: 'Good',
+          condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
           status: 'Not Sold'
