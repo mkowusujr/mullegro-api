@@ -105,10 +105,12 @@ router.post('/login', async (req, res) => {
  * /api/users/user/details:
  *    get:
  *      tags: ['User Controller']
- *      description: Get the logged in user's details
+ *      summary: Gets the current users properties
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error fetching users
  */
 router.get('/user/details', auth.verifyToken, (req, res) => {
   return res.status(200).send(res.locals.user);
@@ -119,10 +121,12 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
  * /api/users:
  *    get:
  *      tags: ['User Controller']
- *      description: Get all users from the database
+ *      summary: Get all users from the database
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error fetching users
  */
 router.get('', async (req, res) => {
   try {
@@ -135,13 +139,22 @@ router.get('', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/user/byId/:id:
+ * /api/users/user/byId/{id}:
  *    get:
  *      tags: ['User Controller']
- *      description: Get a user from the database by id
+ *      summary: Get a user from the database by id
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: Numeric ID of the user to get
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error fetching users
  */
 router.get('/user/byId/:id', async (req, res) => {
   try {
@@ -154,13 +167,22 @@ router.get('/user/byId/:id', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/user/:username:
+ * /api/users/user/{username}:
  *    get:
  *      tags: ['User Controller']
- *      description: Get a user from the database by username
+ *      summary: Get a user from the database by username
+ *      parameters:
+ *        - in: path
+ *          name: username
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: Username of the user to get
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error fetching users
  */
 router.get('/user/:username', async (req, res) => {
   try {
@@ -173,13 +195,22 @@ router.get('/user/:username', async (req, res) => {
 
 /**
  * @swagger
- * /api/users/user/:username:
+ * /api/users/user/{username}:
  *    delete:
  *      tags: ['User Controller']
- *      description: Delete a user from the database by username
+ *      summary: Delete a user from the database by username
+ *      parameters:
+ *        - in: path
+ *          name: username
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: Username of the user to delete
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error deleting users
  */
 router.delete('/user/:username', async (req, res) => {
   try {
@@ -197,10 +228,18 @@ router.delete('/user/:username', async (req, res) => {
  * /api/users/search:
  *    get:
  *      tags: ['User Controller']
- *      description: Search and retrieve all the users in the database whose username matched the search query
+ *      summary: Search and retrieve all the users in the database whose username matched the search query
+ *      parameters:
+ *        - in: query
+ *          name: query
+ *          schema:
+ *            type: string
+ *          description: The search query to look for users with
  *      responses:
  *        200:
  *          description: Success
+ *        404:
+ *          description: Error fetching users
  */
 router.get('/search', async (req, res) => {
   try {
