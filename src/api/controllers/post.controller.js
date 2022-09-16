@@ -85,6 +85,24 @@ router.get('/filter', async (req, res) => {
   }
 });
 
+router.get('/filter/category/names', async (req, res) => {
+  try {
+    let categoryNames = postService.getAllCategoryNames();
+    return res.status(200).send(categoryNames);
+  } catch (err) {
+    return res.status(404).send(err);
+  }
+});
+
+router.get('/filter/condition/names', async (req, res) => {
+  try {
+    let conditionNames = postService.getAllConditionNames();
+    return res.status(200).send(conditionNames);
+  } catch (err) {
+    return res.status(404).send(err);
+  }
+});
+
 router.get('/search', async (req, res) => {
   try {
     let queryString = req.query.query;

@@ -417,42 +417,45 @@ describe('Post Controller', () => {
 
   describe("endpoint: '/api/posts/filter', ", () => {
     describe('HTTP GET method', () => {
+      let dummyUser;
+      beforeEach(async () => {
+        dummyUser = await User.create({
+          name: 'Dummy User',
+          address: 'USA',
+          username: 'dummy_username',
+          email: 'dummay@email.com'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post 2',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Used - Acceptable',
+          address: 'CANADA',
+          category: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await dummyUser.createPost({
+          title: 'Dummy Post3',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Used - Very Good',
+          address: 'JAPAN',
+          category: 'Clarinet',
+          status: 'Not Sold'
+        });
+        await Post.create({
+          title: 'Dummy Post',
+          price: 100.0,
+          description: 'This is an instrument',
+          condition: 'Used - Very Good',
+          address: 'USA',
+          category: 'Trumpet',
+          status: 'Not Sold'
+        });
+      });
+
       it('can get all of a certain category', async () => {
         try {
-          let dummyUser = await User.create({
-            name: 'Dummy User',
-            address: 'USA',
-            username: 'dummy_username',
-            email: 'dummay@email.com'
-          });
-          await dummyUser.createPost({
-            title: 'Dummy Post 2',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Acceptable',
-            address: 'CANADA',
-            category: 'Clarinet',
-            status: 'Not Sold'
-          });
-          await dummyUser.createPost({
-            title: 'Dummy Post3',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Very Good',
-            address: 'JAPAN',
-            category: 'Clarinet',
-            status: 'Not Sold'
-          });
-          await Post.create({
-            title: 'Dummy Post',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Very Good',
-            address: 'USA',
-            category: 'Trumpet',
-            status: 'Not Sold'
-          });
-
           let searchTerm = 'Clarinet';
           let queryUrl = '?category=' + searchTerm;
 
@@ -470,40 +473,6 @@ describe('Post Controller', () => {
       });
       it('can get all of a certain condition', async () => {
         try {
-          let dummyUser = await User.create({
-            name: 'Dummy User',
-            address: 'USA',
-            username: 'dummy_username',
-            email: 'dummay@email.com'
-          });
-          await dummyUser.createPost({
-            title: 'Dummy Post 2',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Acceptable',
-            address: 'CANADA',
-            category: 'Clarinet',
-            status: 'Not Sold'
-          });
-          await dummyUser.createPost({
-            title: 'Dummy Post3',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Very Good',
-            address: 'JAPAN',
-            category: 'Clarinet',
-            status: 'Not Sold'
-          });
-          await Post.create({
-            title: 'Dummy Post',
-            price: 100.0,
-            description: 'This is an instrument',
-            condition: 'Used - Very Good',
-            address: 'USA',
-            category: 'Trumpet',
-            status: 'Not Sold'
-          });
-
           let searchTerm = 'Used - Acceptable';
           let queryUrl = '?condition=' + searchTerm;
 
@@ -515,6 +484,32 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(1);
           response.body.forEach(object => checkToSeeIsPostObject(object));
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('can get all the possible filter category names', async () => {
+        try {
+          const response = await request(server)
+            .get('/api/posts//filter/category/names')
+            .set('Content-Type', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(83);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('can get all the possible filter ... names', async () => {
+        try {
+          const response = await request(server)
+            .get('/api/posts/filter/condition/names')
+            .set('Content-Type', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(6);
         } catch (error) {
           fail(error);
         }
