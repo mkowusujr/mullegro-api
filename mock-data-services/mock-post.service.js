@@ -31,7 +31,7 @@ randomCondition = () => {
   return conditionOptions[randomIndex];
 };
 
-randomType = () => {
+randomCategory = () => {
   const typeOptions = getInstrumentsList();
   randomIndex = getRandomInt(typeOptions.length - 1);
   return typeOptions[randomIndex];
@@ -43,7 +43,7 @@ exports.createPosts = async users => {
 
   users.forEach(async user => {
     maxAmountOfPostPerUser = getRandomInt(10);
-    instrumentType = randomType();
+    instrumentType = randomCategory();
 
     for (let i = 0; i < maxAmountOfPostPerUser; i++) {
       await postService.createNewPost(user, {
