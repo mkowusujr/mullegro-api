@@ -10,7 +10,7 @@ const checkToSeeIsPostObject = object => {
   expect(object.hasOwnProperty('description')).toBeTrue();
   expect(object.hasOwnProperty('condition')).toBeTrue();
   expect(object.hasOwnProperty('address')).toBeTrue();
-  expect(object.hasOwnProperty('type')).toBeTrue();
+  expect(object.hasOwnProperty('category')).toBeTrue();
   expect(object.hasOwnProperty('status')).toBeTrue();
 };
 
@@ -44,7 +44,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           const response = await request(server)
@@ -78,7 +78,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           let newStatus = { status: 'sold' };
@@ -124,7 +124,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await dummyUser.createPost({
@@ -133,7 +133,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await Post.create({
@@ -142,7 +142,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
 
@@ -176,7 +176,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await dummyUser.createPost({
@@ -185,7 +185,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await Post.create({
@@ -194,7 +194,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
 
@@ -247,7 +247,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await dummyUser.createPost({
@@ -256,7 +256,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           await Post.create({
@@ -265,7 +265,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           let token = jwtMaker.createJwt(dummyUser);
@@ -306,7 +306,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           };
           let token = jwtMaker.createJwt(dummyUser);
@@ -374,7 +374,7 @@ describe('Post Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           });
           let postId = 1;

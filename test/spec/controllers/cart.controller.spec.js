@@ -37,7 +37,7 @@ describe('Cart Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -46,7 +46,7 @@ describe('Cart Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -55,7 +55,7 @@ describe('Cart Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           }
         ],
@@ -86,7 +86,7 @@ describe('Cart Controller', () => {
 
           const response = await request(server)
             .get('/api/cart')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe('Cart Controller', () => {
           let post = { id: 1 };
           const response = await request(server)
             .post('/api/cart')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token)
             .send(post);
           expect(console.log).toHaveBeenCalled();
@@ -127,7 +127,7 @@ describe('Cart Controller', () => {
 
           const response = await request(server)
             .post('/api/cart')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token)
             .send(badPost);
 
@@ -156,7 +156,7 @@ describe('Cart Controller', () => {
 
           const response = await request(server)
             .delete('/api/cart')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -185,7 +185,7 @@ describe('Cart Controller', () => {
 
           const response = await request(server)
             .delete('/api/cart/post/1')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -198,7 +198,7 @@ describe('Cart Controller', () => {
         try {
           const response = await request(server)
             .delete('/api/cart/post/400')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);

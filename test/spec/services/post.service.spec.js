@@ -28,7 +28,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId = 1;
@@ -62,7 +62,7 @@ describe('Post Service', () => {
               description: 'This is an instrument',
               condition: 'Good',
               address: 'USA',
-              type: 'Clarinet',
+              category: 'Clarinet',
               status: 'Not Sold'
             },
             {
@@ -71,7 +71,7 @@ describe('Post Service', () => {
               description: 'This is an instrument',
               condition: 'Mid',
               address: 'CANADA',
-              type: 'Clarinet',
+              category: 'Clarinet',
               status: 'Not Sold'
             },
             {
@@ -80,7 +80,7 @@ describe('Post Service', () => {
               description: 'This is an instrument',
               condition: 'Good',
               address: 'JAPAN',
-              type: 'Clarinet',
+              category: 'Clarinet',
               status: 'Not Sold'
             }
           ],
@@ -123,7 +123,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Mid',
           address: 'CANADA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         await dummyUser.createPost({
@@ -132,7 +132,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'JAPAN',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         await Post.create({
@@ -141,7 +141,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
 
@@ -197,7 +197,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         };
 
@@ -208,7 +208,7 @@ describe('Post Service', () => {
         expect(response.description).toEqual(postObject.description);
         expect(response.condition).toEqual(postObject.condition);
         expect(response.address).toEqual(postObject.address);
-        expect(response.type).toEqual(postObject.type);
+        expect(response.category).toEqual(postObject.category);
         expect(response.status).toEqual(postObject.status);
 
         expect(response.userId).toEqual(dummyUser.id);
@@ -246,7 +246,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId = 1;
@@ -284,7 +284,7 @@ describe('Post Service', () => {
           description: 'This is an instrument',
           condition: 'Mid',
           address: 'CANADA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
 

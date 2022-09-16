@@ -52,7 +52,7 @@ exports.createPosts = async users => {
         description: faker.lorem.sentences(),
         condition: randomCondition(),
         address: user.address,
-        type: instrumentType,
+        category: instrumentType,
         status: 'Available',
         display_picture: faker.image.cats(500, 500, true)
       });

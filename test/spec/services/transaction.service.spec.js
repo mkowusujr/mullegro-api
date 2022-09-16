@@ -36,7 +36,7 @@ describe('Transaction Service', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -45,7 +45,7 @@ describe('Transaction Service', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -54,7 +54,7 @@ describe('Transaction Service', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           }
         ],

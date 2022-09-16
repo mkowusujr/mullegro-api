@@ -64,7 +64,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId = 1;
@@ -98,7 +98,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId = 1;
@@ -136,7 +136,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let post2 = await Post.create({
@@ -145,7 +145,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument too',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId1 = 1,
@@ -180,7 +180,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let post2 = await Post.create({
@@ -189,7 +189,7 @@ describe('Cart Service', () => {
           description: 'This is an instrument too',
           condition: 'Good',
           address: 'USA',
-          type: 'Clarinet',
+          category: 'Clarinet',
           status: 'Not Sold'
         });
         let postId1 = 1,
@@ -199,7 +199,7 @@ describe('Cart Service', () => {
 
         let response = await cartService.clearCart(dummyUser);
         let cartItems = await cartService.getCartItems(dummyUser);
-        console.log(JSON.stringify(cartItems));
+        
         expect(response.message).toBe('Successfully cleared cart');
         expect(cartItems.length).toEqual(0);
       } catch (error) {

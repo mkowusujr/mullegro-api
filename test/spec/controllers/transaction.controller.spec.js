@@ -43,7 +43,7 @@ describe('Transaction Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'USA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -52,7 +52,7 @@ describe('Transaction Controller', () => {
             description: 'This is an instrument',
             condition: 'Mid',
             address: 'CANADA',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           },
           {
@@ -61,7 +61,7 @@ describe('Transaction Controller', () => {
             description: 'This is an instrument',
             condition: 'Good',
             address: 'JAPAN',
-            type: 'Clarinet',
+            category: 'Clarinet',
             status: 'Not Sold'
           }
         ],
@@ -96,7 +96,7 @@ describe('Transaction Controller', () => {
 
           const response = await request(server)
             .post('/api/transactions')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -113,7 +113,7 @@ describe('Transaction Controller', () => {
         try {
           const response = await request(server)
             .post('/api/transactions')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -145,7 +145,7 @@ describe('Transaction Controller', () => {
 
           const response = await request(server)
             .get('/api/transactions')
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
@@ -186,7 +186,7 @@ describe('Transaction Controller', () => {
 
           const response = await request(server)
             .get(`/api/transactions/${transactionId}`)
-            .set('Content-Type', 'application/json')
+            .set('Content-category', 'application/json')
             .set('Authorization', token);
 
           expect(console.log).toHaveBeenCalled();
