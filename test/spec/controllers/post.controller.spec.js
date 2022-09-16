@@ -414,4 +414,60 @@ describe('Post Controller', () => {
       });
     });
   });
+
+  describe("endpoint: '/api/posts?category=', ", () => {
+    describe('HTTP GET method', () => {
+      it('can get all of a certain category', async () => {
+        try {
+          let dummyUser = await User.create({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post 2',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Mid',
+            address: 'CANADA',
+            category: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await dummyUser.createPost({
+            title: 'Dummy Post3',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'JAPAN',
+            category: 'Clarinet',
+            status: 'Not Sold'
+          });
+          await Post.create({
+            title: 'Dummy Post',
+            price: 100.0,
+            description: 'This is an instrument',
+            condition: 'Good',
+            address: 'USA',
+            category: 'Trumpet',
+            status: 'Not Sold'
+          });
+
+          let searchTerm = 'Clarinet';
+          let queryUrl = '?category=' + searchTerm;
+
+          const response = await request(server)
+            .get(`/api/posts/filter` + queryUrl)
+            .set('Content-Type', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(2);
+          response.body.forEach(object => checkToSeeIsPostObject(object));
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
 });

@@ -88,3 +88,17 @@ exports.getPost = async postId => {
     return helperService.sendRejectedPromiseWith(errOutput);
   }
 };
+
+/**
+ *
+ * @param {*} category
+ * @returns
+ */
+exports.getPostsOfCategory = async category => {
+  try {
+    return await Post.findAll({ where: { category: category } });
+  } catch (error) {
+    let errOutput = 'Error getting posts: ' + err;
+    return helperService.sendRejectedPromiseWith(errOutput);
+  }
+};

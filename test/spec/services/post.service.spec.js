@@ -319,4 +319,57 @@ describe('Post Service', () => {
       }
     });
   });
+
+  describe('getPostsOfCategory', () => {
+    it('should return a post', async () => {
+      try {
+        await Post.bulkCreate(
+          [
+            {
+              title: 'Dummy Post',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Good',
+              address: 'USA',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post 2',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Mid',
+              address: 'CANADA',
+              category: 'Trumpet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post3',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Good',
+              address: 'JAPAN',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            }
+          ],
+          { returning: true }
+        );
+
+        let response = await postService.getPostsOfCategory('Clarinet');
+
+        expect(response.length).toEqual(2);
+      } catch (error) {
+        fail(error);
+      }
+    });
+    it('should throw an error if there is an issue', async () => {
+      try {
+        let response = await postService.getPost();
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
+    });
+  });
 });

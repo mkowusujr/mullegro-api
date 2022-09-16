@@ -72,6 +72,19 @@ router.get('', async (req, res) => {
 });
 
 /**
+ * Get all Posts
+ */
+router.get('/filter', async (req, res) => {
+  try {
+    let queryCategory = req.query.category;
+    let allPosts = await postService.getPostsOfCategory(queryCategory);
+    return res.status(200).send(allPosts);
+  } catch (err) {
+    return res.status(404).send(err);
+  }
+});
+
+/**
  * Get all a users post
  */
 router.get('/users/user/:username/posts', async (req, res) => {
