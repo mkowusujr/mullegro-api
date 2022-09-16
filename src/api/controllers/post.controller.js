@@ -84,6 +84,16 @@ router.get('/filter', async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  try {
+    let queryString = req.query.query;
+    let posts = await postService.findAll(queryString);
+    return res.status(200).send(posts);
+  } catch (error) {
+    return res.status(404).send('Error fetching posts: ' + error);
+  }
+});
+
 /**
  * Get all a users post
  */

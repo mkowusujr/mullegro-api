@@ -52,7 +52,7 @@ describe('Post Service', () => {
   });
 
   describe('findAll', () => {
-    it('should get all the posts in the database', async () => {
+    it('can get all the posts in the database', async () => {
       try {
         let dummyPosts = await Post.bulkCreate(
           [
@@ -93,6 +93,48 @@ describe('Post Service', () => {
         for (let i = 0; i < response.length; i++) {
           expect(response[i].id).toEqual(i + 1);
         }
+      } catch (error) {
+        fail(error);
+      }
+    });
+    it('can search for the posts by title', async () => {
+      try {
+        await Post.bulkCreate(
+          [
+            {
+              title: 'Dummy Post',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Good',
+              address: 'USA',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post 2',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Mid',
+              address: 'CANADA',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            },
+            {
+              title: 'Dummy Post 3',
+              price: 100.0,
+              description: 'This is an instrument',
+              condition: 'Good',
+              address: 'JAPAN',
+              category: 'Clarinet',
+              status: 'Not Sold'
+            }
+          ],
+          { returning: true }
+        );
+
+        let response = await postService.findAll('2');
+
+        expect(response.length).toEqual(1);
       } catch (error) {
         fail(error);
       }
@@ -370,6 +412,13 @@ describe('Post Service', () => {
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
+    });
+  });
+
+  describe('getPostsOfCategory', () => {
+    it('should get all possible post categories', () => {
+      response = postService.getAllCategoryNames();
+      expect(response.length).toEqual(83);
     });
   });
 });

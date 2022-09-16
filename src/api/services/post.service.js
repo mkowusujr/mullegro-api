@@ -1,6 +1,9 @@
 const helperService = require('./helper.service');
 const db = require('../models');
 const Post = db.posts;
+const { readFileSync } = require('fs');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 /**
  * Get Logged in users posts
@@ -66,9 +69,16 @@ exports.deletePost = async (currentUser, postId) => {
 /**
  * Get all Posts
  */
-exports.findAll = async () => {
+exports.findAll = async searchQuery => {
   try {
-    return await Post.findAll();
+    if (!searchQuery) return await Post.findAll();
+    return await Post.findAll({
+      where: {
+        title: {
+          [Op.like]: `%${searchQuery}%`
+        }
+      }
+    });
   } catch (err) {
     let errOutput = 'Error getting posts: ' + err;
     return helperService.sendRejectedPromiseWith(errOutput);
@@ -101,4 +111,11 @@ exports.getPostsOfCategory = async category => {
     let errOutput = 'Error getting posts: ' + err;
     return helperService.sendRejectedPromiseWith(errOutput);
   }
+};
+
+exports.getAllCategoryNames = () => {
+  const filename = './mock-data-services/instruments-list.txt';
+  const contents = readFileSync(filename, 'utf-8');
+  let instrumentsList = JSON.parse(contents);
+  return instrumentsList.sort();
 };
