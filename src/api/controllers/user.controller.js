@@ -16,29 +16,7 @@ const auth = require('../middlewares/auth');
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              required:
- *                - name
- *                - email
- *                - username
- *                - address
- *                - password
- *              properties:
- *                name:
- *                  type: string
- *                  default: jane doe
- *                email:
- *                  type: string
- *                  default: jane.doe@example.com
- *                username:
- *                  type: string
- *                  default: jane.doe
- *                address:
- *                  type: string
- *                  default: somewhere 1234 dr
- *                password:
- *                  type: string
- *                  default: goodPassword
+ *              $ref: '#/components/schemas/User'
  *      responses:
  *        200:
  *          description: Successfully created user
@@ -70,17 +48,7 @@ router.post('/register', async (req, res) => {
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              required:
- *                - emailOrUsername
- *                - password
- *              properties:
- *                emailOrUsername:
- *                  type: string
- *                  default: jane.doe@example.com
- *                password:
- *                  type: string
- *                  default: goodPassword
+ *              $ref: '#/components/schemas/LoginInput'
  *      responses:
  *        200:
  *          description: Successfully logged in
@@ -108,7 +76,11 @@ router.post('/login', async (req, res) => {
  *      summary: Gets the current users properties
  *      responses:
  *        200:
- *          description: Success
+ *          description: A user
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Users'
  *        404:
  *          description: Error fetching users
  */
@@ -124,7 +96,11 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
  *      summary: Get all users from the database
  *      responses:
  *        200:
- *          description: Success
+ *          description: A list of all the users in the database
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Users'
  *        404:
  *          description: Error fetching users
  */
@@ -144,22 +120,21 @@ router.get('', async (req, res) => {
  *      tags: ['User Controller']
  *      summary: Get a user from the database by id
  *      parameters:
- *        - in: path
- *          name: id
- *          schema:
- *            type: integer
- *          required: true
- *          description: Numeric ID of the user to get
+ *        - $ref: '#/components/parameters/userIdParam'
  *      responses:
  *        200:
- *          description: Success
+ *          description: A user with the specified id
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
  *        404:
  *          description: Error fetching users
  */
 router.get('/user/byId/:id', async (req, res) => {
   try {
     let fetchedUser = await userService.getUserById(req.params.id);
-    return res.status(200).json(fetchedUser);
+    return res.status(200).send(fetchedUser);
   } catch (error) {
     return res.status(404).send('Error fetching user: ' + error);
   }
@@ -172,15 +147,14 @@ router.get('/user/byId/:id', async (req, res) => {
  *      tags: ['User Controller']
  *      summary: Get a user from the database by username
  *      parameters:
- *        - in: path
- *          name: username
- *          schema:
- *            type: string
- *          required: true
- *          description: Username of the user to get
+ *        - $ref: '#/components/parameters/usernameParam'
  *      responses:
  *        200:
- *          description: Success
+ *          description: A user with the specified username
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
  *        404:
  *          description: Error fetching users
  */
@@ -200,15 +174,10 @@ router.get('/user/:username', async (req, res) => {
  *      tags: ['User Controller']
  *      summary: Delete a user from the database by username
  *      parameters:
- *        - in: path
- *          name: username
- *          schema:
- *            type: string
- *          required: true
- *          description: Username of the user to delete
+ *        - $ref: '#/components/parameters/usernameParam'
  *      responses:
  *        200:
- *          description: Success
+ *          description: Successfully deleted user
  *        404:
  *          description: Error deleting users
  */
@@ -230,14 +199,14 @@ router.delete('/user/:username', async (req, res) => {
  *      tags: ['User Controller']
  *      summary: Search and retrieve all the users in the database whose username matched the search query
  *      parameters:
- *        - in: query
- *          name: query
- *          schema:
- *            type: string
- *          description: The search query to look for users with
+ *        - $ref: '#/components/parameters/searchUserParam'
  *      responses:
  *        200:
- *          description: Success
+ *          description: A list of users
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Users'
  *        404:
  *          description: Error fetching users
  */
