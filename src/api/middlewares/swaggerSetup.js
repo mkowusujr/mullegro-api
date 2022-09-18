@@ -1,6 +1,6 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 
-const userSchemaProperties = {
+const createUserSchemaProperties = {
   name: {
     type: 'string',
     example: 'jane doe',
@@ -28,7 +28,60 @@ const userSchemaProperties = {
   }
 };
 
+const userSchemaProperties = {
+  id: {
+    type: 'number',
+    example: 1
+  },
+  name: {
+    type: 'string',
+    example: 'jane doe'
+  },
+  email: {
+    type: 'string',
+    example: 'jane.doe@example.com'
+  },
+  username: {
+    type: 'string',
+    example: 'jane.doe'
+  },
+  address: {
+    type: 'string',
+    example: 'somewhere 1234 dr'
+  },
+  password: {
+    type: 'string',
+    example: 'goodPassword'
+  },
+  bio: {
+    type: 'string',
+    example: 'A short paragraph about this user'
+  },
+  profile_picture: {
+    type: 'string',
+    example: 'imageUrl'
+  }
+};
+
+const loginInputSchemaProperties = {
+  emailOrUsername: {
+    type: 'string',
+    example: 'jane.doe@example.com ',
+    required: true
+  },
+  password: {
+    type: 'string',
+    example: 'goodPassword',
+    required: true
+  }
+};
+
 const schemas = {
+  CreateUser: {
+    type: Object,
+    description: 'Data object for creating a user',
+    properties: createUserSchemaProperties
+  },
   User: {
     type: Object,
     description: 'Data object for a user',
@@ -42,18 +95,7 @@ const schemas = {
   },
   LoginInput: {
     type: Object,
-    properties: {
-      emailOrUsername: {
-        type: 'string',
-        example: 'jane.doe@example.com ',
-        required: true
-      },
-      password: {
-        type: 'string',
-        example: 'goodPassword',
-        required: true
-      }
-    }
+    properties: loginInputSchemaProperties
   }
 };
 

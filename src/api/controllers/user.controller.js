@@ -16,7 +16,7 @@ const auth = require('../middlewares/auth');
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/User'
+ *              $ref: '#/components/schemas/CreateUser'
  *      responses:
  *        200:
  *          description: Successfully created user
