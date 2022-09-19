@@ -9,10 +9,16 @@ const cartService = require('../services/cart.service');
  * /api/cart:
  *    get:
  *      tags: ['Cart Controller']
- *      description: Getts all the posts in a user's cart
+ *      description: Gets current user's cart
  *      responses:
  *        200:
  *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Cart'
+ *        400:
+ *          description: Error getting user's cart
  */
 router.get('', auth.verifyToken, async (req, res) => {
   try {
@@ -26,7 +32,23 @@ router.get('', auth.verifyToken, async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/cart:
+ *    post:
+ *      tags: ['Cart Controller']
+ *      description: Adds the post to the current user's cart
+ *      requestBody:
+ *        description: The post to add to the cart
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Post'
+ *      responses:
+ *        200:
+ *          description: Successfully added post to cart
+ *        400:
+ *          description: Error getting user's cart
  */
 router.post('', auth.verifyToken, async (req, res) => {
   try {
@@ -42,7 +64,16 @@ router.post('', auth.verifyToken, async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/cart:
+ *    delete:
+ *      tags: ['Cart Controller']
+ *      description: Clears the current user's cart
+ *      responses:
+ *        200:
+ *          description: Successfully cleared the cart
+ *        400:
+ *          description: Error clearing the user's cart
  */
 router.delete('', auth.verifyToken, async (req, res) => {
   try {
@@ -56,7 +87,18 @@ router.delete('', auth.verifyToken, async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/cart/post/{id}:
+ *    delete:
+ *      tags: ['Cart Controller']
+ *      description: Removes the post to the current user's cart
+ *      parameters:
+ *        - $ref: '#/components/parameters/postIdParam'
+ *      responses:
+ *        200:
+ *          description: Successfully removed post to cart
+ *        400:
+ *          description: Error removing post from the user's cart
  */
 router.delete('/post/:id', auth.verifyToken, async (req, res) => {
   try {
