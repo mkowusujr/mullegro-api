@@ -201,7 +201,7 @@ router.delete('/user/:username', async (req, res) => {
  *      tags: ['User Controller']
  *      summary: Search and retrieve all the users in the database whose username matched the search query
  *      parameters:
- *        - $ref: '#/components/parameters/searchUserParam'
+ *        - $ref: '#/components/parameters/searchQuery'
  *      responses:
  *        200:
  *          description: A list of users

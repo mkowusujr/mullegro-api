@@ -153,6 +153,18 @@ const transactionSchemaProperties = {
   }
 };
 
+const filterOptionsSchemaProperties = {
+  options: {
+    type: 'array',
+    items: {
+      optionName: {
+        type: 'string',
+        example: 'Specific '
+      }
+    }
+  }
+}
+
 const schemas = {
   CreateUser: {
     type: 'object',
@@ -198,21 +210,31 @@ const schemas = {
     type: 'array',
     description: 'List of transaction data objects',
     items: { $ref: '#/components/schemas/Transaction' }
+  },
+  FilterOptions: {
+    type: 'object',
+    description: 'Data object containing a list of filter options',
+    properties: filterOptionsSchemaProperties
   }
 };
 
-const idBaseParam = {
+const baseIdParam = {
   in: 'path',
-  name: 'id',
   type: 'number',
-  required: true,
-  description: 'Id of the user to get'
+  required: true
+};
+
+const baseQueryParam = {
+  in: 'query',
+  type: 'string',
+  required: false,
 };
 
 const parameters = {
   userIdParam: {
-    ...idBaseParam,
-    description: 'Id of the user to get'
+    ...baseIdParam,
+    description: 'Id of the user to get',
+    name: 'User Id'
   },
   usernameParam: {
     in: 'path',
@@ -221,20 +243,31 @@ const parameters = {
     required: true,
     description: 'Username of the user to get'
   },
-  searchUserParam: {
-    in: 'query',
-    name: 'username',
-    type: 'string',
-    required: true,
-    description: 'The search query to look for users with'
-  },
   postIdParam: {
-    ...idBaseParam,
-    description: 'Id of post to get'
+    ...baseIdParam,
+    description: 'Id of post to get',
+    name: 'Post Id'
   },
   transactionIdParam: {
-    ...idBaseParam,
-    description: 'Id of transaction to get'
+    ...baseIdParam,
+    description: 'Id of transaction to get',
+    name: 'Transaction Id'
+  },
+  searchQuery: {
+    ...baseQueryParam,
+    description: 'The search term',
+    name: 'Search Query',
+    required: true
+  },
+  categoryQuery: {
+    ...baseQueryParam,
+    description: 'The category filter',
+    name: 'Category Query'
+  },
+  conditionQuery: {
+    ...baseQueryParam,
+    description: 'The condition filter',
+    name: 'Condition Query'
   }
 };
 

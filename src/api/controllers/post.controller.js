@@ -9,10 +9,16 @@ const userService = require('../services/user.service');
  * /api/posts/user/posts:
  *    get:
  *      tags: ['Post Controller']
- *      description: Logged in user getting new posts
+ *      summary: Get all the currently user's posts
  *      responses:
  *        200:
  *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Posts'
+ *        400: 
+ *          description: Error getting all the current user's posts
  */
 router.get('/user/posts', auth.verifyToken, async (req, res) => {
   try {
@@ -26,7 +32,27 @@ router.get('/user/posts', auth.verifyToken, async (req, res) => {
 });
 
 /**
- * Logged in user making new posts
+ * @swagger
+ * /api/posts/user/posts:
+ *    post:
+ *      tags: ['Post Controller']
+ *      summary: Create a post for the current user
+ *      requestBody:
+ *        description: The post to add to create
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Post'
+ *      responses:
+ *        200:
+ *          description: Success creating post
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Post'
+ *        400: 
+ *          description: Error creating post
  */
 router.post('/user/posts', auth.verifyToken, async (req, res) => {
   try {
@@ -41,7 +67,18 @@ router.post('/user/posts', auth.verifyToken, async (req, res) => {
 });
 
 /**
- * Logged in user modifying their posts
+ * @swagger
+ * /api/posts/post/{postId}:
+ *    delete:
+ *      tags: ['Post Controller']
+ *      summary: Delete the current user's post
+ *      parameters:
+ *        - $ref: '#/components/parameters/postIdParam'
+ *      responses:
+ *        200:
+ *          description: Successfully deleted the current user's post
+ *        404: 
+ *          description: Error delete current user's post
  */
 router.delete(
   '/user/posts/post/:postId',
@@ -60,7 +97,20 @@ router.delete(
 );
 
 /**
- * Get all Posts
+ * @swagger
+ * /api/posts:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all posts from the database
+ *      responses:
+ *        200:
+ *          description: Success getting all posts from the database
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Posts'
+ *        400: 
+ *          description: Error getting all posts from the database
  */
 router.get('', async (req, res) => {
   try {
@@ -72,7 +122,23 @@ router.get('', async (req, res) => {
 });
 
 /**
- * Get all Posts
+ * @swagger
+ * /api/posts/filter:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all posts from the database that match the filter
+ *      parameters:
+ *        - $ref: '#/components/parameters/categoryQuery'
+ *        - $ref: '#/components/parameters/conditionQuery'
+ *      responses:
+ *        200:
+ *          description: Success getting all posts from the database that match the filter
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Posts'
+ *        400: 
+ *          description: Error getting all posts from the database that match the filter
  */
 router.get('/filter', async (req, res) => {
   try {
@@ -86,15 +152,47 @@ router.get('/filter', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/posts/filter/category/names:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all filter options for the category filter
+ *      responses:
+ *        200:
+ *          description: Success getting all filter options for the category filter
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/FilterOptions'
+ *        400: 
+ *          description: Error getting all filter options for the category filter
+ */
 router.get('/filter/category/names', async (req, res) => {
   try {
     let categoryNames = postService.getAllCategoryNames();
     return res.status(200).send(categoryNames);
   } catch (err) {
-    return res.status(404).send(err);
+    return res.status(400).send(err);
   }
 });
 
+/**
+ * @swagger
+ * /api/posts/filter/condition/names:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all filter options for the condition filter
+ *      responses:
+ *        200:
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/FilterOptions'
+ *        400: 
+ *          description: Error getting all filter options for the condition filter
+ */
 router.get('/filter/condition/names', async (req, res) => {
   try {
     let conditionNames = postService.getAllConditionNames();
@@ -104,6 +202,24 @@ router.get('/filter/condition/names', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/posts/search:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all posts that contained the search query param
+ *      parameters:
+ *        - $ref: '#/components/parameters/searchQuery'
+ *      responses:
+ *        200:
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Posts'
+ *        400: 
+ *          description: Error getting all filter options for the condition filter
+ */
 router.get('/search', async (req, res) => {
   try {
     let queryString = req.query.query;
@@ -115,7 +231,22 @@ router.get('/search', async (req, res) => {
 });
 
 /**
- * Get all a users post
+ * @swagger
+ * /api/posts/user/{username}/posts:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get all of a user's posts
+ *      parameters:
+ *        - $ref: '#/components/parameters/usernameParam'
+ *      responses:
+ *        200:
+ *          description: Success getting all of a user's posts
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Posts'
+ *        404: 
+ *          description: Error getting all of a user's posts
  */
 router.get('/users/user/:username/posts', async (req, res) => {
   try {
@@ -128,11 +259,26 @@ router.get('/users/user/:username/posts', async (req, res) => {
 });
 
 /**
- * Get one post
+ * @swagger
+ * /api/posts/post/{postId}:
+ *    get:
+ *      tags: ['Post Controller']
+ *      summary: Get a post
+ *      parameters:
+ *        - $ref: '#/components/parameters/postIdParam'
+ *      responses:
+ *        200:
+ *          description: Success getting a post
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Post'
+ *        404: 
+ *          description: Error getting a post
  */
-router.get('/post/:id', async (req, res) => {
+router.get('/post/:postId', async (req, res) => {
   try {
-    let post = await postService.getPost(req.params.id);
+    let post = await postService.getPost(req.params.postId);
     return res.status(200).send(post);
   } catch (err) {
     return res.status(404).send(err);
@@ -140,11 +286,26 @@ router.get('/post/:id', async (req, res) => {
 });
 
 /**
- * Update a post
+ * @swagger
+ * /api/posts/post/{postId}:
+ *    update:
+ *      tags: ['Post Controller']
+ *      summary: Update a post's status
+ *      parameters:
+ *        - $ref: '#/components/parameters/postIdParam'
+ *      responses:
+ *        200:
+ *          description: Success getting a post
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Post'
+ *        404: 
+ *          description: Error getting a post
  */
-router.put('/post/:id', async (req, res) => {
+router.put('/post/:postId', async (req, res) => {
   try {
-    await postService.updatePostStatus(req.params.id, req.body);
+    await postService.updatePostStatus(req.params.postId, req.body);
     return res.status(200).send('Successfully updated post');
   } catch (err) {
     return res.status(404).send(err);
