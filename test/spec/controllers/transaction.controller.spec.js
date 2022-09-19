@@ -175,29 +175,29 @@ describe('Transaction Controller', () => {
           fail(error);
         }
       });
-      it("gets a transcation from a user's transaction history", async () => {
+      it("gets a transaction from a user's transaction history", async () => {
         try {
-          for (let i = 0; i < dummyPosts.length; i++) {
-            await cartService
-              .addToCart(dummyUser, dummyPosts[i].id)
-              .then(async () => {
-                await transactionService.addToTransactions(dummyUser);
-              });
-          }
-          let transactionId = 2;
+          await cartService
+            .addToCart(dummyUser, dummyPosts[0].id)
+            .then(async () => {
+              await transactionService.addToTransactions(dummyUser);
+            })
+            .then(async () => {
+              let transactionId = 1;
 
-          const response = await request(server)
-            .get(`/api/transactions/transaction/${transactionId}`)
-            .set('Content-category', 'application/json')
-            .set('Authorization', token);
-
-          expect(console.log).toHaveBeenCalled();
-          expect(response.status).toEqual(200);
-          expect(response.body.id).toEqual(transactionId);
-          expect(response.body.dateString).toBeTruthy();
-          expect(response.body.totalAmount).toBeTruthy();
-          expect(response.body.itemCount).toBeTruthy();
-          expect(response.body.posts.length).toEqual(dummyPosts.length);
+              const response = await request(server)
+                .get(`/api/transactions/transaction/${transactionId}`)
+                .set('Content-category', 'application/json')
+                .set('Authorization', token);
+              
+              expect(console.log).toHaveBeenCalled();
+              expect(response.status).toEqual(200);
+              expect(response.body.id).toEqual(transactionId);
+              expect(response.body.dateString).toBeTruthy();
+              expect(response.body.totalAmount).toEqual(100);
+              expect(response.body.itemCount).toEqual(1);
+              expect(response.body.posts.length).toEqual(1);
+            });
         } catch (error) {
           fail(error);
         }
