@@ -163,11 +163,13 @@ describe('Transaction Controller', () => {
     });
   });
 
-  describe("endpoint: '/api/transactions/:transactionId', ", () => {
+  describe("endpoint: '/api/transactions/transaction/:transactionId', ", () => {
     describe('HTTP GET method', () => {
       it('should require authorization', async () => {
         try {
-          const response = await request(server).get('/api/transactions/1');
+          const response = await request(server).get(
+            '/api/transactions/transaction/1'
+          );
           expect(response.status).toEqual(401);
         } catch (error) {
           fail(error);
@@ -185,7 +187,7 @@ describe('Transaction Controller', () => {
           let transactionId = 2;
 
           const response = await request(server)
-            .get(`/api/transactions/${transactionId}`)
+            .get(`/api/transactions/transaction/${transactionId}`)
             .set('Content-category', 'application/json')
             .set('Authorization', token);
 
