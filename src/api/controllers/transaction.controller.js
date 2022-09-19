@@ -42,7 +42,7 @@ router.get('', auth.verifyToken, async (req, res) => {
 /**
  *
  */
-router.get('transaction/:transactionId', auth.verifyToken, async (req, res) => {
+router.get('/transaction/:transactionId', auth.verifyToken, async (req, res) => {
   try {
     let transactionId = req.params.transactionId;
     let transaction = await transactionService.getTransaction(transactionId);
