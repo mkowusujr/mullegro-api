@@ -48,7 +48,7 @@ router.get('', auth.verifyToken, async (req, res) => {
  *        200:
  *          description: Successfully added post to cart
  *        400:
- *          description: Error getting user's cart
+ *          description: Error adding to the user's cart
  */
 router.post('', auth.verifyToken, async (req, res) => {
   try {
