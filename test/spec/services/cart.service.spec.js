@@ -200,10 +200,10 @@ describe('Cart Service', () => {
         await cartService.addToCart(dummyUser, postId2);
 
         let response = await cartService.clearCart(dummyUser);
-        let cartItems = await cartService.getCartItems(dummyUser);
+        let cart = await cartService.getCart(dummyUser);
 
         expect(response.message).toBe('Successfully cleared cart');
-        expect(cartItems.length).toEqual(0);
+        expect(cart.posts.length).toEqual(0);
       } catch (error) {
         fail(error);
       }
