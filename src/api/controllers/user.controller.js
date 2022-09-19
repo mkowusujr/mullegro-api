@@ -74,6 +74,8 @@ router.post('/login', async (req, res) => {
  *    get:
  *      tags: ['User Controller']
  *      summary: Gets the current users properties
+ *      security:
+ *      - BearerAuth: []
  *      responses:
  *        200:
  *          description: A user

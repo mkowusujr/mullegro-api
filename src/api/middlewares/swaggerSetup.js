@@ -123,9 +123,18 @@ const parameters = {
   }
 };
 
+const security = {
+  BearerAuth: {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT'
+  }
+};
+
 const components = {
   schemas: schemas,
-  parameters: parameters
+  parameters: parameters,
+  security: security
 };
 
 const swaggerDefinition = {
