@@ -59,13 +59,22 @@ exports.removeFromCart = async (user, postId) => {
   }
 };
 
-exports.getCartItems = async user => {
+exports.getCart = async user => {
   try {
     await verifyUserHasCart(user);
-    let userCart = await user.getCart();
-    return await userCart.getPosts();
+    let userCart = await user.getCart({
+      include: Post
+    });
+
+    userCart.itemCount = await userCart.posts.length;
+    await userCart.posts.forEach(post => {
+      userCart.totalAmount += post.price;
+    });
+
+    await userCart.save();
+    return userCart;
   } catch (error) {
-    let errorOutput = "Error getting user's cart items: " + error;
+    let errorOutput = "Error getting user's cart: " + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };

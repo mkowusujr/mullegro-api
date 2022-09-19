@@ -16,7 +16,7 @@ const cartService = require('../services/cart.service');
  */
 router.get('', auth.verifyToken, async (req, res) => {
   try {
-    let cartItems = await cartService.getCartItems(
+    let cartItems = await cartService.getCart(
       await userService.getCurrentUser(res)
     );
     return res.status(200).send(cartItems);

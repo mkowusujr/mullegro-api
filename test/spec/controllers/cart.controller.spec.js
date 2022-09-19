@@ -91,7 +91,9 @@ describe('Cart Controller', () => {
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
-          expect(response.body.length).toEqual(3);
+          expect(response.body.totalAmount).toBeTruthy();
+          expect(response.body.itemCount).toBeTruthy();
+          expect(response.body.posts.length).toEqual(dummyPosts.length);
         } catch (error) {
           fail(error);
         }

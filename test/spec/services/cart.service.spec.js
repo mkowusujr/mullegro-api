@@ -127,8 +127,8 @@ describe('Cart Service', () => {
     });
   });
 
-  describe('getCartItems', () => {
-    it('gets all the items in the cart', async () => {
+  describe('getCart', () => {
+    it("gets current users' cart", async () => {
       try {
         let post = await Post.create({
           title: 'Dummy Post',
@@ -153,9 +153,11 @@ describe('Cart Service', () => {
         await cartService.addToCart(dummyUser, postId1);
         await cartService.addToCart(dummyUser, postId2);
 
-        let response = await cartService.getCartItems(dummyUser);
+        let cart = await cartService.getCart(dummyUser);
 
-        expect(response.length).toEqual(2);
+        expect(cart.itemCount).toEqual(2);
+        expect(cart.totalAmount).toEqual(200);
+        expect(cart.posts.length).toEqual(2);
       } catch (error) {
         fail(error);
       }
@@ -163,7 +165,7 @@ describe('Cart Service', () => {
     it('throws an error if there is an issue', async () => {
       try {
         let dummyUser2 = {};
-        let response = await cartService.getCartItems(dummyUser2);
+        let response = await cartService.getCart(dummyUser2);
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
