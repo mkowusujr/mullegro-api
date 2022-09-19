@@ -5,6 +5,12 @@ module.exports = (sequelize, Sequelize) => {
       autoIncrement: true,
       allowNull: false,
       primaryKey: true
+    },
+    totalAmount: {
+      type: Sequelize.FLOAT
+    },
+    itemCount: {
+      type: Sequelize.INTEGER
     }
   });
   return Cart;
