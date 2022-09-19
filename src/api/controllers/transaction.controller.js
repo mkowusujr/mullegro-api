@@ -17,7 +17,7 @@ const userService = require('../services/user.service');
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Transaction'
- *        400: 
+ *        400:
  *          description: Error adding transaction
  */
 router.post('', auth.verifyToken, async (req, res) => {
@@ -44,7 +44,7 @@ router.post('', auth.verifyToken, async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Transactions'
- *        400: 
+ *        400:
  *          description: Error getting transaction history
  */
 router.get('', auth.verifyToken, async (req, res) => {

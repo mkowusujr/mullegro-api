@@ -17,7 +17,7 @@ const userService = require('../services/user.service');
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Posts'
- *        400: 
+ *        400:
  *          description: Error getting all the current user's posts
  */
 router.get('/user/posts', auth.verifyToken, async (req, res) => {
@@ -51,7 +51,7 @@ router.get('/user/posts', auth.verifyToken, async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Post'
- *        400: 
+ *        400:
  *          description: Error creating post
  */
 router.post('/user/posts', auth.verifyToken, async (req, res) => {
@@ -77,7 +77,7 @@ router.post('/user/posts', auth.verifyToken, async (req, res) => {
  *      responses:
  *        200:
  *          description: Successfully deleted the current user's post
- *        404: 
+ *        404:
  *          description: Error delete current user's post
  */
 router.delete(
@@ -109,7 +109,7 @@ router.delete(
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Posts'
- *        400: 
+ *        400:
  *          description: Error getting all posts from the database
  */
 router.get('', async (req, res) => {
@@ -137,7 +137,7 @@ router.get('', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Posts'
- *        400: 
+ *        400:
  *          description: Error getting all posts from the database that match the filter
  */
 router.get('/filter', async (req, res) => {
@@ -165,7 +165,7 @@ router.get('/filter', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/FilterOptions'
- *        400: 
+ *        400:
  *          description: Error getting all filter options for the category filter
  */
 router.get('/filter/category/names', async (req, res) => {
@@ -190,7 +190,7 @@ router.get('/filter/category/names', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/FilterOptions'
- *        400: 
+ *        400:
  *          description: Error getting all filter options for the condition filter
  */
 router.get('/filter/condition/names', async (req, res) => {
@@ -217,7 +217,7 @@ router.get('/filter/condition/names', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Posts'
- *        400: 
+ *        400:
  *          description: Error getting all filter options for the condition filter
  */
 router.get('/search', async (req, res) => {
@@ -245,7 +245,7 @@ router.get('/search', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Posts'
- *        404: 
+ *        404:
  *          description: Error getting all of a user's posts
  */
 router.get('/users/user/:username/posts', async (req, res) => {
@@ -273,7 +273,7 @@ router.get('/users/user/:username/posts', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Post'
- *        404: 
+ *        404:
  *          description: Error getting a post
  */
 router.get('/post/:postId', async (req, res) => {
@@ -300,7 +300,7 @@ router.get('/post/:postId', async (req, res) => {
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Post'
- *        404: 
+ *        404:
  *          description: Error getting a post
  */
 router.put('/post/:postId', async (req, res) => {

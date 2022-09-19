@@ -163,7 +163,7 @@ const filterOptionsSchemaProperties = {
       }
     }
   }
-}
+};
 
 const schemas = {
   CreateUser: {
@@ -227,7 +227,7 @@ const baseIdParam = {
 const baseQueryParam = {
   in: 'query',
   type: 'string',
-  required: false,
+  required: false
 };
 
 const parameters = {
