@@ -201,12 +201,17 @@ const schemas = {
   }
 };
 
+const idBaseParam = {
+  in: 'path',
+  name: 'id',
+  type: 'number',
+  required: true,
+  description: 'Id of the user to get'
+};
+
 const parameters = {
   userIdParam: {
-    in: 'path',
-    name: 'id',
-    type: 'number',
-    required: true,
+    ...idBaseParam,
     description: 'Id of the user to get'
   },
   usernameParam: {
@@ -222,6 +227,14 @@ const parameters = {
     type: 'string',
     required: true,
     description: 'The search query to look for users with'
+  },
+  postIdParam: {
+    ...idBaseParam,
+    description: 'Id of post to get'
+  },
+  transactionIdParam: {
+    ...idBaseParam,
+    description: 'Id of transaction to get'
   }
 };
 
