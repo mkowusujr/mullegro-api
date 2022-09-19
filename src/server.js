@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
-const swaggerDocs = require('./api/middlewares/swaggerSetup');
+const swaggerSpec = require('./api/middlewares/swaggerSetup');
 const db = require('./api/models/index');
 
 const app = express();
@@ -28,7 +28,10 @@ db.sequelize
 // setup api route controllers
 const apiRoutes = require('./api/controllers/index');
 app.use('/api', apiRoutes);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.get('/swagger.json', (req, res) => {
+  res.send(swaggerSpec);
+})
 
 // start app
 const PORT = 3000;
