@@ -197,6 +197,7 @@ describe('Transaction Controller', () => {
           expect(response.body.dateString).toBeTruthy();
           expect(response.body.totalAmount).toBeTruthy();
           expect(response.body.itemCount).toBeTruthy();
+          expect(response.body.posts.length).toEqual(dummyPosts.length);
         } catch (error) {
           fail(error);
         }
