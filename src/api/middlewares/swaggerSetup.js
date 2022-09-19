@@ -76,26 +76,128 @@ const loginInputSchemaProperties = {
   }
 };
 
+const postSchemaProperties = {
+  id: {
+    type: 'number',
+    example: 1
+  },
+  title: {
+    type: 'string',
+    example: 'Navy Blue Clarinet'
+  },
+  price: {
+    type: 'number',
+    example: '120.00'
+  },
+  description: {
+    type: 'string',
+    example: 'This is a clean Navy Blue Clarinet'
+  },
+  condition: {
+    type: 'string',
+    example: 'Like New'
+  },
+  address: {
+    type: 'string',
+    example: 'The USA'
+  },
+  category: {
+    type: 'string',
+    example: 'Clarinet'
+  },
+  status: {
+    type: 'string',
+    example: 'Not Sold'
+  },
+  display_picture: {
+    type: 'string',
+    example: 'Image url'
+  }
+};
+
+const cartSchemaProperties = {
+  totalAmount: {
+    type: 'number',
+    example: 2000.0
+  },
+  itemCount: {
+    type: 'number',
+    example: 2
+  },
+  posts: {
+    type: 'array',
+    items: { $ref: '#/components/schemas/Post' }
+  }
+};
+
+const transactionSchemaProperties = {
+  id: {
+    type: 'number',
+    example: 1
+  },
+  dateString: {
+    type: 'string',
+    example: '09/21/2022'
+  },
+  totalAmount: {
+    type: 'number',
+    example: 2000.0
+  },
+  itemCount: {
+    type: 'number',
+    example: 2
+  },
+  posts: {
+    type: 'array',
+    items: { $ref: '#/components/schemas/Post' }
+  }
+};
+
 const schemas = {
   CreateUser: {
-    type: Object,
+    type: 'object',
     description: 'Data object for creating a user',
     properties: createUserSchemaProperties
   },
   User: {
-    type: Object,
+    type: 'object',
     description: 'Data object for a user',
     properties: userSchemaProperties
   },
   Users: {
-    type: Array,
-    items: {
-      $ref: '#/components/schemas/User'
-    }
+    type: 'array',
+    description: 'List of user data objects',
+    items: { $ref: '#/components/schemas/User' }
   },
   LoginInput: {
-    type: Object,
+    type: 'object',
+    description: 'The login form data',
     properties: loginInputSchemaProperties
+  },
+  Post: {
+    type: 'object',
+    description: 'Data object for a post',
+    properties: postSchemaProperties
+  },
+  Posts: {
+    type: 'array',
+    description: 'List of post data objects',
+    items: { $ref: '#/components/schemas/Post' }
+  },
+  Cart: {
+    type: 'object',
+    description: 'Data object for a cart',
+    properties: cartSchemaProperties
+  },
+  Transaction: {
+    type: 'object',
+    description: 'Data object for a transaction',
+    properties: transactionSchemaProperties
+  },
+  Transactions: {
+    type: 'array',
+    description: 'List of transaction data objects',
+    items: { $ref: '#/components/schemas/Transaction' }
   }
 };
 
