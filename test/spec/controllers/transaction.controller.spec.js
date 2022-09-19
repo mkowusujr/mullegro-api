@@ -189,7 +189,7 @@ describe('Transaction Controller', () => {
                 .get(`/api/transactions/transaction/${transactionId}`)
                 .set('Content-category', 'application/json')
                 .set('Authorization', token);
-              
+
               expect(console.log).toHaveBeenCalled();
               expect(response.status).toEqual(200);
               expect(response.body.id).toEqual(transactionId);
