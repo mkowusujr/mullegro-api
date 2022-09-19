@@ -9,10 +9,16 @@ const userService = require('../services/user.service');
  * /api/transactions:
  *    post:
  *      tags: ['Transaction Controller']
- *      description: Add a new transaction
+ *      summary: Add a new transaction to the transaction history
  *      responses:
  *        200:
- *          description: Success
+ *          description: Successfully added transaction to the transaction history
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Transaction'
+ *        400: 
+ *          description: Error adding transaction
  */
 router.post('', auth.verifyToken, async (req, res) => {
   try {
@@ -26,7 +32,20 @@ router.post('', auth.verifyToken, async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/transactions:
+ *    get:
+ *      tags: ['Transaction Controller']
+ *      summary: Gets the user's transaction history
+ *      responses:
+ *        200:
+ *          description: Successfully fetched current user's transaction history
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Transactions'
+ *        400: 
+ *          description: Error getting transaction history
  */
 router.get('', auth.verifyToken, async (req, res) => {
   try {
@@ -40,7 +59,22 @@ router.get('', auth.verifyToken, async (req, res) => {
 });
 
 /**
- *
+ * @swagger
+ * /api/transactions/transaction/{transactionId}:
+ *    get:
+ *      tags: ['Transaction Controller']
+ *      summary: Gets a transaction from the current user's transaction history
+ *      parameters:
+ *        - $ref: '#/components/parameters/transactionIdParam'
+ *      responses:
+ *        200:
+ *          description: Successfully fetched transaction from the transaction history
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Transaction'
+ *        400:
+ *          description: Error getting transaction
  */
 router.get(
   '/transaction/:transactionId',

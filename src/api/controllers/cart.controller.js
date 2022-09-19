@@ -9,7 +9,7 @@ const cartService = require('../services/cart.service');
  * /api/cart:
  *    get:
  *      tags: ['Cart Controller']
- *      description: Gets current user's cart
+ *      summary: Gets current user's cart
  *      responses:
  *        200:
  *          description: Success
@@ -36,7 +36,7 @@ router.get('', auth.verifyToken, async (req, res) => {
  * /api/cart:
  *    post:
  *      tags: ['Cart Controller']
- *      description: Adds the post to the current user's cart
+ *      summary: Adds the post to the current user's cart
  *      requestBody:
  *        description: The post to add to the cart
  *        required: true
@@ -68,7 +68,7 @@ router.post('', auth.verifyToken, async (req, res) => {
  * /api/cart:
  *    delete:
  *      tags: ['Cart Controller']
- *      description: Clears the current user's cart
+ *      summary: Clears the current user's cart
  *      responses:
  *        200:
  *          description: Successfully cleared the cart
@@ -91,7 +91,7 @@ router.delete('', auth.verifyToken, async (req, res) => {
  * /api/cart/post/{id}:
  *    delete:
  *      tags: ['Cart Controller']
- *      description: Removes the post to the current user's cart
+ *      summary: Removes the post to the current user's cart
  *      parameters:
  *        - $ref: '#/components/parameters/postIdParam'
  *      responses:
