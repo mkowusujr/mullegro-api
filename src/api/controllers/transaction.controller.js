@@ -42,14 +42,18 @@ router.get('', auth.verifyToken, async (req, res) => {
 /**
  *
  */
-router.get('/transaction/:transactionId', auth.verifyToken, async (req, res) => {
-  try {
-    let transactionId = req.params.transactionId;
-    let transaction = await transactionService.getTransaction(transactionId);
-    return res.status(200).send(transaction);
-  } catch (error) {
-    return res.status(400).send(error);
+router.get(
+  '/transaction/:transactionId',
+  auth.verifyToken,
+  async (req, res) => {
+    try {
+      let transactionId = req.params.transactionId;
+      let transaction = await transactionService.getTransaction(transactionId);
+      return res.status(200).send(transaction);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
   }
-});
+);
 
 module.exports = router;
