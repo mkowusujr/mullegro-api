@@ -8,6 +8,7 @@ exports.addToTransactions = async user => {
     let userCart = await user.getCart();
     let posts = await userCart.getPosts();
     if (posts.length == 0) throw 'Cart is empty';
+
     let transaction = await user.createTransaction({
       dateString: new Date().toLocaleDateString(),
       totalAmount: 0,
@@ -19,9 +20,13 @@ exports.addToTransactions = async user => {
       transaction.itemCount += 1;
       await transaction.addPost(post);
     });
-
-    await userCart.removePosts();
     await transaction.save();
+
+    posts.forEach(async post => {
+      await userCart.removePost(post);
+      await userCart.save();
+    });
+
     return await this.getTransaction(transaction.id);
   } catch (error) {
     errorOutput = 'Error creating transaction history: ' + error;
