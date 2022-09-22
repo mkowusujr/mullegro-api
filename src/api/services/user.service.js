@@ -7,21 +7,38 @@ const Op = Sequelize.Op;
 const cartService = require('./cart.service');
 const { faker } = require('@faker-js/faker');
 
+/**
+ * 
+ * @param {string} username 
+ */
 const failIfUsernameExists = async username => {
-  user = await User.findOne({ where: { username: username } });
+  let user = await User.findOne({ where: { username: username } });
   if (user) throw `User with the username ${userObj.username} already exists`;
 };
 
+/**
+ * 
+ * @param {string} userEmail 
+ */
 const failIfEmailExists = async userEmail => {
-  user = await User.findOne({ where: { email: userEmail } });
+  let user = await User.findOne({ where: { email: userEmail } });
   if (user) throw `User with the email ${userObj.username} already exists`;
 };
 
+/**
+ * 
+ * @param {User} newUser 
+ */
 const encryptPassword = async newUser => {
   newUser.password = await bcrypt.hashSync(newUser.password, 10);
   await newUser.save();
 };
 
+/**
+ * 
+ * @param {User} user 
+ * @returns 
+ */
 exports.createUser = async user => {
   return await failIfUsernameExists(user.username)
     .then(async () => await failIfEmailExists(user.email))
