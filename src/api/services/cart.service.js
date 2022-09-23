@@ -27,7 +27,11 @@ const verifyPostExists = async postId => {
  */
 exports.createCart = async user => {
   try {
-    await user.createCart();
+    await user.createCart({
+      totalAmount: 0,
+      itemCount: 0
+    });
+
     return Promise.resolve('Created cart successfully');
   } catch (error) {
     let errorOutput = 'Error creating cart: ' + error;
