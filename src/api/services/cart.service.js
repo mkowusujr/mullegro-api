@@ -101,7 +101,6 @@ exports.getCart = async user => {
     });
 
     userCart.itemCount = await userCart.posts.length;
-    userCart.totalAmount = 0;
     await userCart.posts.forEach(post => {
       userCart.totalAmount += post.price;
     });
