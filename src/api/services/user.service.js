@@ -8,8 +8,9 @@ const cartService = require('./cart.service');
 const { faker } = require('@faker-js/faker');
 
 /**
- * 
- * @param {string} username 
+ * Checks if the new user's username is taken or not
+ * Throws an error if it is
+ * @param {string} username
  */
 const failIfUsernameExists = async username => {
   let user = await User.findOne({ where: { username: username } });
@@ -17,8 +18,9 @@ const failIfUsernameExists = async username => {
 };
 
 /**
- * 
- * @param {string} userEmail 
+ * Checks if the new user's email is taken or not
+ * Throws an error if it is
+ * @param {string} userEmail
  */
 const failIfEmailExists = async userEmail => {
   let user = await User.findOne({ where: { email: userEmail } });
@@ -26,8 +28,8 @@ const failIfEmailExists = async userEmail => {
 };
 
 /**
- * 
- * @param {User} newUser 
+ * Encrypts the user's password
+ * @param {User} newUser The User data object
  */
 const encryptPassword = async newUser => {
   newUser.password = await bcrypt.hashSync(newUser.password, 10);
@@ -35,9 +37,9 @@ const encryptPassword = async newUser => {
 };
 
 /**
- * 
- * @param {User} user 
- * @returns 
+ * Creates a new user
+ * @param {User} user The User data object
+ * @returns The created User
  */
 exports.createUser = async user => {
   return await failIfUsernameExists(user.username)
@@ -57,6 +59,11 @@ exports.createUser = async user => {
     );
 };
 
+/**
+ * Gets a user by their id
+ * @param {number} userId The user's id
+ * @returns The User object matching the id
+ */
 exports.getUserById = async userId => {
   try {
     let fetchedUser = await User.findByPk(userId);
@@ -68,6 +75,11 @@ exports.getUserById = async userId => {
   }
 };
 
+/**
+ * Gets a user by their email
+ * @param {string} userEmail
+ * @returns The User object matching the email
+ */
 exports.getUserByEmail = async userEmail => {
   try {
     let fetchedUser = await User.findOne({ where: { email: userEmail } });
@@ -79,6 +91,11 @@ exports.getUserByEmail = async userEmail => {
   }
 };
 
+/**
+ * Gets the user by their username
+ * @param {string} username
+ * @returns The User object matching the username
+ */
 exports.getUserByUsername = async username => {
   try {
     let fetchedUser = await User.findOne({ where: { username: username } });
@@ -90,6 +107,11 @@ exports.getUserByUsername = async username => {
   }
 };
 
+/**
+ * Gets a user with either email or username
+ * @param {*} emailOrUsername Either the user's email or username
+ * @returns The User object matching the email or username
+ */
 exports.getUser = async emailOrUsername => {
   try {
     if (emailOrUsername.includes('@'))
@@ -101,6 +123,11 @@ exports.getUser = async emailOrUsername => {
   }
 };
 
+/**
+ * Gets the user stored in the request object
+ * @param {Request} res The http request object
+ * @returns The User object stored in the request object
+ */
 exports.getCurrentUser = async res => {
   try {
     let username = res.locals.user.username;
@@ -113,6 +140,11 @@ exports.getCurrentUser = async res => {
   }
 };
 
+/**
+ * Gets the user matching the login info
+ * @param {*} loginObject
+ * @returns The User object that matches the login info
+ */
 exports.getAuthorizedUser = async loginObject => {
   try {
     let { emailOrUsername, password } = loginObject;
@@ -131,6 +163,12 @@ exports.getAuthorizedUser = async loginObject => {
   }
 };
 
+/**
+ * Finds all the users whose username matches the search query if there is
+ * a query, or all the users in the database if otherwise
+ * @param {string} searchQuery The query to use to search for users with
+ * @returns A list of User objects
+ */
 exports.findAll = async searchQuery => {
   try {
     if (!searchQuery) return await User.findAll();
@@ -147,6 +185,11 @@ exports.findAll = async searchQuery => {
   }
 };
 
+/**
+ * Deletes a user by email or username
+ * @param {string} emailOrUsername Either the user's email or username
+ * @returns A message about whether the function executed succesfully
+ */
 exports.deleteUser = async emailOrUsername => {
   try {
     let user = await this.getUser(emailOrUsername);

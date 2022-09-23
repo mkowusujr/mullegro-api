@@ -31,7 +31,7 @@ app.use('/api', apiRoutes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.get('/swagger.json', (req, res) => {
   res.send(swaggerSpec);
-})
+});
 
 // start app
 const PORT = 3000;

@@ -2,16 +2,29 @@ const db = require('../models/index');
 const Post = db.posts;
 const helperService = require('./helper.service');
 
+/**
+ * Checks if the user has a cart object
+ * @param {User} user The User data object
+ */
 const verifyUserHasCart = async user => {
   let userCart = await user.getCart();
   if (!userCart) throw `User with id of ${user.id} doesn\'t have a cart`;
 };
 
+/**
+ * Checks if a post exists in the database
+ * @param {number} postId The post's id
+ */
 const verifyPostExists = async postId => {
   let post = await Post.findByPk(postId);
   if (!post) throw `Post with id of ${postId} does not exist`;
 };
 
+/**
+ * Creates a cart object for the user
+ * @param {User} user The User data object
+ * @returns A message about whether the function executed succesfully
+ */
 exports.createCart = async user => {
   try {
     await user.createCart();
@@ -22,6 +35,12 @@ exports.createCart = async user => {
   }
 };
 
+/**
+ * Adds a post to the user's cart
+ * @param {User} user The User data object
+ * @param {number} postId The post's id
+ * @returns A message about whether the function executed succesfully
+ */
 exports.addToCart = async (user, postId) => {
   try {
     await verifyUserHasCart(user);
@@ -39,6 +58,12 @@ exports.addToCart = async (user, postId) => {
   }
 };
 
+/**
+ * Remove a post from the user's cart
+ * @param {User} user The User data object
+ * @param {number} postId The post's id
+ * @returns A message about whether the function executed succesfully
+ */
 exports.removeFromCart = async (user, postId) => {
   try {
     await verifyUserHasCart(user);
@@ -59,6 +84,11 @@ exports.removeFromCart = async (user, postId) => {
   }
 };
 
+/**
+ * Gets the user's cart object
+ * @param {User} user The User data object
+ * @returns {Cart} The Cart object
+ */
 exports.getCart = async user => {
   try {
     await verifyUserHasCart(user);
@@ -80,6 +110,11 @@ exports.getCart = async user => {
   }
 };
 
+/**
+ * Removes all the posts from the user's cart
+ * @param {User} user The User data object
+ * @returns {Promise} A message about whether the function executed succesfully
+ */
 exports.clearCart = async user => {
   try {
     await verifyUserHasCart(user);

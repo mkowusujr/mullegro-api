@@ -1,3 +1,8 @@
+/**
+ * @typedef {Object} User The User data object
+ * @property {string} name The user's name
+ */
+
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define('user', {
     id: {

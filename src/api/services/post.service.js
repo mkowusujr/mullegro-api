@@ -6,8 +6,9 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 /**
- * Get Logged in users posts
- * @param {User Obj} currentUser The current User
+ * Gets all the posts belonging to the logged in user
+ * @param {User} currentUser The User data object
+ * @returns All the posts belonging to the logged in user
  */
 exports.findAllPostsForUser = async currentUser => {
   try {
@@ -19,7 +20,10 @@ exports.findAllPostsForUser = async currentUser => {
 };
 
 /**
- * Logged in user create a new post
+ * Creates a new post from the current user
+ * @param {User} currentUser The User data object
+ * @param {Post} newPost The Post data object
+ * @returns The created post
  */
 exports.createNewPost = async (currentUser, newPost) => {
   try {
@@ -32,8 +36,9 @@ exports.createNewPost = async (currentUser, newPost) => {
 
 /**
  * Update a Post's status
- * @param {number} postId
- * @param {{status: string}} postStatus
+ * @param {number} postId The post's id
+ * @param {{status: string}} postStatus The post's new status
+ * @returns THe updated Post
  */
 exports.updatePostStatus = async (postId, postStatus) => {
   try {
@@ -50,7 +55,10 @@ exports.updatePostStatus = async (postId, postStatus) => {
 };
 
 /**
- * Logged in user deleting one of their posts
+ * Deletes a user's post
+ * @param {User} currentUser The User data object
+ * @param {Post} postId The post's id
+ * @returns  A message about whether the function executed succesfully
  */
 exports.deletePost = async (currentUser, postId) => {
   try {
@@ -67,7 +75,10 @@ exports.deletePost = async (currentUser, postId) => {
 };
 
 /**
- * Get all Posts
+ * Finds all the posts whose title matches the search query if there is
+ * a query, or all the posts in the database if otherwise
+ * @param {string} searchQuery The query to use to search for posts with
+ * @returns A list of Post objects
  */
 exports.findAll = async searchQuery => {
   try {
@@ -86,7 +97,9 @@ exports.findAll = async searchQuery => {
 };
 
 /**
- * Get one post
+ * Gets a post by id
+ * @param {number} postId The post's id
+ * @returns The fetched Post
  */
 exports.getPost = async postId => {
   try {
@@ -100,9 +113,9 @@ exports.getPost = async postId => {
 };
 
 /**
- *
- * @param {*} category
- * @returns
+ * Gets all the posts that match the category
+ * @param {string} category The post's category
+ * @returns A list of posts that match the category
  */
 const getPostsOfCategory = async category => {
   try {
@@ -113,6 +126,10 @@ const getPostsOfCategory = async category => {
   }
 };
 
+/**
+ * Gets all the category options
+ * @returns A list of the category options
+ */
 exports.getAllCategoryNames = () => {
   const filename = './mock-data-services/instruments-list.txt';
   const contents = readFileSync(filename, 'utf-8');
@@ -120,6 +137,11 @@ exports.getAllCategoryNames = () => {
   return instrumentsList.sort();
 };
 
+/**
+ * Gets all the posts that match the condition
+ * @param {string} condition The post's condition
+ * @returns A list of posts that match the condition
+ */
 const getPostsOfCondition = async condition => {
   try {
     return Post.findAll({ where: { condition: condition } });
@@ -129,6 +151,10 @@ const getPostsOfCondition = async condition => {
   }
 };
 
+/**
+ * Gets all the condition options
+ * @returns A list of the condition options
+ */
 exports.getAllConditionNames = () => {
   const conditionOptions = [
     'New',
@@ -141,6 +167,12 @@ exports.getAllConditionNames = () => {
   return conditionOptions;
 };
 
+/**
+ * Filters out a list of posts
+ * @param {string} queryCategory The post's category
+ * @param {string} queryCondition The post's status
+ * @returns The list of filtered posts
+ */
 exports.filterPosts = async (queryCategory, queryCondition) => {
   try {
     let filteredPosts = [];

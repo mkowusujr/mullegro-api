@@ -3,6 +3,11 @@ const Post = db.posts;
 const Transaction = db.transactions;
 const helperService = require('./helper.service');
 
+/**
+ * Adds a transaction to the user's transaction history
+ * @param {User} user The User data object
+ * @returns The Transaction added to the user's transaction history
+ */
 exports.addToTransactions = async user => {
   try {
     let userCart = await user.getCart();
@@ -34,6 +39,11 @@ exports.addToTransactions = async user => {
   }
 };
 
+/**
+ * Gets the user's full transaction history
+ * @param {User} user The User data object
+ * @returns The user's transaction object
+ */
 exports.getFullTransactionHistory = async user => {
   try {
     return await user.getTransactions();
@@ -43,6 +53,11 @@ exports.getFullTransactionHistory = async user => {
   }
 };
 
+/**
+ * Gets a transaction from the user's transaction history
+ * @param {number} transactionId The transaction's id
+ * @returns The fetched transaction
+ */
 exports.getTransaction = async transactionId => {
   try {
     let transaction = await Transaction.findByPk(transactionId, {
