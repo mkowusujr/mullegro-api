@@ -9,7 +9,6 @@
  * @property {string} bio The user's bio
  * @property {string} profile_picture The user's profile_picture
  * @property {Cart} cart The user's cart
- * @property {Transaction} transaction The user's transaction history
  */
 
 /**
