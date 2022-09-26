@@ -43,9 +43,9 @@ exports.createPosts = async users => {
 
   users.forEach(async user => {
     let maxAmountOfPostPerUser = getRandomInt(10);
-    instrumentType = randomCategory();
-
+    
     for (let i = 0; i < maxAmountOfPostPerUser; i++) {
+      let instrumentType = randomCategory();
       await postService.createNewPost(user, {
         title: `${randomTitlePrefix()} ${instrumentType}`,
         price: faker.commerce.price(minPrice, maxPrice),
