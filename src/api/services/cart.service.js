@@ -101,6 +101,8 @@ exports.getCart = async user => {
     });
 
     userCart.itemCount = await userCart.posts.length;
+    userCart.totalAmount = 0;
+
     await userCart.posts.forEach(post => {
       userCart.totalAmount += post.price;
     });
@@ -124,7 +126,7 @@ exports.clearCart = async user => {
     let userCart = await user.getCart();
 
     let posts = await userCart.getPosts();
-    posts.forEach(async post => await userCart.removePost(post));
+    posts.forEach(async post => await userCart.removePost(post.id));
 
     await userCart.save();
     return Promise.resolve({ message: 'Successfully cleared cart' });
