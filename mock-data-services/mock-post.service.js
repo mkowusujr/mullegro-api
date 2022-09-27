@@ -27,13 +27,13 @@ randomCondition = () => {
     'Used - Good',
     'Used - Acceptable'
   ];
-  randomIndex = getRandomInt((conditionOptions.length - 1));
+  randomIndex = getRandomInt(conditionOptions.length - 1);
   return conditionOptions[randomIndex];
 };
 
 randomCategory = () => {
   const typeOptions = getInstrumentsList();
-  randomIndex = getRandomInt((typeOptions.length - 1));
+  randomIndex = getRandomInt(typeOptions.length - 1);
   return typeOptions[randomIndex];
 };
 
@@ -43,7 +43,7 @@ exports.createPosts = async users => {
 
   users.forEach(async user => {
     let maxAmountOfPostPerUser = getRandomInt(10);
-    
+
     for (let i = 0; i < maxAmountOfPostPerUser; i++) {
       let instrumentType = randomCategory();
       await postService.createNewPost(user, {

@@ -46,7 +46,7 @@ exports.addToTransactions = async user => {
  */
 exports.getFullTransactionHistory = async user => {
   try {
-    return await user.getTransactions({include: Post});
+    return await user.getTransactions({ include: Post });
   } catch (error) {
     errorOutput = 'Error getting transaction history: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
