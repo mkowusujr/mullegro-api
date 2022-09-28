@@ -200,3 +200,20 @@ exports.deleteUser = async emailOrUsername => {
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
+
+/**
+ * Updates the current user's information
+ * @param {User} currentUser The User data object
+ * @param {User} updatedUserInfo The User data object
+ * @returns The updated User data object
+ */
+exports.updateUser = async (currentUser, updatedUserInfo) => {
+  try {
+    currentUser = updatedUserInfo;
+    await currentUser.save();
+    return currentUser;
+  } catch (error) {
+    let errorOutput = "Error Updating User";
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+}
