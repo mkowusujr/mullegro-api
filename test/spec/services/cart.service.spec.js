@@ -63,7 +63,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -97,7 +96,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -135,7 +133,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -144,7 +141,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument too',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -181,7 +177,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -190,7 +185,6 @@ describe('Cart Service', () => {
           price: 100.0,
           description: 'This is an instrument too',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Clarinet',
           status: 'Available'
         });

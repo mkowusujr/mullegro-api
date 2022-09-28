@@ -36,7 +36,6 @@ describe('Cart Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           },
@@ -45,7 +44,6 @@ describe('Cart Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           },
@@ -54,7 +52,6 @@ describe('Cart Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'JAPAN',
             category: 'Clarinet',
             status: 'Available'
           }

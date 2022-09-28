@@ -22,10 +22,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING(30),
       allowNull: false
     },
-    address: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
     category: {
       type: Sequelize.STRING(30),
       allowNull: false

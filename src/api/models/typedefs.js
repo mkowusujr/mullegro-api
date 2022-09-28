@@ -18,7 +18,6 @@
  * @property {string} price The post's price
  * @property {string} description The post's description
  * @property {string} condition The post's condition
- * @property {string} address The post's address
  * @property {string} category The post's category
  * @property {string} status The post's status
  * @property {string} display_picture The post's display_picture

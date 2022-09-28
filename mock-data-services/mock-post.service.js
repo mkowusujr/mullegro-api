@@ -51,7 +51,6 @@ exports.createPosts = async users => {
         price: faker.commerce.price(minPrice, maxPrice),
         description: faker.lorem.sentences(),
         condition: randomCondition(),
-        address: user.address,
         category: instrumentType,
         status: 'Available',
         display_picture: faker.image.cats(500, 500, true)

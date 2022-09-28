@@ -97,10 +97,6 @@ const postSchemaProperties = {
     type: 'string',
     example: 'Like New'
   },
-  address: {
-    type: 'string',
-    example: 'The USA'
-  },
   category: {
     type: 'string',
     example: 'Clarinet'

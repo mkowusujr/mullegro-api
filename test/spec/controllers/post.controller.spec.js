@@ -9,7 +9,6 @@ const checkToSeeIsPostObject = object => {
   expect(object.hasOwnProperty('price')).toBeTrue();
   expect(object.hasOwnProperty('description')).toBeTrue();
   expect(object.hasOwnProperty('condition')).toBeTrue();
-  expect(object.hasOwnProperty('address')).toBeTrue();
   expect(object.hasOwnProperty('category')).toBeTrue();
   expect(object.hasOwnProperty('status')).toBeTrue();
 };
@@ -43,7 +42,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -77,7 +75,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -123,7 +120,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -132,7 +128,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'JAPAN',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -141,7 +136,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -175,7 +169,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -184,7 +177,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'JAPAN',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -193,7 +185,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -246,7 +237,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -255,7 +245,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'JAPAN',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -264,7 +253,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -305,7 +293,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Clarinet',
             status: 'Available'
           };
@@ -373,7 +360,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -430,7 +416,6 @@ describe('Post Controller', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Acceptable',
-          address: 'CANADA',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -439,7 +424,6 @@ describe('Post Controller', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'JAPAN',
           category: 'Clarinet',
           status: 'Available'
         });
@@ -448,7 +432,6 @@ describe('Post Controller', () => {
           price: 100.0,
           description: 'This is an instrument',
           condition: 'Used - Very Good',
-          address: 'USA',
           category: 'Trumpet',
           status: 'Available'
         });
@@ -532,7 +515,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Acceptable',
-            address: 'CANADA',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -541,7 +523,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'JAPAN',
             category: 'Clarinet',
             status: 'Available'
           });
@@ -550,7 +531,6 @@ describe('Post Controller', () => {
             price: 100.0,
             description: 'This is an instrument',
             condition: 'Used - Very Good',
-            address: 'USA',
             category: 'Trumpet',
             status: 'Available'
           });
