@@ -75,7 +75,6 @@ exports.removeFromCart = async (user, postId) => {
 
     let userCart = await user.getCart();
 
-    let post = await Post.findByPk(postId);
     await userCart.removePost(postId);
     await userCart.save();
 
