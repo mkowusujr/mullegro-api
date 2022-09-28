@@ -118,7 +118,7 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
 router.put('/user', auth.verifyToken, async (req, res) => {
   try {
     let currentUser = await userService.getCurrentUser(res);
-    let updatedUserInfo = res.body;
+    let updatedUserInfo = req.body;
     let updatedUser = await userService.updateUser(
       currentUser,
       updatedUserInfo

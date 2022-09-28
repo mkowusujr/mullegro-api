@@ -72,7 +72,7 @@ describe('User Controller', () => {
     });
   });
 
-  describe("endpoint: '/api/users/user/details', ", () => {
+  describe("endpoint: '/api/users/user/login', ", () => {
     describe('HTTP POST method', () => {
       it("should accepts a user's username and password and return a token", async () => {
         try {
@@ -196,6 +196,101 @@ describe('User Controller', () => {
           expect(response.body.email).toBe(userObject.email);
           expect(response.body.address).toBe(userObject.address);
           expect(response.body.password).toBeFalsy();
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/users/user', ", () => {
+    describe('HTTP PUT method', () => {
+      it('it should require authorization', async () => {
+        try {
+          const response = await request(server).put('/api/users/user');
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it("should update the current user's deatails", async () => {
+        try {
+          await userService.createUser({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username2',
+            email: 'dummay2@email.com',
+            password: 'dummyPassword'
+          });
+
+          let currentUser = await userService.createUser({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          });
+
+          let token = jwtMaker.createJwt(currentUser);
+
+          let updatedUserInfo = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username21',
+            email: 'dummay21@email.com',
+            password: 'dummyPassword21'
+          };
+
+          const response = await request(server)
+            .put('/api/users/user')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .send(updatedUserInfo);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(200);
+          expect(response.body.name).toBe(currentUser.name);
+          expect(response.body.username).toBe(updatedUserInfo.username);
+          expect(response.body.email).toBe(updatedUserInfo.email);
+          expect(response.body.password).toBe(updatedUserInfo.password);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 400 response if there is an issue', async () => {
+        try {
+          await userService.createUser({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username2',
+            email: 'dummay2@email.com',
+            password: 'dummyPassword'
+          });
+
+          let currentUser = await userService.createUser({
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          });
+
+          let token = jwtMaker.createJwt(currentUser);
+
+          let updatedUserInfo = {
+            name: 'Dummy User',
+            address: 'USA',
+            username: 'dummy_username2',
+            email: 'dummay@email.com',
+            password: 'dummyPassword'
+          };
+
+          const response = await request(server)
+            .put('/api/users/user')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .send(updatedUserInfo);
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
