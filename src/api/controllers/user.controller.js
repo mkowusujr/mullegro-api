@@ -92,6 +92,46 @@ router.get('/user/details', auth.verifyToken, (req, res) => {
 
 /**
  * @swagger
+ * /api/users/user:
+ *    put:
+ *      tags: ['User Controller']
+ *      summary: Updates the current users properties
+ *      requestBody:
+ *        description: The updated user properties
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CreateUser'
+ *      security:
+ *      - BearerAuth: []
+ *      responses:
+ *        200:
+ *          description: A user
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Users'
+ *        400:
+ *          description: Error updating user
+ */
+router.put('/user', auth.verifyToken, async (req, res) => {
+  try {
+    let currentUser = await userService.getCurrentUser(res);
+    let updatedUserInfo = res.body;
+    let updatedUser = await userService.updateUser(
+      currentUser,
+      updatedUserInfo
+    );
+
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+/**
+ * @swagger
  * /api/users:
  *    get:
  *      tags: ['User Controller']
