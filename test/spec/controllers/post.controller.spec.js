@@ -45,7 +45,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           const response = await request(server)
             .get('/api/posts/post/1')
@@ -79,7 +79,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           let newStatus = { status: 'sold' };
 
@@ -125,7 +125,7 @@ describe('Post Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await dummyUser.createPost({
             title: 'Dummy Post3',
@@ -134,7 +134,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await Post.create({
             title: 'Dummy Post',
@@ -143,7 +143,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
 
           const response = await request(server)
@@ -177,7 +177,7 @@ describe('Post Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await dummyUser.createPost({
             title: 'Dummy Post3',
@@ -186,7 +186,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await Post.create({
             title: 'Dummy Post',
@@ -195,7 +195,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
 
           const response = await request(server)
@@ -248,7 +248,7 @@ describe('Post Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await dummyUser.createPost({
             title: 'Dummy Post3',
@@ -257,7 +257,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await Post.create({
             title: 'Dummy Post',
@@ -266,7 +266,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           let token = jwtMaker.createJwt(dummyUser);
 
@@ -307,7 +307,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           };
           let token = jwtMaker.createJwt(dummyUser);
 
@@ -375,7 +375,7 @@ describe('Post Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           let postId = 1;
           let token = jwtMaker.createJwt(dummyUser);
@@ -432,7 +432,7 @@ describe('Post Controller', () => {
           condition: 'Used - Acceptable',
           address: 'CANADA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         await dummyUser.createPost({
           title: 'Dummy Post3',
@@ -441,7 +441,7 @@ describe('Post Controller', () => {
           condition: 'Used - Very Good',
           address: 'JAPAN',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         await Post.create({
           title: 'Dummy Post',
@@ -450,7 +450,7 @@ describe('Post Controller', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Trumpet',
-          status: 'Not Sold'
+          status: 'Available'
         });
       });
 
@@ -534,7 +534,7 @@ describe('Post Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await dummyUser.createPost({
             title: 'Dummy Post3',
@@ -543,7 +543,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           });
           await Post.create({
             title: 'Dummy Post',
@@ -552,7 +552,7 @@ describe('Post Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Trumpet',
-            status: 'Not Sold'
+            status: 'Available'
           });
 
           let searchTerm = '3';

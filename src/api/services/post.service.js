@@ -7,12 +7,16 @@ const Op = Sequelize.Op;
 
 /**
  * Gets all the posts belonging to the logged in user
- * @param {User} currentUser The User data object
+ * @param {User} user The User data object
+ * @param {boolean} isCurrentUser Whether or not the user is the
+ * the current logged in user
  * @returns All the posts belonging to the logged in user
  */
-exports.findAllPostsForUser = async currentUser => {
+exports.findAllPostsForUser = async (user, isCurrentUser) => {
   try {
-    return await currentUser.getPosts();
+    return isCurrentUser
+      ? await user.getPosts()
+      : await user.getPosts({ where: { status: 'Available' } });
   } catch (err) {
     let errOutput = "Error getting user's posts: " + err;
     return helperService.sendRejectedPromiseWith(errOutput);
@@ -82,12 +86,14 @@ exports.deletePost = async (currentUser, postId) => {
  */
 exports.findAll = async searchQuery => {
   try {
-    if (!searchQuery) return await Post.findAll();
+    if (!searchQuery)
+      return await Post.findAll({ where: { status: 'Available' } });
     return await Post.findAll({
       where: {
         title: {
           [Op.like]: `%${searchQuery}%`
-        }
+        },
+        status: 'Available'
       }
     });
   } catch (err) {
@@ -119,7 +125,12 @@ exports.getPost = async postId => {
  */
 const getPostsOfCategory = async category => {
   try {
-    return await Post.findAll({ where: { category: category } });
+    return await Post.findAll({
+      where: {
+        category: category,
+        status: 'Available'
+      }
+    });
   } catch (error) {
     let errOutput = 'Error getting posts of category: ' + err;
     return helperService.sendRejectedPromiseWith(errOutput);
@@ -144,7 +155,12 @@ exports.getAllCategoryNames = () => {
  */
 const getPostsOfCondition = async condition => {
   try {
-    return Post.findAll({ where: { condition: condition } });
+    return Post.findAll({
+      where: {
+        condition: condition,
+        status: 'Available'
+      }
+    });
   } catch (error) {
     let errOutput = 'Error getting posts by condition: ' + err;
     return helperService.sendRejectedPromiseWith(errOutput);

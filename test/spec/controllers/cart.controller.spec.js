@@ -38,7 +38,7 @@ describe('Cart Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post 2',
@@ -47,7 +47,7 @@ describe('Cart Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post3',
@@ -56,7 +56,7 @@ describe('Cart Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           }
         ],
         { returning: true }

@@ -22,8 +22,10 @@ const userService = require('../services/user.service');
  */
 router.get('/user/posts', auth.verifyToken, async (req, res) => {
   try {
+    let isCurrentUser = true;
     let usersPosts = await postService.findAllPostsForUser(
-      await userService.getCurrentUser(res)
+      await userService.getCurrentUser(res),
+      isCurrentUser
     );
     return res.status(200).send(usersPosts);
   } catch (err) {
@@ -251,7 +253,8 @@ router.get('/search', async (req, res) => {
 router.get('/users/user/:username/posts', async (req, res) => {
   try {
     let user = await userService.getUserByUsername(req.params.username);
-    let usersPosts = await postService.findAllPostsForUser(user);
+    let isCurrentUser = false;
+    let usersPosts = await postService.findAllPostsForUser(user, isCurrentUser);
     return res.status(200).send(usersPosts);
   } catch (err) {
     return res.status(404).send(err);

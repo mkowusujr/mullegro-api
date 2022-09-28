@@ -107,7 +107,7 @@ const postSchemaProperties = {
   },
   status: {
     type: 'string',
-    example: 'Not Sold'
+    example: 'Available'
   },
   display_picture: {
     type: 'string',

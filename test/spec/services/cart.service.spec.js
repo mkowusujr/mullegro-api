@@ -65,7 +65,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId = 1;
 
@@ -99,7 +99,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId = 1;
         await cartService.addToCart(dummyUser, postId);
@@ -137,7 +137,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let post2 = await Post.create({
           title: 'Dummy Post2',
@@ -146,7 +146,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId1 = 1,
           postId2 = 2;
@@ -183,7 +183,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let post2 = await Post.create({
           title: 'Dummy Post2',
@@ -192,7 +192,7 @@ describe('Cart Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId1 = 1,
           postId2 = 2;

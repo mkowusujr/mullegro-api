@@ -23,6 +23,8 @@ exports.addToTransactions = async user => {
     posts.forEach(async post => {
       transaction.totalAmount += post.price;
       transaction.itemCount += 1;
+      post.status = 'Sold';
+      await post.save();
       await transaction.addPost(post);
     });
     await transaction.save();

@@ -44,7 +44,7 @@ describe('Transaction Controller', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post 2',
@@ -53,7 +53,7 @@ describe('Transaction Controller', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post3',
@@ -62,7 +62,7 @@ describe('Transaction Controller', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           }
         ],
         { returning: true }

@@ -37,7 +37,7 @@ describe('Transaction Service', () => {
             condition: 'Used - Very Good',
             address: 'USA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post 2',
@@ -46,7 +46,7 @@ describe('Transaction Service', () => {
             condition: 'Used - Acceptable',
             address: 'CANADA',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           },
           {
             title: 'Dummy Post3',
@@ -55,7 +55,7 @@ describe('Transaction Service', () => {
             condition: 'Used - Very Good',
             address: 'JAPAN',
             category: 'Clarinet',
-            status: 'Not Sold'
+            status: 'Available'
           }
         ],
         { returning: true }
@@ -84,6 +84,7 @@ describe('Transaction Service', () => {
         expect(transaction.totalAmount).toEqual(totalAmount);
         expect(transaction.dateString).toEqual(dateString);
         expect(transaction.posts.length).toEqual(3);
+        expect(transaction.posts[0].status).toBe('Sold');
       } catch (error) {
         fail(error);
       }

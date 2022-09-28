@@ -29,7 +29,7 @@ describe('Post Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId = 1;
 
@@ -63,7 +63,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post 2',
@@ -72,7 +72,7 @@ describe('Post Service', () => {
               condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post3',
@@ -81,7 +81,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             }
           ],
           { returning: true }
@@ -108,7 +108,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post 2',
@@ -117,7 +117,7 @@ describe('Post Service', () => {
               condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post 3',
@@ -126,7 +126,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             }
           ],
           { returning: true }
@@ -166,7 +166,7 @@ describe('Post Service', () => {
           condition: 'Used - Acceptable',
           address: 'CANADA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         await dummyUser.createPost({
           title: 'Dummy Post3',
@@ -175,7 +175,7 @@ describe('Post Service', () => {
           condition: 'Used - Very Good',
           address: 'JAPAN',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         await Post.create({
           title: 'Dummy Post',
@@ -184,10 +184,13 @@ describe('Post Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
-
-        let response = await postService.findAllPostsForUser(dummyUser);
+        let isCurrentUser = false;
+        let response = await postService.findAllPostsForUser(
+          dummyUser,
+          isCurrentUser
+        );
 
         expect(response.length).toEqual(2);
         response.forEach(post => {
@@ -205,8 +208,11 @@ describe('Post Service', () => {
           username: 'dummy_username',
           email: 'dummay@email.com'
         });
-
-        let response = await postService.findAllPostsForUser(dummyUser);
+        let isCurrentUser = true;
+        let response = await postService.findAllPostsForUser(
+          dummyUser,
+          isCurrentUser
+        );
 
         expect(response).toEqual([]);
       } catch (error) {
@@ -215,7 +221,8 @@ describe('Post Service', () => {
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        let response = await postService.findAllPostsForUser({});
+        let isCurrentUser = false;
+        let response = await postService.findAllPostsForUser({}, isCurrentUser);
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
@@ -240,7 +247,7 @@ describe('Post Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         };
 
         let response = await postService.createNewPost(dummyUser, postObject);
@@ -289,7 +296,7 @@ describe('Post Service', () => {
           condition: 'Used - Very Good',
           address: 'USA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
         let postId = 1;
         let newStatus = { status: 'Sold' };
@@ -327,7 +334,7 @@ describe('Post Service', () => {
           condition: 'Used - Acceptable',
           address: 'CANADA',
           category: 'Clarinet',
-          status: 'Not Sold'
+          status: 'Available'
         });
 
         let postId = 1;
@@ -374,7 +381,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post 2',
@@ -383,7 +390,7 @@ describe('Post Service', () => {
               condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Trumpet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post3',
@@ -392,7 +399,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             }
           ],
           { returning: true }
@@ -417,7 +424,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'USA',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post 2',
@@ -426,7 +433,7 @@ describe('Post Service', () => {
               condition: 'Used - Acceptable',
               address: 'CANADA',
               category: 'Trumpet',
-              status: 'Not Sold'
+              status: 'Available'
             },
             {
               title: 'Dummy Post3',
@@ -435,7 +442,7 @@ describe('Post Service', () => {
               condition: 'Used - Very Good',
               address: 'JAPAN',
               category: 'Clarinet',
-              status: 'Not Sold'
+              status: 'Available'
             }
           ],
           { returning: true }
