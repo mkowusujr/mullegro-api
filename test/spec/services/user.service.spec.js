@@ -334,4 +334,74 @@ describe('User Service', () => {
       }
     });
   });
+
+  describe('updateUser', () => {
+    it('can update a user', async () => {
+      try {
+        let userObject = {
+          name: 'William Doe',
+          username: 'fake_user20',
+          address: 'America',
+          email: 'williamdoe@email.com',
+          password: 'safeAndSecurePassword'
+        };
+
+        let response = await userService.updateUser(newUser, userObject);
+
+        expect(response.name).toBe(userObject.name);
+        expect(response.username).toBe(userObject.username);
+        expect(response.address).toBe(userObject.address);
+        expect(response.email).toBe(userObject.email);
+        expect(response.password).toBe(userObject.password);
+      } catch (error) {
+        fail(error);
+      }
+    });
+    it("doesn't allow duplicate usernames in the database", async () => {
+      await User.create({
+        name: 'John Doe',
+        username: 'fake_user2',
+        address: 'America',
+        email: 'notreal2@email.com',
+        password: 'safeAndSecurePassword'
+      })
+        .then(async () => {
+          let userObject = {
+            name: 'John Doe Jr',
+            username: 'fake_user2',
+            address: 'America',
+            email: 'notreal@email.com',
+            password: 'safeAndSecurePassword'
+          };
+          let response = await userService.updateUser(newUser, userObject);
+          if (!response || response) fail("Didn't throw error");
+        })
+        .catch(error => {
+          expect(console.error).toHaveBeenCalled();
+        });
+    });
+    it("doesn't allow duplicate emails in the database", async () => {
+      await User.create({
+        name: 'John Doe',
+        username: 'fake_user21',
+        address: 'America',
+        email: 'notreal2@email.com',
+        password: 'safeAndSecurePassword'
+      })
+        .then(async () => {
+          let userObject = {
+            name: 'John Doe Jr',
+            username: 'fake_user',
+            address: 'America',
+            email: 'notreal2@email.com',
+            password: 'safeAndSecurePassword'
+          };
+          let response = await userService.updateUser(newUser, userObject);
+          if (!response || response) fail("Didn't throw error");
+        })
+        .catch(error => {
+          expect(console.error).toHaveBeenCalled();
+        });
+    });
+  });
 });

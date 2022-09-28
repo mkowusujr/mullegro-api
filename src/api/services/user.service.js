@@ -14,7 +14,7 @@ const { faker } = require('@faker-js/faker');
  */
 const failIfUsernameExists = async username => {
   let user = await User.findOne({ where: { username: username } });
-  if (user) throw `User with the username ${userObj.username} already exists`;
+  if (user) throw `User with the username ${user.username} already exists`;
 };
 
 /**
@@ -24,7 +24,7 @@ const failIfUsernameExists = async username => {
  */
 const failIfEmailExists = async userEmail => {
   let user = await User.findOne({ where: { email: userEmail } });
-  if (user) throw `User with the email ${userObj.username} already exists`;
+  if (user) throw `User with the email ${user.email} already exists`;
 };
 
 /**
@@ -196,24 +196,29 @@ exports.deleteUser = async emailOrUsername => {
     await user.destroy();
     return Promise.resolve('Deleted successfully');
   } catch (error) {
-    let errorOutput = "User doesn't exist";
+    let errorOutput = "User doesn't exist: " + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
 
 /**
  * Updates the current user's information
- * @param {User} currentUser The User data object
+ * @param {User} user The User data object
  * @param {User} updatedUserInfo The User data object
  * @returns The updated User data object
  */
-exports.updateUser = async (currentUser, updatedUserInfo) => {
+exports.updateUser = async (user, updatedUserInfo) => {
   try {
-    currentUser = updatedUserInfo;
-    await currentUser.save();
-    return currentUser;
+    if (user.username != updatedUserInfo.username) {
+      await failIfUsernameExists(updatedUserInfo.username);
+    } else if (user.email != updatedUserInfo.email) {
+      await failIfEmailExists(updatedUserInfo.email);
+    }
+
+    await user.update(updatedUserInfo);
+    return await this.getUserByUsername(user.username);
   } catch (error) {
-    let errorOutput = "Error Updating User";
+    let errorOutput = 'Error Updating User: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
-}
+};
