@@ -31,6 +31,7 @@ exports.findAllPostsForUser = async (user, isCurrentUser) => {
  */
 exports.createNewPost = async (currentUser, newPost) => {
   try {
+    newPost.status = "Available";
     return await currentUser.createPost(newPost);
   } catch (err) {
     let errOutput = 'Error creating post: ' + err;
