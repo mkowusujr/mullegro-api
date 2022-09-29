@@ -86,8 +86,9 @@ router.post('/login', async (req, res) => {
  *        404:
  *          description: Error fetching users
  */
-router.get('/user/details', auth.verifyToken, (req, res) => {
-  return res.status(200).send(res.locals.user);
+router.get('/user/details', auth.verifyToken, async (req, res) => {
+  let currentUser = await userService.getCurrentUser(res);
+  return res.status(200).send(currentUser);
 });
 
 /**
