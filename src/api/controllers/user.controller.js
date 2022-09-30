@@ -87,8 +87,12 @@ router.post('/login', async (req, res) => {
  *          description: Error fetching users
  */
 router.get('/user/details', auth.verifyToken, async (req, res) => {
-  let currentUser = await userService.getCurrentUser(res);
-  return res.status(200).send(currentUser);
+  try {
+    let currentUser = await userService.getCurrentUser(res);
+    return res.status(200).send(currentUser);
+  } catch (error) {
+    return res.status(404).send(error);
+  }
 });
 
 /**
