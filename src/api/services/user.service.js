@@ -149,7 +149,7 @@ exports.getAuthorizedUser = async loginObject => {
   try {
     let { emailOrUsername, password } = loginObject;
     let user = await this.getUser(emailOrUsername);
-    let isCorrectPassword = await bcrypt.compareSync(password, user.password);
+    let isCorrectPassword = bcrypt.compareSync(password, user.password);
     if (isCorrectPassword) {
       return await User.findByPk(user.id, {
         attributes: ['name', 'username', 'email', 'address']
