@@ -1,5 +1,6 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 
+/*CREATE USER SCHEMA*/
 const createUserSchemaProperties = {
   name: {
     type: 'string',
@@ -28,6 +29,7 @@ const createUserSchemaProperties = {
   }
 };
 
+/*USER SCHEMA*/
 const userSchemaProperties = {
   id: {
     type: 'number',
@@ -63,6 +65,7 @@ const userSchemaProperties = {
   }
 };
 
+/*LOGIN SCHEMA*/
 const loginInputSchemaProperties = {
   emailOrUsername: {
     type: 'string',
@@ -76,6 +79,7 @@ const loginInputSchemaProperties = {
   }
 };
 
+/*POST SCHEMA*/
 const postSchemaProperties = {
   id: {
     type: 'number',
@@ -111,6 +115,7 @@ const postSchemaProperties = {
   }
 };
 
+/*CART SCHEMA*/
 const cartSchemaProperties = {
   totalAmount: {
     type: 'number',
@@ -126,6 +131,7 @@ const cartSchemaProperties = {
   }
 };
 
+/*TRANSACTION SCHEMA*/
 const transactionSchemaProperties = {
   id: {
     type: 'number',
@@ -149,6 +155,35 @@ const transactionSchemaProperties = {
   }
 };
 
+/*REVIEW SCHEMA*/
+const reviewSchemaProperties = {
+  id: {
+    type: 'number',
+    example: 1
+  },
+  dateString: {
+    type: 'string',
+    example: '09/21/2022'
+  },
+  rating: {
+    type: 'number',
+    example: 4.5
+  },
+  description: {
+    type: 'string',
+    example: 'This is in good condition'
+  },
+  user: {
+    type: 'object',
+    properties: userSchemaProperties
+  },
+  post: {
+    type: 'object',
+    properties: postSchemaProperties
+  }
+};
+
+/*FILTER OPTIONS SCHEMA*/
 const filterOptionsSchemaProperties = {
   options: {
     type: 'array',
@@ -161,6 +196,7 @@ const filterOptionsSchemaProperties = {
   }
 };
 
+/*DEFINING THE SCHEMAS*/
 const schemas = {
   CreateUser: {
     type: 'object',
@@ -207,6 +243,11 @@ const schemas = {
     description: 'List of transaction data objects',
     items: { $ref: '#/components/schemas/Transaction' }
   },
+  Review: {
+    type: 'object',
+    description: 'Data object for a review',
+    properties: reviewSchemaProperties
+  },
   FilterOptions: {
     type: 'object',
     description: 'Data object containing a list of filter options',
@@ -214,18 +255,21 @@ const schemas = {
   }
 };
 
+/*BASE ID PARAM TEMPLATE*/
 const baseIdParam = {
   in: 'path',
   type: 'number',
   required: true
 };
 
+/*BASE QUERY PARAM TEMPLATE*/
 const baseQueryParam = {
   in: 'query',
   type: 'string',
   required: false
 };
 
+/*DEFINING THE PARAMETERS*/
 const parameters = {
   userIdParam: {
     ...baseIdParam,
@@ -267,6 +311,7 @@ const parameters = {
   }
 };
 
+/*DEFINING THE SECURITY*/
 const security = {
   BearerAuth: {
     type: 'http',
@@ -275,12 +320,14 @@ const security = {
   }
 };
 
+/*DEFINING THE COMPONENTS*/
 const components = {
   schemas: schemas,
   parameters: parameters,
   security: security
 };
 
+/*DEFINING THE SWAGGER DEFINITION*/
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -291,6 +338,7 @@ const swaggerDefinition = {
   components: components
 };
 
+/*SETTING UP THE SWAGGER OPTIONS*/
 const swaggerOptions = {
   defaultModelsExpandDepth: -1,
   swaggerDefinition,
@@ -302,4 +350,5 @@ const swaggerOptions = {
   ]
 };
 
+/*EXPORT THE SWAGGER DOCS SETUP*/
 module.exports = swaggerJSDoc(swaggerOptions);

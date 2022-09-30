@@ -45,3 +45,13 @@
  * @property {string} emailOrUsername Either the user's email or username
  * @property {string} password The user's password
  */
+
+/**
+ * @typedef {Object} Review The Review data object
+ * @property {number} id The review's id
+ * @property {string} dateString The review's dateString
+ * @property {number} rating The review's numeric rating
+ * @property {string} description The review's description
+ * @property {User} user The review's owner
+ * @property {Post} post The review's post
+ */

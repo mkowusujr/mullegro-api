@@ -27,6 +27,7 @@ db.users = require('./user')(sequelize, Sequelize);
 db.posts = require('./post')(sequelize, Sequelize);
 db.carts = require('./cart')(sequelize, Sequelize);
 db.transactions = require('./transaction')(sequelize, Sequelize);
+db.reviews = require('./review')(sequelize, Sequelize);
 
 // establish relationships
 db.users.hasMany(db.posts);
@@ -43,6 +44,12 @@ db.transactions.belongsTo(db.users);
 
 db.transactions.hasMany(db.posts);
 db.posts.belongsTo(db.transactions);
+
+db.posts.hasOne(db.reviews);
+db.reviews.belongsTo(db.posts);
+
+db.users.hasMany(db.reviews);
+db.reviews.belongsTo(db.users);
 
 // export db
 module.exports = db;
