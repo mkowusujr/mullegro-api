@@ -216,6 +216,8 @@ exports.updateUser = async (user, updatedUserInfo) => {
     }
 
     await user.update(updatedUserInfo);
+    await encryptPassword(user);
+
     return await this.getUserByUsername(user.username);
   } catch (error) {
     let errorOutput = 'Error Updating User: ' + error;
