@@ -6,9 +6,6 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    dateString: {
-      type: Sequelize.STRING
-    },
     totalAmount: {
       type: Sequelize.FLOAT
     },

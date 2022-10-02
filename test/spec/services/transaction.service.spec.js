@@ -10,8 +10,7 @@ describe('Transaction Service', () => {
   let db,
     Post,
     dummyUser,
-    dummyPosts,
-    dateString = new Date().toLocaleDateString();
+    dummyPosts
 
   beforeEach(async () => {
     try {
@@ -79,7 +78,6 @@ describe('Transaction Service', () => {
 
         expect(transaction.itemCount).toEqual(itemCount);
         expect(transaction.totalAmount).toEqual(totalAmount);
-        expect(transaction.dateString).toEqual(dateString);
         expect(transaction.posts.length).toEqual(3);
         expect(transaction.posts[0].status).toBe('Sold');
       } catch (error) {
@@ -116,7 +114,6 @@ describe('Transaction Service', () => {
 
         expect(transactions.length).toEqual(3);
         transactions.forEach(transaction => {
-          expect(transaction.dateString).toBeTruthy();
           expect(transaction.totalAmount).toBeTruthy();
           expect(transaction.itemCount).toBeTruthy();
         });
@@ -150,7 +147,6 @@ describe('Transaction Service', () => {
         );
 
         expect(transaction.id).toEqual(transactionId);
-        expect(transaction.dateString).toBeTruthy();
         expect(transaction.totalAmount).toBeTruthy();
         expect(transaction.itemCount).toBeTruthy();
       } catch (error) {

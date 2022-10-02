@@ -15,7 +15,6 @@ describe('Transaction Controller', () => {
     Post,
     dummyUser,
     dummyPosts,
-    dateString = new Date().toLocaleDateString(),
     token;
 
   beforeEach(async () => {
@@ -100,7 +99,6 @@ describe('Transaction Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.itemCount).toEqual(itemCount);
           expect(response.body.totalAmount).toEqual(totalAmount);
-          expect(response.body.dateString).toEqual(dateString);
           expect(response.body.posts.length).toEqual(3);
         } catch (error) {
           fail(error);
@@ -149,7 +147,6 @@ describe('Transaction Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(3);
           response.body.forEach(transaction => {
-            expect(transaction.dateString).toBeTruthy();
             expect(transaction.totalAmount).toBeTruthy();
             expect(transaction.itemCount).toBeTruthy();
           });
@@ -190,7 +187,6 @@ describe('Transaction Controller', () => {
               expect(console.log).toHaveBeenCalled();
               expect(response.status).toEqual(200);
               expect(response.body.id).toEqual(transactionId);
-              expect(response.body.dateString).toBeTruthy();
               expect(response.body.totalAmount).toEqual(100);
               expect(response.body.itemCount).toEqual(1);
               expect(response.body.posts.length).toEqual(1);

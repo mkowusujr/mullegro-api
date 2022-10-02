@@ -34,7 +34,6 @@
 /**
  * @typedef {Object} Transaction The Transaction data object
  * @property {number} id The transaction's id
- * @property {number} dateString The transaction's dateString
  * @property {number} totalAmount The transaction's totalAmount
  * @property {number} itemCount The transaction's itemCount
  * @property {Post[]} posts The transaction's posts
@@ -49,7 +48,6 @@
 /**
  * @typedef {Object} Review The Review data object
  * @property {number} id The review's id
- * @property {string} dateString The review's dateString
  * @property {number} rating The review's numeric rating
  * @property {string} description The review's description
  * @property {User} user The review's owner

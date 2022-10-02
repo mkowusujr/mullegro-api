@@ -137,10 +137,6 @@ const transactionSchemaProperties = {
     type: 'number',
     example: 1
   },
-  dateString: {
-    type: 'string',
-    example: '09/21/2022'
-  },
   totalAmount: {
     type: 'number',
     example: 2000.0
@@ -160,10 +156,6 @@ const reviewSchemaProperties = {
   id: {
     type: 'number',
     example: 1
-  },
-  dateString: {
-    type: 'string',
-    example: '09/21/2022'
   },
   rating: {
     type: 'number',

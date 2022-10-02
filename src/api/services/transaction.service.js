@@ -15,7 +15,6 @@ exports.addToTransactions = async user => {
     if (posts.length == 0) throw 'Cart is empty';
 
     let transaction = await user.createTransaction({
-      dateString: new Date().toLocaleDateString(),
       totalAmount: 0,
       itemCount: 0
     });
