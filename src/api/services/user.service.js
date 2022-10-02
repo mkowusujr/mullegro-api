@@ -151,9 +151,7 @@ exports.getAuthorizedUser = async loginObject => {
     let user = await this.getUser(emailOrUsername);
     let isCorrectPassword = bcrypt.compareSync(password, user.password);
     if (isCorrectPassword) {
-      return await User.findByPk(user.id, {
-        attributes: ['name', 'username', 'email', 'address']
-      });
+      return await User.findByPk(user.id);
     } else {
       throw 'Incorrect Password';
     }
