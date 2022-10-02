@@ -195,7 +195,6 @@ describe('User Controller', () => {
           expect(response.body.username).toBe(userObject.username);
           expect(response.body.email).toBe(userObject.email);
           expect(response.body.address).toBe(userObject.address);
-          expect(response.body.password).toBeFalsy();
         } catch (error) {
           fail(error);
         }
@@ -251,7 +250,7 @@ describe('User Controller', () => {
           expect(response.body.name).toBe(currentUser.name);
           expect(response.body.username).toBe(updatedUserInfo.username);
           expect(response.body.email).toBe(updatedUserInfo.email);
-          expect(response.body.password).toBe(updatedUserInfo.password);
+          expect(response.body.password).toBeTruthy();
         } catch (error) {
           fail(error);
         }

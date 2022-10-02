@@ -219,7 +219,7 @@ describe('User Service', () => {
   });
 
   describe('getAuthorizedUser', () => {
-    it('should get a user without a password field', async () => {
+    it('should get the authorized user', async () => {
       try {
         let userObject = {
           name: 'William Doe',
@@ -240,7 +240,6 @@ describe('User Service', () => {
         expect(response.username).toBe(dummyUser.username);
         expect(response.address).toBe(dummyUser.address);
         expect(response.email).toBe(dummyUser.email);
-        expect(response.password).toBeFalsy();
       } catch (error) {
         fail(error);
       }
@@ -352,7 +351,7 @@ describe('User Service', () => {
         expect(response.username).toBe(userObject.username);
         expect(response.address).toBe(userObject.address);
         expect(response.email).toBe(userObject.email);
-        expect(response.password).toBe(userObject.password);
+        expect(response.password).toBeTruthy();
       } catch (error) {
         fail(error);
       }
