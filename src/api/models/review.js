@@ -6,10 +6,6 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    dateString: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
     rating: {
       type: Sequelize.FLOAT,
       allowNull: false
