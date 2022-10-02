@@ -6,9 +6,8 @@
  */
 exports.logger = (req, res, next) => {
   const requestOutput = `>> ${req.method} http://${req.headers.host}${req.originalUrl}`;
-  const bodyJSON = JSON.stringify(req.body, null, 2);
 
-  logRequest(req.method, requestOutput, bodyJSON);
+  logRequest(req.method, requestOutput);
   next();
 };
 
@@ -40,20 +39,18 @@ const colorize = (...args) => ({
  *
  * @param {*} requestMethod
  */
-const logRequest = (requestMethod, requestOutput, bodyJSON) => {
+const logRequest = (requestMethod, requestOutput) => {
   switch (requestMethod) {
     case 'GET':
       console.log(colorize(requestOutput).magenta);
       break;
 
     case 'POST':
-      console.log(colorize(requestOutput + '\n>> Request Body:').green);
-      console.log(`${bodyJSON}`);
+      console.log(colorize(requestOutput).green);
       break;
 
     case 'PUT':
-      console.log(colorize(requestOutput + '\n>> Request Body:').yellow);
-      console.log(`${bodyJSON}`);
+      console.log(colorize(requestOutput).yellow);
       break;
 
     case 'DELETE':
