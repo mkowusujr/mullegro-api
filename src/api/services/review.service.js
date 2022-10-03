@@ -5,18 +5,14 @@ const helperService = require('./helper.service');
 const userService = require('./user.service');
 
 /**
- * Create a new review
+ * Creates a new review
  * @param {User} user The user making the review
- * @param {number} postId The id of the post being reviewed
  * @param {Review} review The review being made
  * @returns The created review
  */
-exports.createReview = async (user, postId, review) => {
+exports.createReview = async (user, review) => {
   try {
-    let createdReview = await user.createReview(review);
-    createdReview.postId = postId;
-    await createdReview.save();
-    return createdReview;
+    return await user.createReview(review);
   } catch (error) {
     let errorOutput = 'Error creating review: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);

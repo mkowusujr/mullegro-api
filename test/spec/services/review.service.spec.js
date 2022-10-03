@@ -5,7 +5,7 @@ describe('Review Service', () => {
     expect(reviewService).toBeTruthy();
   });
 
-  let db, User, Post, Review, dummyUsers, dummyPosts, dummyReviews;
+  let db, User, Post, Review, dummyUsers, dummyPosts;
 
   beforeEach(async () => {
     try {
@@ -78,7 +78,7 @@ describe('Review Service', () => {
         { returning: true }
       );
 
-      dummyReviews = await Review.bulkCreate(
+      await Review.bulkCreate(
         [
           {
             rating: 4,
@@ -118,12 +118,12 @@ describe('Review Service', () => {
       let post = dummyPosts[0];
       let review = {
         rating: 4,
-        description: 'This was cool'
+        description: 'This was cool',
+        postId: post.id
       };
 
       let createdReview = await reviewService.createReview(
         user,
-        post.id,
         review
       );
 
@@ -133,10 +133,9 @@ describe('Review Service', () => {
     it('should throw an error if there is an issue', async () => {
       try {
         let user = {};
-        let reviewId = 1;
         let review = {};
 
-        let response = await reviewService.createReview(user, reviewId, review);
+        let response = await reviewService.createReview(user, review);
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
