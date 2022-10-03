@@ -125,7 +125,7 @@ exports.getUser = async emailOrUsername => {
 
 /**
  * Gets the user stored in the request object
- * @param {Request} res The http request object
+ * @param {Response} res The http request object
  * @returns The User object stored in the request object
  */
 exports.getCurrentUser = async res => {
