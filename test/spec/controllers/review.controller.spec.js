@@ -169,4 +169,36 @@ describe('Review Controller', () => {
       });
     })
   })
+
+  describe("endpoint: '/api/reviews/review/reviewId", () => {
+    describe('HTTP POST method', () => {
+      it('should fetch a review by id', async () => {
+        try {
+          let reviewId = 1;
+
+          const response = await request(server)
+            .get(`/api/reviews/review/${reviewId}`)
+            .set('Content-category', 'application/json');
+          
+          expect(response.status).toEqual(200);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let reviewId = 404;
+
+          const response = await request(server)
+            .get(`/api/reviews/review/${reviewId}`)
+            .set('Content-category', 'application/json')
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
 });
