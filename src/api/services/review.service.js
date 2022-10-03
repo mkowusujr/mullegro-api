@@ -36,7 +36,7 @@ exports.getReview = async reviewId => {
 };
 
 /**
- * Update an existing review
+ * Updates an existing review
  * @param {User} user The user making the review
  * @param {number} reviewId The id of the review being modified
  * @param {Review} updatedReviewDetails The updated review details
@@ -83,7 +83,7 @@ exports.getAllReviewsMadeByUser = async username => {
  * @param {string} username The user's username
  * @returns A list of reviews a user has made
  */
-exports.getAllReviewsFromPostsByUser = async username => {
+exports.getAllReviewsFromPostsMadeByUser = async username => {
   try {
     let user = await userService.getUserByUsername(username);
     let reviews = [];
@@ -110,7 +110,7 @@ exports.generateStatsForUser = async username => {
   try {
     let user = await userService.getUserByUsername(username);
 
-    let reviewsOnPostsByUser = await this.getAllReviewsFromPostsByUser(username);
+    let reviewsOnPostsByUser = await this.getAllReviewsFromPostsMadeByUser(username);
 
     let totalRatings = 0;
     reviewsOnPostsByUser.forEach(review => {

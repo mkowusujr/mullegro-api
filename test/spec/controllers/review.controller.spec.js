@@ -133,6 +133,7 @@ describe('Review Controller', () => {
       });
       it('should create a post', async () => {
         try {
+          let user = dummyUsers[0];
           let post = dummyPosts[0];
           let review = {
             rating: 4,
@@ -146,6 +147,8 @@ describe('Review Controller', () => {
             .set('Authorization', token)
             .send(review);
           expect(response.status).toEqual(200);
+          expect(response.body.userId).toEqual(user.id);
+          expect(response.body.postId).toEqual(post.id);
         } catch (error) {
           fail(error);
         }
@@ -160,18 +163,18 @@ describe('Review Controller', () => {
             .set('Content-category', 'application/json')
             .set('Authorization', token)
             .send(review);
-          
+
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
           fail(error);
         }
       });
-    })
-  })
+    });
+  });
 
-  describe("endpoint: '/api/reviews/review/reviewId", () => {
-    describe('HTTP POST method', () => {
+  describe("endpoint: '/api/reviews/review/:reviewId", () => {
+    describe('HTTP GET method', () => {
       it('should fetch a review by id', async () => {
         try {
           let reviewId = 1;
@@ -179,8 +182,9 @@ describe('Review Controller', () => {
           const response = await request(server)
             .get(`/api/reviews/review/${reviewId}`)
             .set('Content-category', 'application/json');
-          
+
           expect(response.status).toEqual(200);
+          expect(response.body.id).toEqual(reviewId);
         } catch (error) {
           fail(error);
         }
@@ -191,6 +195,161 @@ describe('Review Controller', () => {
 
           const response = await request(server)
             .get(`/api/reviews/review/${reviewId}`)
+            .set('Content-category', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+    describe('HTTP PUT method', () => {
+      it('should require authorization', async () => {
+        try {
+          let reviewId = 1;
+          const response = await request(server).put(
+            `/api/reviews/review/${reviewId}`
+          );
+          expect(response.status).toEqual(401);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('can update a review', async () => {
+        try {
+          let user = dummyUsers[0];
+          let reviewId = 4;
+          let updatedReviewDetails = {
+            rating: 4.8,
+            description: 'This was cooler than I thought'
+          };
+
+          const response = await request(server)
+            .put(`/api/reviews/review/${reviewId}`)
+            .set('Content-category', 'application/json')
+            .set('Authorization', token)
+            .send(updatedReviewDetails);
+
+          expect(response.status).toEqual(200);
+          expect(response.body.id).toEqual(reviewId);
+          expect(response.body.userId).toEqual(user.id);
+          expect(response.body.rating).toEqual(updatedReviewDetails.rating);
+          expect(response.body.description).toBe(
+            updatedReviewDetails.description
+          );
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let reviewId = 404;
+          let updatedReviewDetails = {};
+          const response = await request(server)
+            .put(`/api/reviews/review/${reviewId}`)
+            .set('Content-category', 'application/json')
+            .set('Authorization', token)
+            .send(updatedReviewDetails);
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/reviews/user/:username/reviews", () => {
+    describe('HTTP GET method', () => {
+      it('can get all the reviews a user created', async () => {
+        try {
+          let actualAmountOfReviewUserOneMade = 1;
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${dummyUsername}/reviews`)
+            .set('Content-category', 'application/json');
+
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(actualAmountOfReviewUserOneMade);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let username = 'notARealUserName';
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${username}/reviews`)
+            .set('Content-category', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/reviews/user/:username/posts/reviews", () => {
+    describe('HTTP GET method', () => {
+      it('should gets all the reviews that the specified user has made', async () => {
+        try {
+          let actualAmountOfReviewsMadeOnPostsBelongingToUserOne = 3;
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${dummyUsername}/posts/reviews`)
+            .set('Content-category', 'application/json');
+
+          expect(response.status).toEqual(200);
+          expect(response.body.length).toEqual(
+            actualAmountOfReviewsMadeOnPostsBelongingToUserOne
+          );
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let username = 'notARealUserName';
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${username}/posts/reviews`)
+            .set('Content-category', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
+  describe("endpoint: '/api/reviews/user/:username/stats", () => {
+    describe('HTTP GET method', () => {
+      it('can get all the reviews a user created', async () => {
+        try {
+          let actualAmountOfReviewUserOneMade = 1;
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${dummyUsername}/stats`)
+            .set('Content-category', 'application/json')
+
+          expect(response.status).toEqual(200);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let username = 'notARealUserName';
+
+          const response = await request(server)
+            .get(`/api/reviews/user/${username}/stats`)
             .set('Content-category', 'application/json')
 
           expect(console.log).toHaveBeenCalled();

@@ -175,6 +175,18 @@ const reviewSchemaProperties = {
   }
 };
 
+/*USER STATS SCHEMA*/
+const statsSchemaProperties = {
+  averageRating: {
+    type: 'number',
+    example: 4.5
+  },
+  amountOfPostsSold: {
+    type: 'number',
+    example: 3
+  }
+};
+
 /*FILTER OPTIONS SCHEMA*/
 const filterOptionsSchemaProperties = {
   options: {
@@ -239,6 +251,16 @@ const schemas = {
     type: 'object',
     description: 'Data object for a review',
     properties: reviewSchemaProperties
+  },
+  Reviews: {
+    type: 'array',
+    description: 'List of review data objects',
+    items: { $ref: '#/components/schemas/Review' }
+  },
+  Stats: {
+    type: 'object',
+    description: 'Data object for a user stats',
+    properties: statsSchemaProperties
   },
   FilterOptions: {
     type: 'object',

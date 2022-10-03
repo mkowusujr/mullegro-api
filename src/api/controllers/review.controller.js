@@ -66,4 +66,124 @@ router.get('/review/:reviewId', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/reviews/review/{reviewId}:
+ *    put:
+ *      tags: ['Review Controller']
+ *      summary: Updates an existing review
+ *      parameters:
+ *        - $ref: '#/components/parameters/reviewIdParam'
+ *      responses:
+ *        200:
+ *          description: Successfully added updated the review
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Review'
+ *        400:
+ *          description: Error updating review
+ */
+router.put('/review/:reviewId', auth.verifyToken, async (req, res) => {
+  try {
+    let currentUser = await userService.getCurrentUser(res);
+    let reviewId = req.params.reviewId;
+    let updatedReviewDetails = req.body;
+    let updateReview = await reviewService.updateReview(
+      currentUser,
+      reviewId,
+      updatedReviewDetails
+    );
+    res.status(200).send(updateReview);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/reviews/user/${username}/posts/reviews:
+ *    post:
+ *      tags: ['Review Controller']
+ *      summary: Gets all the reviews on posts made by the specified user has made
+ *      parameters:
+ *        - $ref: '#/components/parameters/usernameParam'
+ *      responses:
+ *        200:
+ *          description: Successfully added fetched reviews
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Reviews'
+ *        404:
+ *          description: Error fetching reviews
+ */
+router.get('/user/:username/posts/reviews', async (req, res) => {
+  try {
+    let username = req.params.username;
+    let reviews = await reviewService.getAllReviewsFromPostsMadeByUser(
+      username
+    );
+    res.status(200).send(reviews);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/reviews/user/${username}/reviews:
+ *    post:
+ *      tags: ['Review Controller']
+ *      summary: Gets all the reviews that the specified user has made
+ *      parameters:
+ *        - $ref: '#/components/parameters/usernameParam'
+ *      responses:
+ *        200:
+ *          description: Successfully added fetched reviews
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Reviews'
+ *        404:
+ *          description: Error fetching reviews
+ */
+router.get('/user/:username/reviews', async (req, res) => {
+  try {
+    let username = req.params.username;
+    let reviews = await reviewService.getAllReviewsMadeByUser(username);
+    res.status(200).send(reviews);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/reviews/user/${username}/stats:
+ *    post:
+ *      tags: ['Review Controller']
+ *      summary: should generate the stats for a user
+ *      parameters:
+ *        - $ref: '#/components/parameters/usernameParam'
+ *      responses:
+ *        200:
+ *          description: Successfully added fetched reviews
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Stats'
+ *        404:
+ *          description: Error fetching reviews
+ */
+router.get('/user/:username/stats', async (req, res) => {
+  try {
+    let username = req.params.username;
+    let stats = await reviewService.generateStatsForUser(username);
+    res.status(200).send(stats);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
 module.exports = router;

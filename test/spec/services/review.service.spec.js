@@ -219,11 +219,11 @@ describe('Review Service', () => {
     });
   });
 
-  describe('getAllReviewsFromPostsByUser', () => {
+  describe('getAllReviewsFromPostsMadeByUser', () => {
     it('can get all the reviews made on posts belonging to a user', async () => {
       let user = dummyUsers[0];
       let = actualAmountOfReviewsMadeOnPostsBelongingToUserOne = 3;
-      let reviews = await reviewService.getAllReviewsFromPostsByUser(
+      let reviews = await reviewService.getAllReviewsFromPostsMadeByUser(
         user.username
       );
 
@@ -235,7 +235,7 @@ describe('Review Service', () => {
       try {
         let username = 'doesNotExist';
 
-        let response = await reviewService.getAllReviewsFromPostsByUser(username);
+        let response = await reviewService.getAllReviewsFromPostsMadeByUser(username);
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
