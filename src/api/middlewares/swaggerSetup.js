@@ -165,13 +165,13 @@ const reviewSchemaProperties = {
     type: 'string',
     example: 'This is in good condition'
   },
-  user: {
-    type: 'object',
-    properties: userSchemaProperties
+  userId: {
+    type: 'number',
+    example: 1
   },
   post: {
-    type: 'object',
-    properties: postSchemaProperties
+    type: 'number',
+    example: 1
   }
 };
 
@@ -338,7 +338,8 @@ const swaggerOptions = {
     './src/api/controllers/user.controller.js',
     './src/api/controllers/post.controller.js',
     './src/api/controllers/cart.controller.js',
-    './src/api/controllers/transaction.controller.js'
+    './src/api/controllers/transaction.controller.js',
+    './src/api/controllers/review.controller.js'
   ]
 };
 
