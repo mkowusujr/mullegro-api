@@ -27,7 +27,7 @@ exports.createReview = async (user, review) => {
 exports.getReview = async reviewId => {
   try {
     let review = await Review.findByPk(reviewId);
-    if(!review) throw `Review with ${reviewId} doesn't exist`
+    if (!review) throw `Review with ${reviewId} doesn't exist`;
     return review;
   } catch (error) {
     let errorOutput = 'Error fetching review: ' + error;
@@ -49,7 +49,7 @@ exports.updateReview = async (user, reviewId, updatedReviewDetails) => {
     if (targetReview.userId != user.id) {
       throw `This review doesn't belong to this User`;
     }
-    
+
     targetReview.rating = updatedReviewDetails.rating;
     targetReview.description = updatedReviewDetails.description;
     targetReview.save();
@@ -88,7 +88,7 @@ exports.getAllReviewsFromPostsMadeByUser = async username => {
     let user = await userService.getUserByUsername(username);
     let reviews = [];
     let postsByUser = await user.getPosts();
-    
+
     for (let i = 0; i < postsByUser.length; i++) {
       reviews.push(await postsByUser[i].getReview());
     }
@@ -110,7 +110,9 @@ exports.generateStatsForUser = async username => {
   try {
     let user = await userService.getUserByUsername(username);
 
-    let reviewsOnPostsByUser = await this.getAllReviewsFromPostsMadeByUser(username);
+    let reviewsOnPostsByUser = await this.getAllReviewsFromPostsMadeByUser(
+      username
+    );
 
     let totalRatings = 0;
     reviewsOnPostsByUser.forEach(review => {
@@ -122,10 +124,10 @@ exports.generateStatsForUser = async username => {
         userId: user.id,
         status: 'Sold'
       }
-    })
+    });
 
     let stats = {
-      averageRating: (totalRatings / reviewsOnPostsByUser.length),
+      averageRating: totalRatings / reviewsOnPostsByUser.length,
       amountOfPostsSold: soldPostsBelongingToUser.length
     };
 

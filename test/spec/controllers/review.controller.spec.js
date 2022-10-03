@@ -337,7 +337,7 @@ describe('Review Controller', () => {
 
           const response = await request(server)
             .get(`/api/reviews/user/${dummyUsername}/stats`)
-            .set('Content-category', 'application/json')
+            .set('Content-category', 'application/json');
 
           expect(response.status).toEqual(200);
         } catch (error) {
@@ -350,7 +350,7 @@ describe('Review Controller', () => {
 
           const response = await request(server)
             .get(`/api/reviews/user/${username}/stats`)
-            .set('Content-category', 'application/json')
+            .set('Content-category', 'application/json');
 
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);

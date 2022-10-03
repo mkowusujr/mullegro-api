@@ -122,10 +122,7 @@ describe('Review Service', () => {
         postId: post.id
       };
 
-      let createdReview = await reviewService.createReview(
-        user,
-        review
-      );
+      let createdReview = await reviewService.createReview(user, review);
 
       expect(createdReview.userId).toEqual(user.id);
       expect(createdReview.postId).toEqual(post.id);
@@ -235,7 +232,9 @@ describe('Review Service', () => {
       try {
         let username = 'doesNotExist';
 
-        let response = await reviewService.getAllReviewsFromPostsMadeByUser(username);
+        let response = await reviewService.getAllReviewsFromPostsMadeByUser(
+          username
+        );
         if (response || !response) fail("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();

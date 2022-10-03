@@ -7,10 +7,7 @@ describe('Transaction Service', () => {
     expect(transactionService).toBeTruthy();
   });
 
-  let db,
-    Post,
-    dummyUser,
-    dummyPosts
+  let db, Post, dummyUser, dummyPosts;
 
   beforeEach(async () => {
     try {

@@ -11,11 +11,7 @@ describe('Transaction Controller', () => {
     expect(transactionController).toBeTruthy();
   });
 
-  let db,
-    Post,
-    dummyUser,
-    dummyPosts,
-    token;
+  let db, Post, dummyUser, dummyPosts, token;
 
   beforeEach(async () => {
     try {
