@@ -285,6 +285,11 @@ const parameters = {
     description: 'Id of transaction to get',
     name: 'Transaction Id'
   },
+  reviewIdParam: {
+    ...baseIdParam,
+    description: 'Id of the review to get',
+    name: 'Review Id'
+  },
   searchQuery: {
     ...baseQueryParam,
     description: 'The search term',
