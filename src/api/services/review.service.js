@@ -3,6 +3,7 @@ const Review = db.reviews;
 const Post = db.posts;
 const helperService = require('./helper.service');
 const userService = require('./user.service');
+const postService = require('./post.service');
 
 /**
  * Creates a new review
@@ -34,6 +35,22 @@ exports.getReview = async reviewId => {
     return helperService.sendRejectedPromiseWith(errorOutput);
   }
 };
+
+/**
+ * Gets the review belonging to the specified post
+ * @param {number} postId The post identifier
+ * @returns The review belonging to post
+ */
+exports.getRevieBelongingPost = async postId => {
+  try {
+    let post = await postService.getPost(postId);
+    if (!post) throw `Post with id of ${postId} does not exist`
+    return await post.getReview();
+  } catch (error) {
+    let errorOutput = 'Error fetching review: ' + error;
+    return helperService.sendRejectedPromiseWith(errorOutput);
+  }
+}
 
 /**
  * Updates an existing review

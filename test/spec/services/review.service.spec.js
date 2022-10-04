@@ -158,6 +158,23 @@ describe('Review Service', () => {
     });
   });
 
+  describe('getRevieBelongingPost', () => {
+    it('can get a review belonging to the specified post', async () => {
+      let postId = 1;
+      let fetchedReview = await reviewService.getRevieBelongingPost(postId);
+      expect(fetchedReview.postId).toEqual(postId);
+    });
+    it('should throw an error if there is an issue', async () => {
+      try {
+        let postId = 404;
+        let response = await reviewService.getRevieBelongingPost(postId);
+        if (response || !response) fail("Didn't throw error");
+      } catch (error) {
+        expect(console.error).toHaveBeenCalled();
+      }
+    });
+  });
+
   describe('updateReview', () => {
     it('can update a review belonging to the specified user', async () => {
       let user = dummyUsers[0];

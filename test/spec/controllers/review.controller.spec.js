@@ -261,6 +261,39 @@ describe('Review Controller', () => {
     });
   });
 
+  describe("endpoint: '/api/reviews/post/:postId/review", () => {
+    describe('HTTP GET method', () => {
+      it('should fetch a review by id', async () => {
+        try {
+          let postId = 1;
+
+          const response = await request(server)
+            .get(`/api/reviews/post/${postId}/review`)
+            .set('Content-category', 'application/json');
+
+          expect(response.status).toEqual(200);
+          expect(response.body.postId).toEqual(postId);
+        } catch (error) {
+          fail(error);
+        }
+      });
+      it('sends a 404 response if there is an issue', async () => {
+        try {
+          let postId = 404;
+
+          const response = await request(server)
+            .get(`/api/reviews/post/${postId}/review`)
+            .set('Content-category', 'application/json');
+
+          expect(console.log).toHaveBeenCalled();
+          expect(response.status).toEqual(404);
+        } catch (error) {
+          fail(error);
+        }
+      });
+    });
+  });
+
   describe("endpoint: '/api/reviews/user/:username/reviews", () => {
     describe('HTTP GET method', () => {
       it('can get all the reviews a user created', async () => {

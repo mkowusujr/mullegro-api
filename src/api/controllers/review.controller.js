@@ -54,12 +54,40 @@ router.post('/user/reviews', auth.verifyToken, async (req, res) => {
  *              schema:
  *                $ref: '#/components/schemas/Review'
  *        400:
- *          description: Error creating review
+ *          description: Error fetching review
  */
 router.get('/review/:reviewId', async (req, res) => {
   try {
     let reviewId = req.params.reviewId;
     let fetchedReview = await reviewService.getReview(reviewId);
+    res.status(200).send(fetchedReview);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/reviews/post/{postId}/review:
+ *    post:
+ *      tags: ['Review Controller']
+ *      summary: Fetches the Review belonging to the specified post
+ *      parameters:
+ *        - $ref: '#/components/parameters/postIdParam'
+ *      responses:
+ *        200:
+ *          description: Successfully added created review
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Review'
+ *        400:
+ *          description: Error fetching review
+ */
+ router.get('/post/:postId/review', async (req, res) => {
+  try {
+    let postId = req.params.postId;
+    let fetchedReview = await reviewService.getRevieBelongingPost(postId);
     res.status(200).send(fetchedReview);
   } catch (error) {
     res.status(404).send(error);
