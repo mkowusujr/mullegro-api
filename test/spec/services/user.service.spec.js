@@ -19,9 +19,9 @@ describe('User Service', () => {
         email: 'notreal@email.com',
         password: 'safeAndSecurePassword'
       });
-      spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -45,7 +45,7 @@ describe('User Service', () => {
         expect(response.password).toBeTruthy();
         expect(response.password).not.toBe(userObject.password);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it("doesn't allow duplicate usernames in the database", async () => {
@@ -59,7 +59,7 @@ describe('User Service', () => {
         };
 
         let response = await userService.createUser(userObject);
-        if (!response || response) fail("Didn't throw error");
+        if (!response || response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -75,7 +75,7 @@ describe('User Service', () => {
         };
 
         let response = await userService.createUser(userObject);
-        if (!response || response) fail("Didn't throw error");
+        if (!response || response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -92,14 +92,14 @@ describe('User Service', () => {
         expect(response.id).toEqual(userId);
         expect(response.name).toEqual(newUser.name);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
         let userId = 12;
         let response = await userService.getUserById(userId);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -116,14 +116,14 @@ describe('User Service', () => {
         expect(response.email).toEqual(userEmail);
         expect(response.name).toEqual(newUser.name);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
         let userEmail = 'notreal2@email.com';
         let response = await userService.getUserByEmail(userEmail);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -140,14 +140,14 @@ describe('User Service', () => {
         expect(response.username).toEqual(userUsername);
         expect(response.name).toEqual(newUser.name);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it("throws an error if the username doesn't exist", async () => {
       try {
         let userUsername = 'fake_user3';
         let response = await userService.getUserByUsername(userUsername);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -155,7 +155,7 @@ describe('User Service', () => {
     it('throws an error if nothing is passed in', async () => {
       try {
         let response = await userService.getUserByUsername();
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -170,7 +170,7 @@ describe('User Service', () => {
 
         expect(response.email).toEqual(userEmail);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('can fetch a user by username', async () => {
@@ -180,13 +180,13 @@ describe('User Service', () => {
 
         expect(response.username).toEqual(userUsername);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if nothing is passed in', async () => {
       try {
         let response = await userService.getUser();
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -204,14 +204,14 @@ describe('User Service', () => {
         expect(response.email).toEqual(newUser.email);
         expect(response.username).toEqual(newUser.username);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it("throws an error if the username doesn't exist", async () => {
       try {
         let res = {};
         let response = await userService.getCurrentUser(res);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -241,7 +241,7 @@ describe('User Service', () => {
         expect(response.address).toBe(dummyUser.address);
         expect(response.email).toBe(dummyUser.email);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error in the input password is incorrect', async () => {
@@ -259,7 +259,7 @@ describe('User Service', () => {
           password: 'incorrectPassword'
         };
         let response = await userService.getAuthorizedUser(loginObject);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -281,7 +281,7 @@ describe('User Service', () => {
 
         expect(response.length).toEqual(2);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('can search for the users by username', async () => {
@@ -298,16 +298,18 @@ describe('User Service', () => {
 
         expect(response.length).toEqual(1);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
-        spyOn(userService, 'findAll').and.returnValue(Promise.reject('Error'));
+        jest
+          .spyOn(userService, 'findAll')
+          .mockReturnValue(Promise.reject('Error'));
         let response = await userService.findAll();
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
-        expect(error).toEqual(jasmine.any(String));
+        expect(typeof error).toBe("string");
       }
     });
   });
@@ -316,18 +318,19 @@ describe('User Service', () => {
     it('delete a user', async () => {
       try {
         let response = await userService.deleteUser(newUser.username);
-        let allUsers = await userService.findAll().catch();
-
+        let allUsers = await userService.findAll();
+        
         expect(response).toBe('Deleted successfully');
         expect(allUsers.length).toBe(0);
       } catch (error) {
-        fail(error);
+        console.info(JSON.stringify(error))
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
         let response = await userService.deleteUser('a_fake_username');
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -353,7 +356,7 @@ describe('User Service', () => {
         expect(response.email).toBe(userObject.email);
         expect(response.password).toBeTruthy();
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it("doesn't allow duplicate usernames in the database", async () => {
@@ -373,7 +376,7 @@ describe('User Service', () => {
             password: 'safeAndSecurePassword'
           };
           let response = await userService.updateUser(newUser, userObject);
-          if (!response || response) fail("Didn't throw error");
+          if (!response || response) throw new Error("Didn't throw error");
         })
         .catch(error => {
           expect(console.error).toHaveBeenCalled();
@@ -396,7 +399,7 @@ describe('User Service', () => {
             password: 'safeAndSecurePassword'
           };
           let response = await userService.updateUser(newUser, userObject);
-          if (!response || response) fail("Didn't throw error");
+          if (!response || response) throw new Error("Didn't throw error");
         })
         .catch(error => {
           expect(console.error).toHaveBeenCalled();
