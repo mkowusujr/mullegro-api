@@ -2,7 +2,7 @@ const transactionService = require('../../../src/api/services/transaction.servic
 const userService = require('../../../src/api/services/user.service');
 const cartService = require('../../../src/api/services/cart.service');
 
-describe('Transaction Service', () => {
+describe.only('Transaction Service', () => {
   it('should be created', () => {
     expect(transactionService).toBeTruthy();
   });
@@ -14,7 +14,7 @@ describe('Transaction Service', () => {
       db = require('../../../src/api/models/index');
       Post = db.posts;
       await db.sequelize.sync({ force: true });
-      spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());;
 
       dummyUser = await userService.createUser({
         name: 'Dummy User',
@@ -55,7 +55,7 @@ describe('Transaction Service', () => {
       );
       dummyPosts = await Post.findAll();
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -78,7 +78,7 @@ describe('Transaction Service', () => {
         expect(transaction.posts.length).toEqual(3);
         expect(transaction.posts[0].status).toBe('Sold');
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
@@ -87,7 +87,7 @@ describe('Transaction Service', () => {
         let response = await transactionService.addToTransactions(
           dummyInvalidUser
         );
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -115,7 +115,7 @@ describe('Transaction Service', () => {
           expect(transaction.itemCount).toBeTruthy();
         });
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
@@ -124,7 +124,7 @@ describe('Transaction Service', () => {
         let response = await transactionService.getFullTransactionHistory(
           dummyInvalidUser
         );
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -147,7 +147,7 @@ describe('Transaction Service', () => {
         expect(transaction.totalAmount).toBeTruthy();
         expect(transaction.itemCount).toBeTruthy();
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
@@ -156,7 +156,7 @@ describe('Transaction Service', () => {
         let response = await transactionService.getTransaction(
           invalidTransactionId
         );
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
