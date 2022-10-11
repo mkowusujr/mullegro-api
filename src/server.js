@@ -16,10 +16,12 @@ db.sequelize
   .sync({ force: true })
   .then(() => {
     console.log('>> Database synchronized');
-    mockDataService
+    if (process.env.NODE_ENV !== 'test') {
+      mockDataService
       .createMockData()
       .then(() => console.log('>> Mock data created'))
       .catch(err => console.error(err));
+      }
   })
   .catch(err => {
     console.error(err);
@@ -34,10 +36,12 @@ app.get('/swagger.json', (req, res) => {
 });
 
 // start app
-const PORT = 3000;
-
-app.listen(PORT, () =>
-  console.log(`>> Server is live at http://localhost:${PORT}`)
-);
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = 3000;
+  
+  app.listen(PORT, () =>
+    console.log(`>> Server is live at http://localhost:${PORT}`)
+  );
+}
 
 module.exports = app;
