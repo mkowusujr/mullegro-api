@@ -103,11 +103,14 @@ exports.getAllReviewsMadeByUser = async username => {
 exports.getAllReviewsFromPostsMadeByUser = async username => {
   try {
     let user = await userService.getUserByUsername(username);
+    let emptyReview = {
+    rating: 0
+    }
     let reviews = [];
     let postsByUser = await user.getPosts();
 
     for (let i = 0; i < postsByUser.length; i++) {
-      reviews.push(await postsByUser[i].getReview());
+      reviews.push(await postsByUser[i].getReview() ?? emptyReview);
     }
 
     return reviews;
@@ -125,16 +128,20 @@ exports.getAllReviewsFromPostsMadeByUser = async username => {
  */
 exports.generateStatsForUser = async username => {
   try {
+    let generatedStats = {
+      averageRating: 0,
+      totalPostsMade: 0,
+      totalPostsSold: 0,
+      totalPostsAvailable: 0
+    }
+
     let user = await userService.getUserByUsername(username);
 
     let reviewsOnPostsByUser = await this.getAllReviewsFromPostsMadeByUser(
       username
     );
 
-    let totalRatings = 0;
-    reviewsOnPostsByUser.forEach(review => {
-      totalRatings += review.rating;
-    });
+    let allPostsBelongingToUser = await user.getPosts();
 
     let soldPostsBelongingToUser = await Post.findAll({
       where: {
@@ -143,12 +150,32 @@ exports.generateStatsForUser = async username => {
       }
     });
 
-    let stats = {
-      averageRating: totalRatings / reviewsOnPostsByUser.length,
-      amountOfPostsSold: soldPostsBelongingToUser.length
-    };
+    let availablePostsBelongingToUser = await Post.findAll({
+      where: {
+        userId: user.id,
+        status: 'Available'
+      }
+    });
 
-    return stats;
+    let ratingSum = 0;
+    let  totalRatings = 0;
+    if (reviewsOnPostsByUser && reviewsOnPostsByUser.length != 0){
+      reviewsOnPostsByUser.forEach(review => {
+        ratingSum += review.rating;
+        totalRatings += review.rating == 0? 0 : 1;
+      });
+    }
+    
+    let averageRating = totalRatings == 0? 0 : (ratingSum / totalRatings);
+
+    generatedStats = {
+      averageRating: averageRating,
+      totalPostsMade: allPostsBelongingToUser.length ?? 0,
+      totalPostsSold: soldPostsBelongingToUser.length ?? 0,
+      totalPostsAvailable: availablePostsBelongingToUser.length ?? 0
+    }
+    
+    return generatedStats;
   } catch (error) {
     let errorOutput = 'Error generating stats for user: ' + error;
     return helperService.sendRejectedPromiseWith(errorOutput);
