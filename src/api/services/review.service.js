@@ -110,7 +110,10 @@ exports.getAllReviewsFromPostsMadeByUser = async username => {
     let postsByUser = await user.getPosts();
 
     for (let i = 0; i < postsByUser.length; i++) {
-      reviews.push(await postsByUser[i].getReview() ?? emptyReview);
+      let review = await postsByUser[i].getReview();
+      if (review) {
+        reviews.push(review);
+      }
     }
 
     return reviews;
@@ -162,7 +165,7 @@ exports.generateStatsForUser = async username => {
     if (reviewsOnPostsByUser && reviewsOnPostsByUser.length != 0){
       reviewsOnPostsByUser.forEach(review => {
         ratingSum += review.rating;
-        totalRatings += review.rating == 0? 0 : 1;
+        totalRatings += 1;
       });
     }
     
