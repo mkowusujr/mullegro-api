@@ -2,7 +2,7 @@ const transactionService = require('../../../src/api/services/transaction.servic
 const userService = require('../../../src/api/services/user.service');
 const cartService = require('../../../src/api/services/cart.service');
 
-describe.only('Transaction Service', () => {
+describe('Transaction Service', () => {
   it('should be created', () => {
     expect(transactionService).toBeTruthy();
   });

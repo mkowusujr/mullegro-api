@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "jest test",
+    "test": "jest test --runInBand",
     "pretty": "prettier --config .prettierrc --write \"./**/*.{js,jsx,json}\"",
     "pretty-dev": "npm run pretty && npm run dev",
     "pretty-test": "npm run pretty && npm run test"
