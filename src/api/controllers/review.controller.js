@@ -41,7 +41,7 @@ router.post('/user/reviews', auth.verifyToken, async (req, res) => {
 /**
  * @swagger
  * /api/reviews/review/{reviewId}:
- *    post:
+ *    get:
  *      tags: ['Review Controller']
  *      summary: Fetches the Review matching the specified id
  *      parameters:
@@ -69,7 +69,7 @@ router.get('/review/:reviewId', async (req, res) => {
 /**
  * @swagger
  * /api/reviews/post/{postId}/review:
- *    post:
+ *    get:
  *      tags: ['Review Controller']
  *      summary: Fetches the Review belonging to the specified post
  *      parameters:
@@ -130,8 +130,8 @@ router.put('/review/:reviewId', auth.verifyToken, async (req, res) => {
 
 /**
  * @swagger
- * /api/reviews/user/${username}/posts/reviews:
- *    post:
+ * /api/reviews/user/{username}/posts/reviews:
+ *    get:
  *      tags: ['Review Controller']
  *      summary: Gets all the reviews on posts made by the specified user has made
  *      parameters:
@@ -160,8 +160,8 @@ router.get('/user/:username/posts/reviews', async (req, res) => {
 
 /**
  * @swagger
- * /api/reviews/user/${username}/reviews:
- *    post:
+ * /api/reviews/user/{username}/reviews:
+ *    get:
  *      tags: ['Review Controller']
  *      summary: Gets all the reviews that the specified user has made
  *      parameters:
@@ -188,8 +188,8 @@ router.get('/user/:username/reviews', async (req, res) => {
 
 /**
  * @swagger
- * /api/reviews/user/${username}/stats:
- *    post:
+ * /api/reviews/user/{username}/stats:
+ *    get:
  *      tags: ['Review Controller']
  *      summary: should generate the stats for a user
  *      parameters:
