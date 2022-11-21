@@ -5,11 +5,11 @@ const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
 
 const checkToSeeIsUserObject = object => {
-  expect(object.hasOwnProperty('id')).toBeTrue();
-  expect(object.hasOwnProperty('name')).toBeTrue();
-  expect(object.hasOwnProperty('email')).toBeTrue();
-  expect(object.hasOwnProperty('username')).toBeTrue();
-  expect(object.hasOwnProperty('password')).toBeTrue();
+  expect(object.hasOwnProperty('id')).toBe(true);
+  expect(object.hasOwnProperty('name')).toBe(true);
+  expect(object.hasOwnProperty('email')).toBe(true);
+  expect(object.hasOwnProperty('username')).toBe(true);
+  expect(object.hasOwnProperty('password')).toBe(true);
 };
 
 describe('User Controller', () => {
@@ -24,10 +24,10 @@ describe('User Controller', () => {
       db = require('../../../src/api/models/index');
       await db.sequelize.sync({ force: true });
       User = db.users;
-      spyOn(console, 'log');
-      spyOn(console, 'error');
+      jest.spyOn(console, 'log').mockImplementation(jest.fn());
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -52,7 +52,7 @@ describe('User Controller', () => {
           expect(response.body.data).toBeTruthy();
           expect(response.body.token).toBeTruthy();
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -66,7 +66,7 @@ describe('User Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -101,7 +101,7 @@ describe('User Controller', () => {
           expect(response.body.data.username).toBe(userObject.username);
           expect(response.body.data.email).toBe(userObject.email);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should accepts a user's email and password and return a token", async () => {
@@ -131,7 +131,7 @@ describe('User Controller', () => {
           expect(response.body.data.username).toBe(userObject.username);
           expect(response.body.data.email).toBe(userObject.email);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -157,7 +157,7 @@ describe('User Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -170,7 +170,7 @@ describe('User Controller', () => {
           const response = await request(server).get('/api/users/user/details');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('should get the details of the current user', async () => {
@@ -196,7 +196,7 @@ describe('User Controller', () => {
           expect(response.body.email).toBe(userObject.email);
           expect(response.body.address).toBe(userObject.address);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -209,7 +209,7 @@ describe('User Controller', () => {
           const response = await request(server).put('/api/users/user');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should update the current user's deatails", async () => {
@@ -252,7 +252,7 @@ describe('User Controller', () => {
           expect(response.body.email).toBe(updatedUserInfo.email);
           expect(response.body.password).toBeTruthy();
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -291,7 +291,7 @@ describe('User Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -326,7 +326,7 @@ describe('User Controller', () => {
           expect(response.body.length).toEqual(2);
           response.body.forEach(object => checkToSeeIsUserObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {});
@@ -352,7 +352,7 @@ describe('User Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.username).toBe(username);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends 404 if there is an error', async () => {
@@ -366,7 +366,7 @@ describe('User Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -388,7 +388,7 @@ describe('User Controller', () => {
 
           expect(response.status).toEqual(200);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends 404 if there is an error', async () => {
@@ -402,7 +402,7 @@ describe('User Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -445,7 +445,7 @@ describe('User Controller', () => {
           expect(response.body.length).toEqual(2);
           response.body.forEach(user => expect(user.username).toContain('a'));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });

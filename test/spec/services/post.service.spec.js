@@ -10,12 +10,12 @@ describe('Post Service', () => {
   beforeEach(async () => {
     try {
       db = require('../../../src/api/models/index');
+      await db.sequelize.sync({ force: true });
       Post = db.posts;
       User = db.users;
-      await db.sequelize.sync({ force: true });
-      spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -35,15 +35,15 @@ describe('Post Service', () => {
         let response = await postService.getPost(postId);
 
         expect(response.id).toEqual(postId);
-        expect(response).toEqual(jasmine.any(Post));
+        expect(response).toEqual(expect.any(Post));
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
       try {
         let response = await postService.getPost();
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -90,7 +90,7 @@ describe('Post Service', () => {
           expect(response[i].id).toEqual(i + 1);
         }
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('can search for the posts by title', async () => {
@@ -129,16 +129,16 @@ describe('Post Service', () => {
 
         expect(response.length).toEqual(1);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
       try {
-        spyOn(postService, 'findAll').and.returnValue(Promise.reject('Error'));
+        jest.spyOn(postService, 'findAll').mockReturnValue(Promise.reject('Error'));
         let response = await postService.findAll();
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
-        expect(error).toEqual(jasmine.any(String));
+        expect(error).toEqual(expect.any(String));
       }
     });
   });
@@ -187,7 +187,7 @@ describe('Post Service', () => {
           expect(post.userId).toEqual(dummyUser.id);
         });
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should return an empty list if user has no posts', async () => {
@@ -206,14 +206,14 @@ describe('Post Service', () => {
 
         expect(response).toEqual([]);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
       try {
         let isCurrentUser = false;
         let response = await postService.findAllPostsForUser({}, isCurrentUser);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -251,7 +251,7 @@ describe('Post Service', () => {
 
         expect(response.userId).toEqual(dummyUser.id);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
@@ -268,7 +268,7 @@ describe('Post Service', () => {
         };
 
         let response = await postService.createNewPost(dummyUser, postObject);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -293,13 +293,13 @@ describe('Post Service', () => {
         expect(response.id).toBe(postId);
         expect(response.status).toBe(newStatus.status);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
       try {
         let response = await postService.updatePostStatus(100, {});
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -329,13 +329,13 @@ describe('Post Service', () => {
 
         expect(response).toBe('Deleted successfully');
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should throw an error if there is an issue', async () => {
       try {
         let response = await postService.deletePost({}, 100);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -349,7 +349,7 @@ describe('Post Service', () => {
           email: 'dummay@email.com'
         });
         let response = await postService.deletePost(dummyUser, 1);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -394,7 +394,7 @@ describe('Post Service', () => {
 
         expect(response.length).toEqual(2);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('should return all posts of a certain condition', async () => {
@@ -433,7 +433,7 @@ describe('Post Service', () => {
 
         expect(response.length).toEqual(2);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
   });

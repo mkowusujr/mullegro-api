@@ -10,11 +10,11 @@ describe('Cart Service', () => {
   beforeEach(async () => {
     try {
       db = require('../../../src/api/models/index');
+      await db.sequelize.sync({ force: true });
       Cart = db.carts;
       User = db.users;
       Post = db.posts;
-      await db.sequelize.sync({ force: true });
-      spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());;
 
       dummyUser = await User.create({
         name: 'Dummy User',
@@ -25,7 +25,7 @@ describe('Cart Service', () => {
       await cartService.createCart(dummyUser);
       dummyUserCart = await dummyUser.getCart();
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -48,7 +48,7 @@ describe('Cart Service', () => {
       try {
         let dummyUser = {};
         let response = await cartService.createCart(dummyUser);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -73,7 +73,7 @@ describe('Cart Service', () => {
         expect(post.cartId).toBe(dummyUser.cartId);
         expect(console.error).not.toHaveBeenCalled();
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
@@ -81,7 +81,7 @@ describe('Cart Service', () => {
         let postId = 1;
 
         await cartService.addToCart(dummyUser, postId);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -110,7 +110,7 @@ describe('Cart Service', () => {
 
         expect(oldPost).toBeTruthy();
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
@@ -118,7 +118,7 @@ describe('Cart Service', () => {
         let postId = 1;
 
         await cartService.removeFromCart(dummyUser, postId);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -155,14 +155,14 @@ describe('Cart Service', () => {
         expect(cart.totalAmount).toEqual(200);
         expect(cart.posts.length).toEqual(2);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
         let dummyUser2 = {};
         let response = await cartService.getCart(dummyUser2);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }
@@ -199,14 +199,14 @@ describe('Cart Service', () => {
         expect(response.message).toBe('Successfully cleared cart');
         expect(cart.posts.length).toEqual(0);
       } catch (error) {
-        fail(error);
+        throw error;
       }
     });
     it('throws an error if there is an issue', async () => {
       try {
         let dummyUser2 = {};
         let response = await cartService.clearCart(dummyUser2);
-        if (response || !response) fail("Didn't throw error");
+        if (response || !response) throw new Error("Didn't throw error");
       } catch (error) {
         expect(console.error).toHaveBeenCalled();
       }

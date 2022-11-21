@@ -14,7 +14,7 @@ describe('Review Service', () => {
       User = db.users;
       Post = db.posts;
       await db.sequelize.sync({ force: true });
-      spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
 
       dummyUsers = await User.bulkCreate(
         [
@@ -108,7 +108,7 @@ describe('Review Service', () => {
         { returning: true }
       );
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -236,7 +236,7 @@ describe('Review Service', () => {
   describe('getAllReviewsFromPostsMadeByUser', () => {
     it('can get all the reviews made on posts belonging to a user', async () => {
       let user = dummyUsers[0];
-      let = actualAmountOfReviewsMadeOnPostsBelongingToUserOne = 3;
+      let actualAmountOfReviewsMadeOnPostsBelongingToUserOne = 3;
       let reviews = await reviewService.getAllReviewsFromPostsMadeByUser(
         user.username
       );
@@ -263,14 +263,12 @@ describe('Review Service', () => {
     it('should generate the stats for a user', async () => {
       let username = dummyUsers[0].username;
       let actualAverageRating = 4.27;
-      let actualAmountOfSoldPostsBelongingToUser = 3;
+      let actualTotalPostsSold = 3;
 
       let StatsForUser = await reviewService.generateStatsForUser(username);
 
       expect(StatsForUser.averageRating).toBeCloseTo(actualAverageRating, 2);
-      expect(StatsForUser.amountOfPostsSold).toEqual(
-        actualAmountOfSoldPostsBelongingToUser
-      );
+      expect(StatsForUser.totalPostsSold).toEqual(actualTotalPostsSold);
     });
     it('should throw an error if there is an issue', async () => {
       try {

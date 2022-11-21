@@ -18,8 +18,8 @@ describe('Transaction Controller', () => {
       db = require('../../../src/api/models/index');
       Post = db.posts;
       await db.sequelize.sync({ force: true });
-      spyOn(console, 'log');
-      spyOn(console, 'error');
+      jest.spyOn(console, 'log').mockImplementation(jest.fn());
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
 
       dummyUser = await userService.createUser({
         name: 'Dummy User',
@@ -61,7 +61,7 @@ describe('Transaction Controller', () => {
       );
       dummyPosts = await Post.findAll();
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -72,7 +72,7 @@ describe('Transaction Controller', () => {
           const response = await request(server).post('/api/transactions');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("adds a transaction to a user's transaction history", async () => {
@@ -97,7 +97,7 @@ describe('Transaction Controller', () => {
           expect(response.body.totalAmount).toEqual(totalAmount);
           expect(response.body.posts.length).toEqual(3);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -110,7 +110,7 @@ describe('Transaction Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -121,7 +121,7 @@ describe('Transaction Controller', () => {
           const response = await request(server).get('/api/transactions');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("gets all a user's transactions", async () => {
@@ -147,7 +147,7 @@ describe('Transaction Controller', () => {
             expect(transaction.itemCount).toBeTruthy();
           });
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -162,7 +162,7 @@ describe('Transaction Controller', () => {
           );
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("gets a transaction from a user's transaction history", async () => {
@@ -188,7 +188,7 @@ describe('Transaction Controller', () => {
               expect(response.body.posts.length).toEqual(1);
             });
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });

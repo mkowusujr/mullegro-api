@@ -17,8 +17,8 @@ describe('Review Controller', () => {
       User = db.users;
       Post = db.posts;
       await db.sequelize.sync({ force: true });
-      spyOn(console, 'log');
-      spyOn(console, 'error');
+      jest.spyOn(console, 'log').mockImplementation(jest.fn());
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
 
       dummyUsers = await User.bulkCreate(
         [
@@ -115,7 +115,7 @@ describe('Review Controller', () => {
       token = jwtMaker.createJwt(dummyUsers[0]);
       dummyUsername = dummyUsers[0].username;
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -128,7 +128,7 @@ describe('Review Controller', () => {
           );
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('should create a post', async () => {
@@ -150,7 +150,7 @@ describe('Review Controller', () => {
           expect(response.body.userId).toEqual(user.id);
           expect(response.body.postId).toEqual(post.id);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -167,7 +167,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -186,7 +186,7 @@ describe('Review Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.id).toEqual(reviewId);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -200,7 +200,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -213,7 +213,7 @@ describe('Review Controller', () => {
           );
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('can update a review', async () => {
@@ -239,7 +239,7 @@ describe('Review Controller', () => {
             updatedReviewDetails.description
           );
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -255,7 +255,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -274,7 +274,7 @@ describe('Review Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.postId).toEqual(postId);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -288,7 +288,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -307,7 +307,7 @@ describe('Review Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(actualAmountOfReviewUserOneMade);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -321,7 +321,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -342,7 +342,7 @@ describe('Review Controller', () => {
             actualAmountOfReviewsMadeOnPostsBelongingToUserOne
           );
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -356,7 +356,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -374,7 +374,7 @@ describe('Review Controller', () => {
 
           expect(response.status).toEqual(200);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -388,7 +388,7 @@ describe('Review Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });

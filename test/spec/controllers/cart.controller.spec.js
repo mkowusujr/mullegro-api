@@ -18,8 +18,8 @@ describe('Cart Controller', () => {
       await db.sequelize.sync({ force: true });
       Post = db.posts;
       User = db.users;
-      spyOn(console, 'log');
-      spyOn(console, 'error');
+      jest.spyOn(console, 'log').mockImplementation(jest.fn());
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
 
       dummyUser = await userService.createUser({
         name: 'Dummy User',
@@ -61,7 +61,7 @@ describe('Cart Controller', () => {
 
       token = jwtMaker.createJwt(dummyUser);
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -72,7 +72,7 @@ describe('Cart Controller', () => {
           const response = await request(server).get('/api/cart');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should get all the items in a user's cart", async () => {
@@ -92,7 +92,7 @@ describe('Cart Controller', () => {
           expect(response.body.itemCount).toBeTruthy();
           expect(response.body.posts.length).toEqual(dummyPosts.length);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -103,7 +103,7 @@ describe('Cart Controller', () => {
           const response = await request(server).post('/api/cart');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should add a post to a user's cart", async () => {
@@ -117,7 +117,7 @@ describe('Cart Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -133,7 +133,7 @@ describe('Cart Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -144,7 +144,7 @@ describe('Cart Controller', () => {
           const response = await request(server).delete('/api/cart');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("empty the user's cart", async () => {
@@ -161,7 +161,7 @@ describe('Cart Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -174,7 +174,7 @@ describe('Cart Controller', () => {
           const response = await request(server).delete('/api/cart/post/1');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should remove an item for a user's cart", async () => {
@@ -190,7 +190,7 @@ describe('Cart Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(200);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -202,7 +202,7 @@ describe('Cart Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });

@@ -4,13 +4,13 @@ const request = require('supertest');
 const jwtMaker = require('../helpers/create-jwt');
 
 const checkToSeeIsPostObject = object => {
-  expect(object.hasOwnProperty('id')).toBeTrue();
-  expect(object.hasOwnProperty('title')).toBeTrue();
-  expect(object.hasOwnProperty('price')).toBeTrue();
-  expect(object.hasOwnProperty('description')).toBeTrue();
-  expect(object.hasOwnProperty('condition')).toBeTrue();
-  expect(object.hasOwnProperty('category')).toBeTrue();
-  expect(object.hasOwnProperty('status')).toBeTrue();
+  expect(object.hasOwnProperty('id')).toBe(true);
+  expect(object.hasOwnProperty('title')).toBe(true);
+  expect(object.hasOwnProperty('price')).toBe(true);
+  expect(object.hasOwnProperty('description')).toBe(true);
+  expect(object.hasOwnProperty('condition')).toBe(true);
+  expect(object.hasOwnProperty('category')).toBe(true);
+  expect(object.hasOwnProperty('status')).toBe(true);
 };
 
 describe('Post Controller', () => {
@@ -26,10 +26,10 @@ describe('Post Controller', () => {
       await db.sequelize.sync({ force: true });
       Post = db.posts;
       User = db.users;
-      spyOn(console, 'log');
-      spyOn(console, 'error');
+      jest.spyOn(console, 'log').mockImplementation(jest.fn());
+      jest.spyOn(console, 'error').mockImplementation(jest.fn());
     } catch (error) {
-      fail(error);
+      throw error;
     }
   });
 
@@ -52,7 +52,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           checkToSeeIsPostObject(response.body);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -63,7 +63,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toBeCloseTo(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -88,7 +88,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.text).toBe('Successfully updated post');
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -99,7 +99,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toBeCloseTo(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -148,7 +148,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(3);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -197,7 +197,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(2);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -208,7 +208,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -221,7 +221,7 @@ describe('Post Controller', () => {
           const response = await request(server).get('/api/posts/user/posts');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should get all of the logged in user's post", async () => {
@@ -267,7 +267,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(2);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -277,7 +277,7 @@ describe('Post Controller', () => {
           const response = await request(server).post('/api/posts/user/posts');
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('should create a new post ownered by the logged in user', async () => {
@@ -307,7 +307,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           checkToSeeIsPostObject(response.body);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 400 response if there is an issue', async () => {
@@ -329,7 +329,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(400);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -344,7 +344,7 @@ describe('Post Controller', () => {
           );
           expect(response.status).toEqual(401);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it("should get all of the logged in user's post", async () => {
@@ -374,7 +374,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.text).toEqual('Successfully deleted post');
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('sends a 404 response if there is an issue', async () => {
@@ -395,7 +395,7 @@ describe('Post Controller', () => {
           expect(console.log).toHaveBeenCalled();
           expect(response.status).toEqual(404);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -451,7 +451,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(2);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('can get all of a certain condition', async () => {
@@ -468,7 +468,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(1);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('can get all the possible filter category names', async () => {
@@ -481,7 +481,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(83);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
       it('can get all the possible filter ... names', async () => {
@@ -494,7 +494,7 @@ describe('Post Controller', () => {
           expect(response.status).toEqual(200);
           expect(response.body.length).toEqual(6);
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
@@ -547,7 +547,7 @@ describe('Post Controller', () => {
           expect(response.body.length).toEqual(1);
           response.body.forEach(object => checkToSeeIsPostObject(object));
         } catch (error) {
-          fail(error);
+          throw error;
         }
       });
     });
