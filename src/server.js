@@ -39,7 +39,7 @@ app.get('/swagger.json', (req, res) => {
 if (process.env.NODE_ENV !== 'test') {
   const PORT = 3000;
   
-  app.listen(PORT, () =>
+  app.listen(process.env.PORT || PORT, () =>
     console.log(`>> Server is live at http://localhost:${PORT}`)
   );
 }
