@@ -49,7 +49,7 @@ exports.createUser = async user => {
       await encryptPassword(createdUser);
       await cartService.createCart(createdUser);
 
-      createdUser.profile_picture = faker.image.cats(500, 500, true);
+      createdUser.profilePicture = faker.image.cats(500, 500, true);
       await createdUser.save();
 
       return createdUser;

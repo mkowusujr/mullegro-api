@@ -30,7 +30,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING(10),
       allowNull: false
     },
-    display_picture: {
+    displayPicture: {
+      type: Sequelize.STRING(),
+      allowNull: true
+    },
+    shippingAddress: {
       type: Sequelize.STRING(),
       allowNull: true
     }

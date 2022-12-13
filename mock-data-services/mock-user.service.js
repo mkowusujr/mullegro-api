@@ -14,7 +14,7 @@ exports.createMockUsers = async amount => {
       address: faker.address.streetAddress(),
       password: faker.internet.password(20),
       bio: faker.lorem.sentences(),
-      profile_picture: faker.image.cats(500, 500, true)
+      profilePicture: faker.image.cats(500, 500, true)
     });
 
     users.push(user);

@@ -59,7 +59,7 @@ const userSchemaProperties = {
     type: 'string',
     example: 'A short paragraph about this user'
   },
-  profile_picture: {
+  profilePicture: {
     type: 'string',
     example: 'imageUrl'
   }
@@ -109,7 +109,7 @@ const postSchemaProperties = {
     type: 'string',
     example: 'Available'
   },
-  display_picture: {
+  displayPicture: {
     type: 'string',
     example: 'Image url'
   }

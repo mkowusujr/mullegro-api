@@ -53,7 +53,7 @@ exports.createPosts = async users => {
         condition: randomCondition(),
         category: instrumentType,
         status: 'Available',
-        display_picture: faker.image.cats(500, 500, true)
+        displayPicture: faker.image.cats(500, 500, true)
       });
     }
   });

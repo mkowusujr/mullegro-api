@@ -7,7 +7,7 @@
  * @property {string} email The user's email
  * @property {string} password The user's password
  * @property {string} bio The user's bio
- * @property {string} profile_picture The user's profile_picture
+ * @property {string} profilePicture The user's profilePicture
  * @property {Cart} cart The user's cart
  */
 
@@ -20,7 +20,7 @@
  * @property {string} condition The post's condition
  * @property {string} category The post's category
  * @property {string} status The post's status
- * @property {string} display_picture The post's display_picture
+ * @property {string} displayPicture The post's displayPicture
  */
 
 /**

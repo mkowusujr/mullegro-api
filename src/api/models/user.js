@@ -36,7 +36,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING(),
       allowNull: true
     },
-    profile_picture: {
+    profilePicture: {
       type: Sequelize.STRING(),
       allowNull: true
     }
